@@ -483,6 +483,23 @@ kbd{
   .ch-name{font-size:11px}
   .ch-thumb{height:64px}
 }
+/* ===== PULL TO REFRESH ===== */
+#ptr-indicator{
+  position:absolute;top:0;left:50%;transform:translateX(-50%) translateY(-60px);
+  z-index:50;display:flex;align-items:center;gap:8px;
+  background:var(--card);border:1px solid var(--bdr2);border-radius:24px;
+  padding:8px 18px;font-size:12px;font-weight:600;color:var(--txt2);
+  box-shadow:0 4px 20px rgba(0,0,0,.3);transition:transform .3s var(--ease),opacity .3s;
+  opacity:0;pointer-events:none;
+}
+#ptr-indicator.pulling{opacity:1;pointer-events:none}
+#ptr-indicator.refreshing{opacity:1;pointer-events:none}
+.ptr-spinner{width:18px;height:18px;border:2px solid var(--bdr2);border-top-color:var(--acc);
+  border-radius:50%;display:inline-block}
+#ptr-indicator.refreshing .ptr-spinner{animation:spin .6s linear infinite}
+#ptr-indicator .ptr-arrow{font-size:16px;transition:transform .2s var(--ease)}
+#ptr-indicator.ready .ptr-arrow{transform:rotate(180deg)}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
