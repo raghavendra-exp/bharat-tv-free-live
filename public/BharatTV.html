@@ -1205,11 +1205,22 @@ document.getElementById('cats').addEventListener('click',e=>{
 });
 document.getElementById('langs').addEventListener('click',e=>{
   const el=e.target.closest('.lc');
-  if(!el) return;
+  if(!el||!el.dataset.l) return;
   lang=el.dataset.l;
-  document.querySelectorAll('.lc').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('#langs .lc').forEach(x=>x.classList.remove('on'));
   el.classList.add('on');
   renderAll();
+});
+document.getElementById('countries').addEventListener('click',e=>{
+  const el=e.target.closest('.lc');
+  if(!el||!el.dataset.co) return;
+  country=el.dataset.co;
+  document.querySelectorAll('#countries .lc').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on');
+  buildIndia();
+  renderAll();
+  showToast('🌍 '+(COUNTRY_NAMES[country]||country)+': '+india.length+' channels');
+  if(window.innerWidth<700) closeSb();
 });
 let st;
 document.getElementById('srch').addEventListener('input',e=>{
