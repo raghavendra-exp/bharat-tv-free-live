@@ -919,12 +919,18 @@ function buildIndia(){
   const cl={};
   feeds.forEach(f=>{ if(f.languages){ if(!cl[f.channel]) cl[f.channel]=new Set(); f.languages.forEach(l=>cl[f.channel].add(l)); }});
 
-  india=channels.filter(c=>{
-    if(c.is_nsfw||c.closed) return false;
-    const isIn=c.country==='IN';
-    const hasIL=[...(cl[c.id]||[])].some(l=>IN_LANGS.has(l));
-    return isIn||hasIL;
-  });
+  if(country==='ALL'){
+    india=channels.filter(c=>!c.is_nsfw&&!c.closed);
+  } else if(country==='IN'){
+    india=channels.filter(c=>{
+      if(c.is_nsfw||c.closed) return false;
+      const isIn=c.country==='IN';
+      const hasIL=[...(cl[c.id]||[])].some(l=>IN_LANGS.has(l));
+      return isIn||hasIL;
+    });
+  } else {
+    india=channels.filter(c=>!c.is_nsfw&&!c.closed&&c.country===country);
+  }
   india.forEach(c=>{ c._langs=cl[c.id]?[...cl[c.id]]:[] });
 
   lMap={};
