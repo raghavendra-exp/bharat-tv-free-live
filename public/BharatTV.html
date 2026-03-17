@@ -970,8 +970,9 @@ function renderCards(){
   const empty=document.getElementById('empty');
   const lm=document.getElementById('load-more');
   document.getElementById('count-lbl').textContent=`${ch.length} channels`;
-  const titles={all:'All India Channels',news:'News Channels',sports:'Sports Channels',entertainment:'Entertainment',lifestyle:'Fashion & Lifestyle',travel:'Travel & Adventure',science:'Science & Nature',education:'Education',music:'Music Channels',religious:'Spiritual & Religious',kids:'Kids Channels',documentary:'Documentary',general:'General Channels'};
-  document.getElementById('pg-title').innerHTML=`${titles[cat]||'India Channels'} <span class="live-tag">LIVE</span>`;
+  const cName=COUNTRY_NAMES[country]||country;
+  const titles={all:`All ${cName} Channels`,news:'News Channels',sports:'Sports Channels',entertainment:'Entertainment',lifestyle:'Fashion & Lifestyle',travel:'Travel & Adventure',science:'Science & Nature',education:'Education',music:'Music Channels',religious:'Spiritual & Religious',kids:'Kids Channels',documentary:'Documentary',general:'General Channels'};
+  document.getElementById('pg-title').innerHTML=`${titles[cat]||cName+' Channels'} <span class="live-tag">LIVE</span>`;
 
   if(!ch.length){ grid.innerHTML=''; empty.classList.add('show'); lm.classList.remove('show'); return; }
   empty.classList.remove('show');
