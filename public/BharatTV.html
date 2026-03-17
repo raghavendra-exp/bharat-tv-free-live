@@ -695,7 +695,8 @@ const PER_PAGE = 48;
 // ===== STATE =====
 let channels=[], streams=[], logos=[], feeds=[];
 let india=[], sMap={}, lMap={};
-let cat='all', lang='all', q='', page=1, sortBy='name';
+let cat='all', lang='all', country='IN', q='', page=1, sortBy='name';
+const COUNTRY_NAMES={IN:'India',US:'USA',GB:'UK',CA:'Canada',AE:'UAE',PK:'Pakistan',BD:'Bangladesh',NP:'Nepal',AU:'Australia',ALL:'All Countries'};
 let cur=null, hls=null, streamsReady=false;
 let theaterMode=false;
 
