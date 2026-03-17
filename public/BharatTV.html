@@ -99,6 +99,14 @@ img{display:block}
   backdrop-filter:blur(8px);transition:all .2s var(--ease);
 }
 #theater-close:hover{background:rgba(255,255,255,.25);transform:scale(1.1)}
+/* Always show theater close on mobile */
+@media(max-width:700px){
+  #player-wrap.theater #theater-close{
+    display:flex;top:10px;right:10px;width:40px;height:40px;
+    background:rgba(0,0,0,.6);font-size:18px;
+  }
+  #player-wrap.theater #p-info{z-index:5}
+}
 
 /* ===== HEADER ===== */
 #menu-btn{
@@ -563,6 +571,19 @@ kbd{
 
     <!-- SIDEBAR -->
     <nav id="sb">
+      <div class="sb-head">Country</div>
+      <div class="lang-row" id="countries">
+        <span class="lc on" data-co="IN">🇮🇳 India</span>
+        <span class="lc" data-co="US">🇺🇸 USA</span>
+        <span class="lc" data-co="GB">🇬🇧 UK</span>
+        <span class="lc" data-co="CA">🇨🇦 Canada</span>
+        <span class="lc" data-co="AE">🇦🇪 UAE</span>
+        <span class="lc" data-co="PK">🇵🇰 Pakistan</span>
+        <span class="lc" data-co="BD">🇧🇩 Bangladesh</span>
+        <span class="lc" data-co="NP">🇳🇵 Nepal</span>
+        <span class="lc" data-co="AU">🇦🇺 Australia</span>
+        <span class="lc" data-co="ALL">🌍 All Countries</span>
+      </div>
       <div class="sb-head">Language</div>
       <div class="lang-row" id="langs">
         <span class="lc on" data-l="all">All</span>
@@ -674,7 +695,8 @@ const PER_PAGE = 48;
 // ===== STATE =====
 let channels=[], streams=[], logos=[], feeds=[];
 let india=[], sMap={}, lMap={};
-let cat='all', lang='all', q='', page=1, sortBy='name';
+let cat='all', lang='all', country='IN', q='', page=1, sortBy='name';
+const COUNTRY_NAMES={IN:'India',US:'USA',GB:'UK',CA:'Canada',AE:'UAE',PK:'Pakistan',BD:'Bangladesh',NP:'Nepal',AU:'Australia',ALL:'All Countries'};
 let cur=null, hls=null, streamsReady=false;
 let theaterMode=false;
 
@@ -897,12 +919,18 @@ function buildIndia(){
   const cl={};
   feeds.forEach(f=>{ if(f.languages){ if(!cl[f.channel]) cl[f.channel]=new Set(); f.languages.forEach(l=>cl[f.channel].add(l)); }});
 
-  india=channels.filter(c=>{
-    if(c.is_nsfw||c.closed) return false;
-    const isIn=c.country==='IN';
-    const hasIL=[...(cl[c.id]||[])].some(l=>IN_LANGS.has(l));
-    return isIn||hasIL;
-  });
+  if(country==='ALL'){
+    india=channels.filter(c=>!c.is_nsfw&&!c.closed);
+  } else if(country==='IN'){
+    india=channels.filter(c=>{
+      if(c.is_nsfw||c.closed) return false;
+      const isIn=c.country==='IN';
+      const hasIL=[...(cl[c.id]||[])].some(l=>IN_LANGS.has(l));
+      return isIn||hasIL;
+    });
+  } else {
+    india=channels.filter(c=>!c.is_nsfw&&!c.closed&&c.country===country);
+  }
   india.forEach(c=>{ c._langs=cl[c.id]?[...cl[c.id]]:[] });
 
   lMap={};
@@ -942,8 +970,9 @@ function renderCards(){
   const empty=document.getElementById('empty');
   const lm=document.getElementById('load-more');
   document.getElementById('count-lbl').textContent=`${ch.length} channels`;
-  const titles={all:'All India Channels',news:'News Channels',sports:'Sports Channels',entertainment:'Entertainment',lifestyle:'Fashion & Lifestyle',travel:'Travel & Adventure',science:'Science & Nature',education:'Education',music:'Music Channels',religious:'Spiritual & Religious',kids:'Kids Channels',documentary:'Documentary',general:'General Channels'};
-  document.getElementById('pg-title').innerHTML=`${titles[cat]||'India Channels'} <span class="live-tag">LIVE</span>`;
+  const cName=COUNTRY_NAMES[country]||country;
+  const titles={all:`All ${cName} Channels`,news:'News Channels',sports:'Sports Channels',entertainment:'Entertainment',lifestyle:'Fashion & Lifestyle',travel:'Travel & Adventure',science:'Science & Nature',education:'Education',music:'Music Channels',religious:'Spiritual & Religious',kids:'Kids Channels',documentary:'Documentary',general:'General Channels'};
+  document.getElementById('pg-title').innerHTML=`${titles[cat]||cName+' Channels'} <span class="live-tag">LIVE</span>`;
 
   if(!ch.length){ grid.innerHTML=''; empty.classList.add('show'); lm.classList.remove('show'); return; }
   empty.classList.remove('show');
@@ -1177,11 +1206,22 @@ document.getElementById('cats').addEventListener('click',e=>{
 });
 document.getElementById('langs').addEventListener('click',e=>{
   const el=e.target.closest('.lc');
-  if(!el) return;
+  if(!el||!el.dataset.l) return;
   lang=el.dataset.l;
-  document.querySelectorAll('.lc').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('#langs .lc').forEach(x=>x.classList.remove('on'));
   el.classList.add('on');
   renderAll();
+});
+document.getElementById('countries').addEventListener('click',e=>{
+  const el=e.target.closest('.lc');
+  if(!el||!el.dataset.co) return;
+  country=el.dataset.co;
+  document.querySelectorAll('#countries .lc').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on');
+  buildIndia();
+  renderAll();
+  showToast('🌍 '+(COUNTRY_NAMES[country]||country)+': '+india.length+' channels');
+  if(window.innerWidth<700) closeSb();
 });
 let st;
 document.getElementById('srch').addEventListener('input',e=>{
