@@ -1171,6 +1171,7 @@ function playChannel(c){
   renderUpNext(c);
   renderCards();
   showToast('▶ Playing: '+c.name);
+  startViewerCounter(c.id);
 }
 
 function tryPlay(url,ss,idx,ov,vid,c){
