@@ -1263,7 +1263,7 @@ document.getElementById('countries').addEventListener('click',e=>{
 });
 let st;
 document.getElementById('srch').addEventListener('input',e=>{
-  clearTimeout(st); st=setTimeout(()=>{ q=e.target.value.trim(); renderAll(); },220);
+  clearTimeout(st); st=setTimeout(()=>{ q=e.target.value.trim(); if(ytMode) renderYtGrid(); else renderAll(); },220);
 });
 
 // ===== KEYBOARD SHORTCUTS =====
