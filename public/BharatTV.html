@@ -1453,33 +1453,10 @@ document.getElementById('yt-cats').addEventListener('click',e=>{
   if(window.innerWidth<700) closeSb();
 });
 
-// Override close to reset YT iframe
-const origClose=closePlayer;
-closePlayer=function(){
-  document.getElementById('yt-frame').style.display='none';
-  document.getElementById('yt-frame').src='';
-  document.getElementById('vid').style.display='';
-  origClose();
-};
-
-// Override IPTV cat click to exit YT mode
-const origCatHandler=document.getElementById('cats').onclick;
+// Exit YT mode when clicking IPTV categories
 document.getElementById('cats').addEventListener('click',function(){
   if(ytMode) exitYtMode();
 },true);
-
-// Update search to also filter YT when in ytMode
-const origSrchEl=document.getElementById('srch');
-origSrchEl.removeEventListener('input',()=>{});
-let st2;
-origSrchEl.addEventListener('input',e=>{
-  clearTimeout(st2);
-  st2=setTimeout(()=>{
-    q=e.target.value.trim();
-    if(ytMode) renderYtGrid();
-    else renderAll();
-  },220);
-});
 
 // Update YT counts on boot
 function updateYtCounts(){
