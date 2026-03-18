@@ -1503,6 +1503,45 @@ function updateYtCounts(){
   });
 }
 
+// ===== LIVE VIEWER COUNTER =====
+const viewerMap={};
+function genViewers(id){
+  if(!viewerMap[id]){
+    // Generate a base viewer count: popular channels get more
+    const base=Math.floor(Math.random()*8000)+200;
+    viewerMap[id]={base,current:base};
+  }
+  // Fluctuate ±5% for realism
+  const v=viewerMap[id];
+  const delta=Math.floor(v.base*0.05*(Math.random()*2-1));
+  v.current=Math.max(50,v.current+delta);
+  return v.current;
+}
+
+function fmtViewers(n){
+  if(n>=1000000) return (n/1000000).toFixed(1)+'M';
+  if(n>=1000) return (n/1000).toFixed(1)+'K';
+  return n.toString();
+}
+
+let viewerInterval;
+function startViewerCounter(channelId){
+  stopViewerCounter();
+  const update=()=>{
+    const v=genViewers(channelId);
+    const txt=fmtViewers(v);
+    document.getElementById('vc-count').textContent=txt;
+    document.getElementById('pv-count').textContent=txt;
+  };
+  update();
+  viewerInterval=setInterval(update,4000+Math.random()*3000);
+}
+function stopViewerCounter(){
+  if(viewerInterval){clearInterval(viewerInterval);viewerInterval=null;}
+  document.getElementById('vc-count').textContent='0';
+  document.getElementById('pv-count').textContent='0';
+}
+
 // ===== START =====
 boot();
 updateYtCounts();
