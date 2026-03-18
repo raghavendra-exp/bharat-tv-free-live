@@ -1087,7 +1087,7 @@ function cardHTML(c,i){
     <div class="ch-thumb">
       ${logo?`<img src="${logo}" loading="lazy" alt="${c.name}" onerror="this.style.display='none'">`:`<div class="no-lg">${c.name.slice(0,2).toUpperCase()}</div>`}
       <div class="play-ov"><div class="play-circle"><div class="play-tri"></div></div></div>
-      ${streamsReady?(hasStream?'<div class="live-ind"></div>':'<div class="no-stream-ind">No stream</div>'):''}
+      ${streamsReady?(hasStream?`<div class="live-ind"></div><div class="viewer-badge"><span class="vb-dot"></span>${fmtViewers(genViewers(c.id))}</div>`:'<div class="no-stream-ind">No stream</div>'):''}
     </div>
     <div class="ch-info">
       <div class="ch-name">${c.name}</div>
