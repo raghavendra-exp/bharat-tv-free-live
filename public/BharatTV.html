@@ -1467,6 +1467,7 @@ function playYt(c){
   setupBtns(cur,`https://www.youtube.com/channel/${c.ytId}/live`);
   renderYtUpNext(c);
   showToast('▶ YouTube: '+c.name);
+  startViewerCounter(c.id);
 }
 
 function renderYtUpNext(c){
