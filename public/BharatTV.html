@@ -1252,6 +1252,7 @@ function closePlayer(){
   document.getElementById('vid').style.display='';
   document.getElementById('yt-frame').style.display='none';
   document.getElementById('yt-frame').src='';
+  stopViewerCounter();
   cur=null;
   if(ytMode) renderYtGrid(); else renderCards();
 }
