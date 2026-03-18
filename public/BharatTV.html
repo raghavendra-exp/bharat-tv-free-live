@@ -91,6 +91,7 @@ img{display:block}
   transform:translateY(0);
 }
 #player-wrap.theater #theater-close{display:flex}
+#player-wrap.theater #viewer-counter{display:flex}
 #theater-close{
   display:none;position:absolute;top:16px;right:16px;z-index:310;
   width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.12);
@@ -99,6 +100,39 @@ img{display:block}
   backdrop-filter:blur(8px);transition:all .2s var(--ease);
 }
 #theater-close:hover{background:rgba(255,255,255,.25);transform:scale(1.1)}
+/* Viewer counter in theater */
+#viewer-counter{
+  display:none;position:absolute;top:16px;left:16px;z-index:310;
+  align-items:center;gap:6px;
+  background:rgba(0,0,0,.65);backdrop-filter:blur(8px);
+  padding:6px 14px;border-radius:20px;
+  font-size:12px;font-weight:600;color:#fff;
+}
+#viewer-counter .vc-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--red);
+  animation:blink 1.5s infinite;
+}
+/* Player bar viewer count */
+#p-viewers{
+  display:flex;align-items:center;gap:5px;
+  font-size:11px;color:var(--txt2);margin-top:4px;
+}
+#p-viewers .vc-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--red);
+  animation:blink 1.5s infinite;
+}
+/* Card viewer badge */
+.viewer-badge{
+  position:absolute;bottom:6px;left:6px;
+  display:flex;align-items:center;gap:4px;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(4px);
+  padding:2px 7px;border-radius:10px;
+  font-size:9px;font-weight:600;color:#fff;
+}
+.viewer-badge .vb-dot{
+  width:5px;height:5px;border-radius:50%;background:var(--red);
+  animation:blink 1.5s infinite;
+}
 /* Always show theater close on mobile */
 @media(max-width:700px){
   #player-wrap.theater #theater-close{
