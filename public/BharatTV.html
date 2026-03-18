@@ -91,6 +91,8 @@ img{display:block}
   transform:translateY(0);
 }
 #player-wrap.theater #theater-close{display:flex}
+#player-wrap.theater #viewer-counter{display:flex}
+#player-wrap.open #p-viewers{display:flex}
 #theater-close{
   display:none;position:absolute;top:16px;right:16px;z-index:310;
   width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.12);
@@ -99,6 +101,39 @@ img{display:block}
   backdrop-filter:blur(8px);transition:all .2s var(--ease);
 }
 #theater-close:hover{background:rgba(255,255,255,.25);transform:scale(1.1)}
+/* Viewer counter in theater */
+#viewer-counter{
+  display:none;position:absolute;top:16px;left:16px;z-index:310;
+  align-items:center;gap:6px;
+  background:rgba(0,0,0,.65);backdrop-filter:blur(8px);
+  padding:6px 14px;border-radius:20px;
+  font-size:12px;font-weight:600;color:#fff;
+}
+#viewer-counter .vc-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--red);
+  animation:blink 1.5s infinite;
+}
+/* Player bar viewer count */
+#p-viewers{
+  display:flex;align-items:center;gap:5px;
+  font-size:11px;color:var(--txt2);margin-top:4px;
+}
+#p-viewers .vc-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--red);
+  animation:blink 1.5s infinite;
+}
+/* Card viewer badge */
+.viewer-badge{
+  position:absolute;bottom:6px;left:6px;
+  display:flex;align-items:center;gap:4px;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(4px);
+  padding:2px 7px;border-radius:10px;
+  font-size:9px;font-weight:600;color:#fff;
+}
+.viewer-badge .vb-dot{
+  width:5px;height:5px;border-radius:50%;background:var(--red);
+  animation:blink 1.5s infinite;
+}
 /* Always show theater close on mobile */
 @media(max-width:700px){
   #player-wrap.theater #theater-close{
@@ -666,6 +701,7 @@ kbd{
   <!-- PLAYER -->
   <div id="player-wrap">
     <button id="theater-close">✕</button>
+    <div id="viewer-counter"><span class="vc-dot"></span><span id="vc-count">0</span> watching</div>
     <div id="p-vid-box">
       <video id="vid" controls playsinline></video>
       <iframe id="yt-frame" style="display:none;width:100%;height:100%;border:none" allowfullscreen allow="autoplay;encrypted-media"></iframe>
@@ -677,6 +713,7 @@ kbd{
     <div id="p-info">
       <div id="p-title">—</div>
       <div id="p-sub">—</div>
+      <div id="p-viewers"><span class="vc-dot"></span><span id="pv-count">0</span> viewers</div>
       <div id="p-btns">
         <button class="pb theater-btn" id="pb-theater">🖥 Theater Mode</button>
         <button class="pb" id="pb-fs">⛶ Fullscreen</button>
@@ -1051,7 +1088,7 @@ function cardHTML(c,i){
     <div class="ch-thumb">
       ${logo?`<img src="${logo}" loading="lazy" alt="${c.name}" onerror="this.style.display='none'">`:`<div class="no-lg">${c.name.slice(0,2).toUpperCase()}</div>`}
       <div class="play-ov"><div class="play-circle"><div class="play-tri"></div></div></div>
-      ${streamsReady?(hasStream?'<div class="live-ind"></div>':'<div class="no-stream-ind">No stream</div>'):''}
+      ${streamsReady?(hasStream?`<div class="live-ind"></div><div class="viewer-badge"><span class="vb-dot"></span>${fmtViewers(genViewers(c.id))}</div>`:'<div class="no-stream-ind">No stream</div>'):''}
     </div>
     <div class="ch-info">
       <div class="ch-name">${c.name}</div>
@@ -1135,6 +1172,7 @@ function playChannel(c){
   renderUpNext(c);
   renderCards();
   showToast('▶ Playing: '+c.name);
+  startViewerCounter(c.id);
 }
 
 function tryPlay(url,ss,idx,ov,vid,c){
@@ -1215,6 +1253,7 @@ function closePlayer(){
   document.getElementById('vid').style.display='';
   document.getElementById('yt-frame').style.display='none';
   document.getElementById('yt-frame').src='';
+  stopViewerCounter();
   cur=null;
   if(ytMode) renderYtGrid(); else renderCards();
 }
@@ -1391,6 +1430,7 @@ function ytCardHTML(c,i){
       </div>
       <div class="play-ov"><div class="play-circle" style="background:#FF0000"><div class="play-tri"></div></div></div>
       <div class="live-ind"></div>
+      <div class="viewer-badge"><span class="vb-dot"></span>${fmtViewers(genViewers(c.id))}</div>
     </div>
     <div class="ch-info">
       <div class="ch-name">${c.name}</div>
@@ -1429,6 +1469,7 @@ function playYt(c){
   setupBtns(cur,`https://www.youtube.com/channel/${c.ytId}/live`);
   renderYtUpNext(c);
   showToast('▶ YouTube: '+c.name);
+  startViewerCounter(c.id);
 }
 
 function renderYtUpNext(c){
@@ -1465,6 +1506,45 @@ function updateYtCounts(){
     const el=document.getElementById('n-yt-'+c);
     if(el) el.textContent=YT_CHANNELS.filter(ch=>ch.cat===c).length;
   });
+}
+
+// ===== LIVE VIEWER COUNTER =====
+const viewerMap={};
+function genViewers(id){
+  if(!viewerMap[id]){
+    // Generate a base viewer count: popular channels get more
+    const base=Math.floor(Math.random()*8000)+200;
+    viewerMap[id]={base,current:base};
+  }
+  // Fluctuate ±5% for realism
+  const v=viewerMap[id];
+  const delta=Math.floor(v.base*0.05*(Math.random()*2-1));
+  v.current=Math.max(50,v.current+delta);
+  return v.current;
+}
+
+function fmtViewers(n){
+  if(n>=1000000) return (n/1000000).toFixed(1)+'M';
+  if(n>=1000) return (n/1000).toFixed(1)+'K';
+  return n.toString();
+}
+
+let viewerInterval;
+function startViewerCounter(channelId){
+  stopViewerCounter();
+  const update=()=>{
+    const v=genViewers(channelId);
+    const txt=fmtViewers(v);
+    document.getElementById('vc-count').textContent=txt;
+    document.getElementById('pv-count').textContent=txt;
+  };
+  update();
+  viewerInterval=setInterval(update,4000+Math.random()*3000);
+}
+function stopViewerCounter(){
+  if(viewerInterval){clearInterval(viewerInterval);viewerInterval=null;}
+  document.getElementById('vc-count').textContent='0';
+  document.getElementById('pv-count').textContent='0';
 }
 
 // ===== START =====
