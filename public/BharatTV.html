@@ -1212,7 +1212,11 @@ function closePlayer(){
   pw.classList.remove('open');
   if(hls){hls.destroy();hls=null;}
   document.getElementById('vid').src='';
-  cur=null; renderCards();
+  document.getElementById('vid').style.display='';
+  document.getElementById('yt-frame').style.display='none';
+  document.getElementById('yt-frame').src='';
+  cur=null;
+  if(ytMode) renderYtGrid(); else renderCards();
 }
 
 document.getElementById('pb-close').addEventListener('click',closePlayer);
