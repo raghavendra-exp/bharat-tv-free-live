@@ -737,32 +737,6 @@ let cat='all', lang='all', country='IN', q='', page=1, sortBy='name';
 const COUNTRY_NAMES={IN:'India',US:'USA',GB:'UK',CA:'Canada',AE:'UAE',PK:'Pakistan',BD:'Bangladesh',NP:'Nepal',AU:'Australia',ALL:'All Countries'};
 let cur=null, hls=null, streamsReady=false;
 let theaterMode=false;
-let ytMode=false, ytCat='all';
-
-// ===== YOUTUBE LIVE CHANNELS =====
-const YT_CHANNELS=[
-  {id:'yt-aajtak',name:'Aaj Tak',ytId:'UCt4t-jeY85JegMlZ-E5UWtA',cat:'news',lang:'hin'},
-  {id:'yt-indiatv',name:'India TV',ytId:'UCttspZesZIDEwwpVIgoZtWQ',cat:'news',lang:'hin'},
-  {id:'yt-abpnews',name:'ABP News',ytId:'UCRWFSbif-RFENbBMY2agPnw',cat:'news',lang:'hin'},
-  {id:'yt-ndtv',name:'NDTV India',ytId:'UCZMjhMB55wWnVFP_bTCR0Bg',cat:'news',lang:'hin'},
-  {id:'yt-ndtv-en',name:'NDTV 24x7',ytId:'UCkocZWnEZP4BPYdnN8VfNKg',cat:'news',lang:'eng'},
-  {id:'yt-republic',name:'Republic TV',ytId:'UCwqusr8YDwM-0kzAMBEj0JA',cat:'news',lang:'eng'},
-  {id:'yt-zee',name:'Zee News',ytId:'UCIvaYmXn910QMdemBG3v1pQ',cat:'news',lang:'hin'},
-  {id:'yt-tv9',name:'TV9 Bharatvarsh',ytId:'UCJrkCYPi3iEGPJiCkJx7eFg',cat:'news',lang:'hin'},
-  {id:'yt-news18',name:'News18 India',ytId:'UCY5pOGsnoG9u_I2hHh7_Lgw',cat:'news',lang:'hin'},
-  {id:'yt-wion',name:'WION',ytId:'UC_gUM8rL-Lrg6O3adPW9K1g',cat:'news',lang:'eng'},
-  {id:'yt-cnn18',name:'CNN News18',ytId:'UCef1-8eOpJgud7szVPlZQAQ',cat:'news',lang:'eng'},
-  {id:'yt-tseries',name:'T-Series',ytId:'UCq-Fj5jknLsUf-MWSy4_brA',cat:'music',lang:'hin'},
-  {id:'yt-saregama',name:'Saregama Music',ytId:'UCmlfVmS8VMFHW4JMM7I1SMg',cat:'music',lang:'hin'},
-  {id:'yt-sadhguru',name:'Sadhguru',ytId:'UCcYRmMqDx96sHh2r_A43GtQ',cat:'spiritual',lang:'eng'},
-  {id:'yt-iskcon',name:'ISKCON TV',ytId:'UCOYspaxKfmWMgnJCMBBthkg',cat:'spiritual',lang:'eng'},
-  {id:'yt-aastha',name:'Aastha Channel',ytId:'UCW5-BGlbTCrGYi2w1oPPduw',cat:'spiritual',lang:'hin'},
-  {id:'yt-sonytv',name:'Sony TV',ytId:'UCk3yJoLtfEFr1GCMSWOHkJw',cat:'entertainment',lang:'hin'},
-  {id:'yt-colors',name:'Colors TV',ytId:'UCd7BRCRqxAE_jNnDznlJa_g',cat:'entertainment',lang:'hin'},
-  {id:'yt-zeetv',name:'Zee TV',ytId:'UCppFCkDKMfAEngISTJbymPg',cat:'entertainment',lang:'hin'},
-  {id:'yt-rajyasabha',name:'Rajya Sabha TV',ytId:'UCISgnSNwJDkCJgMF6L9tnHg',cat:'education',lang:'hin'},
-  {id:'yt-dd',name:'DD National',ytId:'UCQxREz0CWhOIBMm6BheNxYQ',cat:'education',lang:'hin'},
-];
 
 // ===== TOAST =====
 let toastTimer;
