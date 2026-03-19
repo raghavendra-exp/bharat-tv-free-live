@@ -991,6 +991,8 @@ function mapCat(c){
 // ===== FILTER =====
 function filtered(){
   let ch=india;
+  // Auto-hide channels without available streams
+  if(streamsReady) ch=ch.filter(c=>(sMap[c.id]||[]).length>0);
   if(cat!=='all') ch=ch.filter(c=>c.categories&&c.categories.some(x=>mapCat(x)===cat));
   if(lang!=='all') ch=ch.filter(c=>c._langs.includes(lang));
   if(q){ const lq=q.toLowerCase(); ch=ch.filter(c=>c.name.toLowerCase().includes(lq)||(c.alt_names&&c.alt_names.some(a=>a.toLowerCase().includes(lq)))); }
