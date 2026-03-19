@@ -943,6 +943,7 @@ async function loadStreamsBackground(){
     document.getElementById('stat-txt').style.display='inline';
     document.getElementById('stat-txt').textContent=`${india.length} ch · ${n} live`;
     showToast(`✅ ${n} live streams loaded!`);
+    updateSidebarCounts();
     renderCards();
     if(cur) renderUpNext(cur);
   }catch(e){
