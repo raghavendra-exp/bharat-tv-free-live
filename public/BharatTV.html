@@ -651,17 +651,6 @@ kbd{
         <div class="cat-item" data-c="documentary"><span class="ci">🎥</span><span class="cl">Documentary</span><span class="cc" id="n-documentary">–</span></div>
         <div class="cat-item" data-c="general"><span class="ci">📡</span><span class="cl">General</span><span class="cc" id="n-general">–</span></div>
       </div>
-      <div class="sb-head" style="margin-top:8px;display:flex;align-items:center;gap:6px">
-        <span style="color:#FF0000">▶</span> YouTube Live
-      </div>
-      <div id="yt-cats" style="padding:0 8px 8px">
-        <div class="cat-item" data-yc="all"><span class="ci">📺</span><span class="cl">All YouTube</span><span class="cc" id="n-yt-all">–</span></div>
-        <div class="cat-item" data-yc="news"><span class="ci">📰</span><span class="cl">News</span><span class="cc" id="n-yt-news">–</span></div>
-        <div class="cat-item" data-yc="music"><span class="ci">🎵</span><span class="cl">Music</span><span class="cc" id="n-yt-music">–</span></div>
-        <div class="cat-item" data-yc="spiritual"><span class="ci">🕉️</span><span class="cl">Spiritual</span><span class="cc" id="n-yt-spiritual">–</span></div>
-        <div class="cat-item" data-yc="entertainment"><span class="ci">🎬</span><span class="cl">Entertainment</span><span class="cc" id="n-yt-entertainment">–</span></div>
-        <div class="cat-item" data-yc="education"><span class="ci">📚</span><span class="cl">Education</span><span class="cc" id="n-yt-education">–</span></div>
-      </div>
       <div class="sb-foot">
         Data: <a href="https://github.com/iptv-org" target="_blank">iptv-org</a> · Open source<br>
         Streams load in background<br>
@@ -704,7 +693,7 @@ kbd{
     <div id="viewer-counter"><span class="vc-dot"></span><span id="vc-count">0</span> watching</div>
     <div id="p-vid-box">
       <video id="vid" controls playsinline></video>
-      <iframe id="yt-frame" style="display:none;width:100%;height:100%;border:none" allowfullscreen allow="autoplay;encrypted-media"></iframe>
+      
       <div id="p-overlay">
         <div class="spin-ring" id="p-spin"></div>
         <div id="p-msg">Loading stream…</div>
@@ -748,32 +737,6 @@ let cat='all', lang='all', country='IN', q='', page=1, sortBy='name';
 const COUNTRY_NAMES={IN:'India',US:'USA',GB:'UK',CA:'Canada',AE:'UAE',PK:'Pakistan',BD:'Bangladesh',NP:'Nepal',AU:'Australia',ALL:'All Countries'};
 let cur=null, hls=null, streamsReady=false;
 let theaterMode=false;
-let ytMode=false, ytCat='all';
-
-// ===== YOUTUBE LIVE CHANNELS =====
-const YT_CHANNELS=[
-  {id:'yt-aajtak',name:'Aaj Tak',ytId:'UCt4t-jeY85JegMlZ-E5UWtA',cat:'news',lang:'hin'},
-  {id:'yt-indiatv',name:'India TV',ytId:'UCttspZesZIDEwwpVIgoZtWQ',cat:'news',lang:'hin'},
-  {id:'yt-abpnews',name:'ABP News',ytId:'UCRWFSbif-RFENbBMY2agPnw',cat:'news',lang:'hin'},
-  {id:'yt-ndtv',name:'NDTV India',ytId:'UCZMjhMB55wWnVFP_bTCR0Bg',cat:'news',lang:'hin'},
-  {id:'yt-ndtv-en',name:'NDTV 24x7',ytId:'UCkocZWnEZP4BPYdnN8VfNKg',cat:'news',lang:'eng'},
-  {id:'yt-republic',name:'Republic TV',ytId:'UCwqusr8YDwM-0kzAMBEj0JA',cat:'news',lang:'eng'},
-  {id:'yt-zee',name:'Zee News',ytId:'UCIvaYmXn910QMdemBG3v1pQ',cat:'news',lang:'hin'},
-  {id:'yt-tv9',name:'TV9 Bharatvarsh',ytId:'UCJrkCYPi3iEGPJiCkJx7eFg',cat:'news',lang:'hin'},
-  {id:'yt-news18',name:'News18 India',ytId:'UCY5pOGsnoG9u_I2hHh7_Lgw',cat:'news',lang:'hin'},
-  {id:'yt-wion',name:'WION',ytId:'UC_gUM8rL-Lrg6O3adPW9K1g',cat:'news',lang:'eng'},
-  {id:'yt-cnn18',name:'CNN News18',ytId:'UCef1-8eOpJgud7szVPlZQAQ',cat:'news',lang:'eng'},
-  {id:'yt-tseries',name:'T-Series',ytId:'UCq-Fj5jknLsUf-MWSy4_brA',cat:'music',lang:'hin'},
-  {id:'yt-saregama',name:'Saregama Music',ytId:'UCmlfVmS8VMFHW4JMM7I1SMg',cat:'music',lang:'hin'},
-  {id:'yt-sadhguru',name:'Sadhguru',ytId:'UCcYRmMqDx96sHh2r_A43GtQ',cat:'spiritual',lang:'eng'},
-  {id:'yt-iskcon',name:'ISKCON TV',ytId:'UCOYspaxKfmWMgnJCMBBthkg',cat:'spiritual',lang:'eng'},
-  {id:'yt-aastha',name:'Aastha Channel',ytId:'UCW5-BGlbTCrGYi2w1oPPduw',cat:'spiritual',lang:'hin'},
-  {id:'yt-sonytv',name:'Sony TV',ytId:'UCk3yJoLtfEFr1GCMSWOHkJw',cat:'entertainment',lang:'hin'},
-  {id:'yt-colors',name:'Colors TV',ytId:'UCd7BRCRqxAE_jNnDznlJa_g',cat:'entertainment',lang:'hin'},
-  {id:'yt-zeetv',name:'Zee TV',ytId:'UCppFCkDKMfAEngISTJbymPg',cat:'entertainment',lang:'hin'},
-  {id:'yt-rajyasabha',name:'Rajya Sabha TV',ytId:'UCISgnSNwJDkCJgMF6L9tnHg',cat:'education',lang:'hin'},
-  {id:'yt-dd',name:'DD National',ytId:'UCQxREz0CWhOIBMm6BheNxYQ',cat:'education',lang:'hin'},
-];
 
 // ===== TOAST =====
 let toastTimer;
@@ -980,6 +943,7 @@ async function loadStreamsBackground(){
     document.getElementById('stat-txt').style.display='inline';
     document.getElementById('stat-txt').textContent=`${india.length} ch · ${n} live`;
     showToast(`✅ ${n} live streams loaded!`);
+    updateSidebarCounts();
     renderCards();
     if(cur) renderUpNext(cur);
   }catch(e){
@@ -1011,11 +975,16 @@ function buildIndia(){
   lMap={};
   logos.forEach(l=>{ if(!lMap[l.channel]) lMap[l.channel]=l.url; });
 
+  updateSidebarCounts();
+}
+
+function updateSidebarCounts(){
   const catKeys=Object.keys(CATS);
-  document.getElementById('n-all').textContent=india.length;
+  const available=streamsReady?india.filter(c=>(sMap[c.id]||[]).length>0):india;
+  document.getElementById('n-all').textContent=available.length;
   catKeys.forEach(k=>{
     const el=document.getElementById('n-'+k); if(!el) return;
-    el.textContent=india.filter(c=>c.categories&&c.categories.some(x=>mapCat(x)===k)).length;
+    el.textContent=available.filter(c=>c.categories&&c.categories.some(x=>mapCat(x)===k)).length;
   });
 }
 
@@ -1028,6 +997,8 @@ function mapCat(c){
 // ===== FILTER =====
 function filtered(){
   let ch=india;
+  // Auto-hide channels without available streams
+  if(streamsReady) ch=ch.filter(c=>(sMap[c.id]||[]).length>0);
   if(cat!=='all') ch=ch.filter(c=>c.categories&&c.categories.some(x=>mapCat(x)===cat));
   if(lang!=='all') ch=ch.filter(c=>c._langs.includes(lang));
   if(q){ const lq=q.toLowerCase(); ch=ch.filter(c=>c.name.toLowerCase().includes(lq)||(c.alt_names&&c.alt_names.some(a=>a.toLowerCase().includes(lq)))); }
@@ -1251,11 +1222,9 @@ function closePlayer(){
   if(hls){hls.destroy();hls=null;}
   document.getElementById('vid').src='';
   document.getElementById('vid').style.display='';
-  document.getElementById('yt-frame').style.display='none';
-  document.getElementById('yt-frame').src='';
   stopViewerCounter();
   cur=null;
-  if(ytMode) renderYtGrid(); else renderCards();
+  renderCards();
 }
 
 document.getElementById('pb-close').addEventListener('click',closePlayer);
@@ -1306,7 +1275,7 @@ document.getElementById('countries').addEventListener('click',e=>{
 });
 let st;
 document.getElementById('srch').addEventListener('input',e=>{
-  clearTimeout(st); st=setTimeout(()=>{ q=e.target.value.trim(); if(ytMode) renderYtGrid(); else renderAll(); },220);
+  clearTimeout(st); st=setTimeout(()=>{ q=e.target.value.trim(); renderAll(); },220);
 });
 
 // ===== KEYBOARD SHORTCUTS =====
@@ -1366,148 +1335,6 @@ setTimeout(()=>{
     document.getElementById('sp-tips').style.display='block';
 },6000);
 
-// ===== YOUTUBE MODE =====
-function enterYtMode(ytCategory){
-  ytMode=true;
-  ytCat=ytCategory||'all';
-  // Deselect IPTV categories
-  document.querySelectorAll('#cats .cat-item').forEach(x=>x.classList.remove('on'));
-  // Highlight YT category
-  document.querySelectorAll('#yt-cats .cat-item').forEach(x=>x.classList.toggle('on',x.dataset.yc===ytCat));
-  // Update counts
-  const ytAll=YT_CHANNELS.length;
-  document.getElementById('n-yt-all').textContent=ytAll;
-  ['news','music','spiritual','entertainment','education'].forEach(c=>{
-    const el=document.getElementById('n-yt-'+c);
-    if(el) el.textContent=YT_CHANNELS.filter(ch=>ch.cat===c).length;
-  });
-  renderYtGrid();
-}
-
-function exitYtMode(){
-  ytMode=false;
-  document.querySelectorAll('#yt-cats .cat-item').forEach(x=>x.classList.remove('on'));
-  document.querySelectorAll('#cats .cat-item').forEach(x=>x.classList.toggle('on',x.dataset.c===cat));
-  renderAll();
-}
-
-function filteredYt(){
-  let list=YT_CHANNELS;
-  if(ytCat!=='all') list=list.filter(c=>c.cat===ytCat);
-  if(q){ const lq=q.toLowerCase(); list=list.filter(c=>c.name.toLowerCase().includes(lq)); }
-  return list;
-}
-
-function renderYtGrid(){
-  const ch=filteredYt();
-  const grid=document.getElementById('grid');
-  const empty=document.getElementById('empty');
-  const lm=document.getElementById('load-more');
-  document.getElementById('count-lbl').textContent=`${ch.length} YouTube channels`;
-  const catNames={all:'All YouTube Live',news:'YouTube News Live',music:'YouTube Music Live',spiritual:'YouTube Spiritual Live',entertainment:'YouTube Entertainment',education:'YouTube Education'};
-  document.getElementById('pg-title').innerHTML=`${catNames[ytCat]||'YouTube Live'} <span class="live-tag" style="background:#FF0000">▶ LIVE</span>`;
-  if(!ch.length){ grid.innerHTML=''; empty.classList.add('show'); lm.classList.remove('show'); return; }
-  empty.classList.remove('show');
-  lm.classList.remove('show');
-  grid.innerHTML=ch.map((c,i)=>ytCardHTML(c,i)).join('');
-  grid.querySelectorAll('.ch-card[data-ytid]').forEach(el=>{
-    el.addEventListener('click',()=>{
-      const c=YT_CHANNELS.find(x=>x.id===el.dataset.id);
-      if(c) playYt(c);
-      if(window.innerWidth<700) closeSb();
-    });
-  });
-}
-
-function ytCardHTML(c,i){
-  const catColors={news:'tc-news',music:'tc-music',spiritual:'tc-rel',entertainment:'tc-ent',education:'tc-edu'};
-  const catLabels={news:'News',music:'Music',spiritual:'Spiritual',entertainment:'Entertainment',education:'Education'};
-  return `<div class="ch-card card-in" data-id="${c.id}" data-ytid="${c.ytId}" style="animation-delay:${Math.min(i*15,300)}ms">
-    <div class="ch-thumb" style="background:linear-gradient(135deg,#1a1a2e,#16213e)">
-      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-        <span style="font-size:28px;color:#FF0000">▶</span>
-        <span style="font-size:9px;color:var(--txt3);font-weight:600">${c.name.slice(0,12)}</span>
-      </div>
-      <div class="play-ov"><div class="play-circle" style="background:#FF0000"><div class="play-tri"></div></div></div>
-      <div class="live-ind"></div>
-      <div class="viewer-badge"><span class="vb-dot"></span>${fmtViewers(genViewers(c.id))}</div>
-    </div>
-    <div class="ch-info">
-      <div class="ch-name">${c.name}</div>
-      <div class="ch-tags">
-        <span class="tag-cat ${catColors[c.cat]||'tc-gen'}">${catLabels[c.cat]||c.cat}</span>
-        <span class="tag-lang" style="background:#FF000018;color:#FF6B6B">YouTube</span>
-      </div>
-    </div>
-  </div>`;
-}
-
-function playYt(c){
-  cur={...c,_isYt:true};
-  const pw=document.getElementById('player-wrap');
-  pw.classList.add('open');
-  if(window.innerWidth<700) pw.scrollIntoView({behavior:'smooth'});
-
-  document.getElementById('p-title').textContent=c.name;
-  document.getElementById('p-sub').textContent=`YouTube Live · ${c.cat.charAt(0).toUpperCase()+c.cat.slice(1)}`;
-
-  // Hide video, show YT iframe
-  const vid=document.getElementById('vid');
-  const ytFrame=document.getElementById('yt-frame');
-  if(hls){hls.destroy();hls=null;}
-  vid.src='';vid.style.display='none';
-
-  const ov=document.getElementById('p-overlay');
-  ov.classList.add('hide');
-  document.getElementById('p-url').textContent='youtube.com/channel/'+c.ytId;
-  document.getElementById('p-note').style.display='block';
-  document.getElementById('p-note').innerHTML='📺 Streaming from <b>YouTube</b>. If no live stream is available, the channel page will load.';
-
-  ytFrame.style.display='block';
-  ytFrame.src=`https://www.youtube.com/embed/live_stream?channel=${c.ytId}&autoplay=1`;
-
-  setupBtns(cur,`https://www.youtube.com/channel/${c.ytId}/live`);
-  renderYtUpNext(c);
-  showToast('▶ YouTube: '+c.name);
-  startViewerCounter(c.id);
-}
-
-function renderYtUpNext(c){
-  const others=filteredYt().filter(x=>x.id!==c.id).slice(0,8);
-  document.getElementById('un-list').innerHTML=others.map(o=>{
-    const catLabels={news:'News',music:'Music',spiritual:'Spiritual',entertainment:'Entertainment',education:'Education'};
-    return `<div class="un-item" data-id="${o.id}">
-      <div class="un-logo" style="background:linear-gradient(135deg,#1a1a2e,#16213e)"><span style="font-size:14px;color:#FF0000">▶</span></div>
-      <div style="min-width:0"><div class="un-name">${o.name}</div><div class="un-cat">${catLabels[o.cat]||o.cat}</div></div>
-    </div>`;
-  }).join('');
-  document.getElementById('un-list').querySelectorAll('.un-item').forEach(el=>{
-    el.addEventListener('click',()=>{ const o=YT_CHANNELS.find(x=>x.id===el.dataset.id); if(o) playYt(o); });
-  });
-}
-
-// YT sidebar click handler
-document.getElementById('yt-cats').addEventListener('click',e=>{
-  const el=e.target.closest('.cat-item');
-  if(!el||!el.dataset.yc) return;
-  enterYtMode(el.dataset.yc);
-  if(window.innerWidth<700) closeSb();
-});
-
-// Exit YT mode when clicking IPTV categories
-document.getElementById('cats').addEventListener('click',function(){
-  if(ytMode) exitYtMode();
-},true);
-
-// Update YT counts on boot
-function updateYtCounts(){
-  document.getElementById('n-yt-all').textContent=YT_CHANNELS.length;
-  ['news','music','spiritual','entertainment','education'].forEach(c=>{
-    const el=document.getElementById('n-yt-'+c);
-    if(el) el.textContent=YT_CHANNELS.filter(ch=>ch.cat===c).length;
-  });
-}
-
 // ===== LIVE VIEWER COUNTER =====
 const viewerMap={};
 function genViewers(id){
@@ -1549,7 +1376,6 @@ function stopViewerCounter(){
 
 // ===== START =====
 boot();
-updateYtCounts();
 </script>
 </body>
 </html>
