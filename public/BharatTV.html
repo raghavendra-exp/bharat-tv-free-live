@@ -974,11 +974,16 @@ function buildIndia(){
   lMap={};
   logos.forEach(l=>{ if(!lMap[l.channel]) lMap[l.channel]=l.url; });
 
+  updateSidebarCounts();
+}
+
+function updateSidebarCounts(){
   const catKeys=Object.keys(CATS);
-  document.getElementById('n-all').textContent=india.length;
+  const available=streamsReady?india.filter(c=>(sMap[c.id]||[]).length>0):india;
+  document.getElementById('n-all').textContent=available.length;
   catKeys.forEach(k=>{
     const el=document.getElementById('n-'+k); if(!el) return;
-    el.textContent=india.filter(c=>c.categories&&c.categories.some(x=>mapCat(x)===k)).length;
+    el.textContent=available.filter(c=>c.categories&&c.categories.some(x=>mapCat(x)===k)).length;
   });
 }
 
