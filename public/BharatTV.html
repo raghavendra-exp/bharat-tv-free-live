@@ -1216,11 +1216,9 @@ function closePlayer(){
   if(hls){hls.destroy();hls=null;}
   document.getElementById('vid').src='';
   document.getElementById('vid').style.display='';
-  document.getElementById('yt-frame').style.display='none';
-  document.getElementById('yt-frame').src='';
   stopViewerCounter();
   cur=null;
-  if(ytMode) renderYtGrid(); else renderCards();
+  renderCards();
 }
 
 document.getElementById('pb-close').addEventListener('click',closePlayer);
