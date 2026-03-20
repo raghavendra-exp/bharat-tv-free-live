@@ -1676,8 +1676,36 @@ function stopViewerCounter(){
   document.getElementById('pv-count').textContent='0';
 }
 
+// ===== TRAFFIC OVERVIEW =====
+let trafficInterval;
+function updateTrafficOverview(){
+  const totalViewers = Object.keys(viewerMap).reduce((sum,id)=>sum+genViewers(id),0) || Math.floor(Math.random()*15000)+4000;
+  const liveChannels = streamsReady ? Object.keys(sMap).length : '...';
+  const activeStreams = streamsReady ? streams.filter(s=>s.channel&&sMap[s.channel]).length : '...';
+  
+  document.getElementById('t-viewers').textContent = fmtViewers(totalViewers);
+  document.getElementById('t-channels').textContent = typeof liveChannels==='number' ? fmtViewers(liveChannels) : liveChannels;
+  document.getElementById('t-streams').textContent = typeof activeStreams==='number' ? fmtViewers(activeStreams) : activeStreams;
+  
+  const viewerChange = Math.floor(Math.random()*15)+2;
+  const streamChange = Math.floor(Math.random()*8)+1;
+  document.getElementById('t-viewers-change').textContent = `↑ ${viewerChange}% this hour`;
+  document.getElementById('t-streams-change').textContent = `↑ ${streamChange}% today`;
+  
+  // Animate pulse bar
+  const pulse = document.getElementById('t-pulse');
+  const pct = Math.min(95, Math.max(30, 50 + Math.random()*40));
+  pulse.style.width = pct+'%';
+}
+
+function startTrafficUpdates(){
+  updateTrafficOverview();
+  trafficInterval = setInterval(updateTrafficOverview, 5000);
+}
+
 // ===== START =====
 boot();
+startTrafficUpdates();
 </script>
 </body>
 </html>
