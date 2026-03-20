@@ -1393,48 +1393,104 @@ function playChannel(c){
 }
 
 function tryPlay(url,ss,idx,ov,vid,c){
-  if(Hls.isSupported()&&url.match(/\.m3u8/i)){
-    hls=new Hls({enableWorker:true,lowLatencyMode:true,maxBufferLength:20});
-    hls.loadSource(url);
-    hls.attachMedia(vid);
-    hls.on(Hls.Events.MANIFEST_PARSED,()=>{
-      ov.classList.add('hide');
-      vid.play().catch(()=>{
-        ov.classList.remove('hide');
-        document.getElementById('p-spin').style.display='none';
-        document.getElementById('p-msg').innerHTML='Autoplay blocked.<br>Press ▶ on the video or use <b>Open VLC</b>.';
+  const proxyUrl = PROXY + encodeURIComponent(url);
+  const urls = [url, proxyUrl]; // Try direct first, then proxy
+  let urlIdx = 0;
+  
+  function attemptPlay(playUrl) {
+    if(hls){hls.destroy();hls=null;}
+    
+    if(Hls.isSupported()&&url.match(/\.m3u8/i)){
+      hls=new Hls({
+        enableWorker:true,
+        lowLatencyMode:true,
+        maxBufferLength:30,
+        maxMaxBufferLength:60,
+        maxBufferSize:60*1000*1000,
+        startFragPrefetch:true,
+        testBandwidth:true,
+        progressive:true,
+        xhrSetup: function(xhr, xhrUrl) {
+          // If the URL is already proxied or same-origin, skip
+          if(!xhrUrl.startsWith(PROXY) && urlIdx > 0) {
+            xhr.open('GET', PROXY + encodeURIComponent(xhrUrl));
+          }
+        }
       });
-    });
-    hls.on(Hls.Events.ERROR,(_,d)=>{
-      if(d.fatal){
-        if(idx+1<ss.length){
-          hls.destroy();
-          document.getElementById('p-url').textContent=ss[idx+1].url;
-          document.getElementById('p-msg').textContent=`Trying stream ${idx+2}/${ss.length}…`;
-          tryPlay(ss[idx+1].url,ss,idx+1,ov,vid,c);
-        } else {
+      hls.loadSource(playUrl);
+      hls.attachMedia(vid);
+      hls.on(Hls.Events.MANIFEST_PARSED,()=>{
+        ov.classList.add('hide');
+        vid.play().catch(()=>{
+          ov.classList.remove('hide');
+          document.getElementById('p-spin').style.display='none';
+          document.getElementById('p-msg').innerHTML='Autoplay blocked. Tap ▶ on the video to play.';
+        });
+      });
+      hls.on(Hls.Events.ERROR,(_,d)=>{
+        if(d.fatal){
+          hls.destroy(); hls=null;
+          // Try next URL variant (proxy)
+          urlIdx++;
+          if(urlIdx < urls.length) {
+            document.getElementById('p-msg').textContent='Trying via proxy…';
+            attemptPlay(urls[urlIdx]);
+          } else if(idx+1<ss.length){
+            // Try next stream source
+            urlIdx = 0;
+            const nextUrl = ss[idx+1].url;
+            const nextUrls = [nextUrl, PROXY + encodeURIComponent(nextUrl)];
+            document.getElementById('p-url').textContent=nextUrl;
+            document.getElementById('p-msg').textContent=`Trying stream ${idx+2}/${ss.length}…`;
+            tryPlay(nextUrl,ss,idx+1,ov,vid,c);
+          } else {
+            ov.classList.remove('hide');
+            document.getElementById('p-spin').style.display='none';
+            document.getElementById('p-msg').innerHTML='All streams failed.<br>Use <b>Open VLC</b> or <b>New Tab</b>.';
+          }
+        }
+      });
+    } else if(vid.canPlayType('application/vnd.apple.mpegurl')){
+      vid.src=playUrl;
+      vid.load();
+      vid.addEventListener('error', function onErr(){
+        vid.removeEventListener('error', onErr);
+        urlIdx++;
+        if(urlIdx < urls.length) attemptPlay(urls[urlIdx]);
+        else if(idx+1<ss.length) tryPlay(ss[idx+1].url,ss,idx+1,ov,vid,c);
+        else {
           ov.classList.remove('hide');
           document.getElementById('p-spin').style.display='none';
           document.getElementById('p-msg').innerHTML='All streams failed.<br>Use <b>Open VLC</b> or <b>New Tab</b>.';
         }
-      }
-    });
-  } else if(vid.canPlayType('application/vnd.apple.mpegurl')){
-    vid.src=url;
-    vid.load();
-    vid.play().then(()=>ov.classList.add('hide')).catch(()=>{
-      ov.classList.remove('hide');
-      document.getElementById('p-spin').style.display='none';
-      document.getElementById('p-msg').innerHTML='Tap ▶ to play or use <b>Open VLC</b>.';
-    });
-  } else {
-    vid.src=url;
-    vid.play().then(()=>ov.classList.add('hide')).catch(()=>{
-      ov.classList.remove('hide');
-      document.getElementById('p-spin').style.display='none';
-      document.getElementById('p-msg').innerHTML='Cannot play directly.<br>Use <b>Open VLC</b> or <b>New Tab</b>.';
-    });
+      }, {once:true});
+      vid.play().then(()=>ov.classList.add('hide')).catch(()=>{
+        ov.classList.remove('hide');
+        document.getElementById('p-spin').style.display='none';
+        document.getElementById('p-msg').innerHTML='Tap ▶ to play.';
+      });
+    } else {
+      vid.src=playUrl;
+      vid.addEventListener('error', function onErr(){
+        vid.removeEventListener('error', onErr);
+        urlIdx++;
+        if(urlIdx < urls.length) attemptPlay(urls[urlIdx]);
+        else if(idx+1<ss.length) tryPlay(ss[idx+1].url,ss,idx+1,ov,vid,c);
+        else {
+          ov.classList.remove('hide');
+          document.getElementById('p-spin').style.display='none';
+          document.getElementById('p-msg').innerHTML='Cannot play directly.<br>Use <b>Open VLC</b> or <b>New Tab</b>.';
+        }
+      }, {once:true});
+      vid.play().then(()=>ov.classList.add('hide')).catch(()=>{
+        ov.classList.remove('hide');
+        document.getElementById('p-spin').style.display='none';
+        document.getElementById('p-msg').innerHTML='Cannot play directly.<br>Use <b>Open VLC</b> or <b>New Tab</b>.';
+      });
+    }
   }
+  
+  attemptPlay(urls[0]);
 }
 
 function setupBtns(c,url){
