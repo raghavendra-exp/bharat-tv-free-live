@@ -14,7 +14,7 @@
     <title>BharatTV — Watch 19,000+ Free Live Indian TV Channels Online</title>
     <meta name="description" content="Watch 19,000+ free live Indian TV channels online. Stream News, Sports, Entertainment, Movies, Music, Kids channels in Hindi, English, Tamil, Telugu & more. No signup needed.">
     <meta name="author" content="Raghav" />
-    <meta name="keywords" content="BharatTV, live Indian TV, free TV channels, watch Indian TV online, Hindi news live, Indian sports live, IPTV India, live streaming, free live TV, Indian entertainment channels">
+    <meta name="keywords" content="BharatTV, live Indian TV, free TV channels, watch Indian TV online, Hindi news live, Indian sports live, IPTV India, live streaming, free live TV, Indian entertainment channels, watch Hindi TV free, Tamil TV online, Telugu channels live, Bengali TV streaming">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
     <link rel="canonical" href="https://bugbash-fullscreen-joy.lovable.app/">
     <meta name="google-adsense-account" content="ca-pub-1416399908118346">
@@ -29,10 +29,616 @@
     <meta name="twitter:title" content="BharatTV — Free Live Indian TV Channels">
     <meta name="twitter:description" content="Watch 19,000+ live Indian TV channels free. News, Sports, Entertainment & more.">
     <meta name="twitter:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c1ad43e5-a529-4f8d-a787-eac4d9cdb42f/id-preview-260e041b--3c3df35f-3700-4969-af5d-6fe58713fd01.lovable.app-1773733122119.png">
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-</head>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BharatTV",
+      "url": "https://bugbash-fullscreen-joy.lovable.app/",
+      "description": "Watch 19,000+ free live Indian TV channels online. Stream News, Sports, Entertainment, Movies, Music, Kids channels in Hindi, English, Tamil, Telugu & more.",
+      "applicationCategory": "EntertainmentApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Raghav"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is BharatTV really free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, BharatTV is 100% free. No subscriptions, no hidden fees, no credit card required."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to create an account?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. You can start watching immediately — no signup, no login, no personal information needed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What devices does BharatTV work on?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "BharatTV works on any device with a modern web browser — smartphones, tablets, laptops, and desktop computers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What languages are available?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Hindi, English, Tamil, Telugu, Bengali, Punjabi, Marathi, Gujarati, Kannada, Malayalam, Urdu, Bhojpuri and more — 12+ languages."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <style>
+      :root {
+        --bg: #0a0a0a;
+        --bg-card: #141414;
+        --bg-muted: #1a1a1a;
+        --fg: #f0f0f0;
+        --fg-muted: #a0a0a0;
+        --primary: #ff6b35;
+        --primary-glow: #ff8c5a;
+        --border: #2a2a2a;
+        --radius: 12px;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: var(--primary); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      img { max-width: 100%; }
+
+      /* Header */
+      .header {
+        position: sticky; top: 0; z-index: 50;
+        background: rgba(10,10,10,0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .header-inner {
+        max-width: 1200px; margin: 0 auto;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 20px; height: 60px;
+      }
+      .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg); }
+      .logo-icon {
+        width: 36px; height: 36px; border-radius: 10px;
+        background: var(--primary); color: #fff;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 800; font-size: 16px;
+      }
+      .logo span { font-weight: 700; font-size: 20px; letter-spacing: -0.5px; }
+      .nav { display: flex; gap: 24px; }
+      .nav a { color: var(--fg-muted); font-size: 14px; text-decoration: none; transition: color 0.2s; }
+      .nav a:hover { color: var(--fg); text-decoration: none; }
+      .btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 10px 22px; border-radius: 10px;
+        font-weight: 600; font-size: 14px;
+        text-decoration: none; transition: all 0.2s; cursor: pointer; border: none;
+      }
+      .btn-primary { background: var(--primary); color: #fff; }
+      .btn-primary:hover { background: var(--primary-glow); text-decoration: none; }
+      .btn-outline { background: transparent; color: var(--fg); border: 1px solid var(--border); }
+      .btn-outline:hover { border-color: var(--fg-muted); text-decoration: none; }
+      .btn-lg { padding: 14px 32px; font-size: 16px; border-radius: 12px; }
+      .btn-sm { padding: 8px 18px; font-size: 13px; }
+
+      /* Hero */
+      .hero {
+        text-align: center; padding: 80px 20px 60px;
+        background: linear-gradient(135deg, rgba(255,107,53,0.06) 0%, transparent 50%, rgba(255,107,53,0.03) 100%);
+        border-bottom: 1px solid var(--border);
+      }
+      .hero-icon {
+        width: 72px; height: 72px; border-radius: 20px;
+        background: var(--primary); color: #fff;
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 24px; font-size: 32px;
+      }
+      .hero h1 {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 800; line-height: 1.15;
+        letter-spacing: -1px; margin-bottom: 16px;
+      }
+      .hero p { color: var(--fg-muted); font-size: 18px; max-width: 640px; margin: 0 auto 32px; }
+      .hero-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+      .hero-badges { margin-top: 24px; font-size: 13px; color: var(--fg-muted); }
+
+      /* Stats */
+      .stats {
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+        max-width: 1200px; margin: 0 auto; padding: 40px 20px;
+        border-bottom: 1px solid var(--border);
+        background: rgba(255,107,53,0.03);
+      }
+      .stat { text-align: center; }
+      .stat-val { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 800; color: var(--primary); }
+      .stat-lbl { font-size: 14px; color: var(--fg-muted); margin-top: 4px; }
+
+      /* Section */
+      .section { padding: 80px 20px; border-bottom: 1px solid var(--border); }
+      .section-alt { background: var(--bg-muted); }
+      .section-inner { max-width: 1200px; margin: 0 auto; }
+      .section-narrow { max-width: 800px; margin: 0 auto; }
+      .section h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; text-align: center; margin-bottom: 8px; }
+      .section .subtitle {
+        text-align: center; color: var(--fg-muted); font-size: 16px;
+        max-width: 600px; margin: 0 auto 48px;
+      }
+
+      /* Grid Cards */
+      .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+      .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+      .grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+      .card {
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: var(--radius); padding: 24px; transition: all 0.2s;
+      }
+      .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.3); transform: translateY(-2px); }
+      .card-icon {
+        width: 44px; height: 44px; border-radius: 10px;
+        background: rgba(255,107,53,0.1); color: var(--primary);
+        display: flex; align-items: center; justify-content: center;
+        margin-bottom: 14px; font-size: 20px;
+      }
+      .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+      .card p { font-size: 14px; color: var(--fg-muted); line-height: 1.6; }
+
+      /* Category Cards */
+      .cat-card {
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: var(--radius); padding: 20px; text-align: center;
+        text-decoration: none; color: var(--fg); transition: all 0.2s; display: block;
+      }
+      .cat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); text-decoration: none; }
+      .cat-emoji { font-size: 32px; margin-bottom: 8px; }
+      .cat-name { font-weight: 600; font-size: 14px; }
+      .cat-ex { font-size: 12px; color: var(--fg-muted); margin-top: 4px; }
+
+      /* Language Tags */
+      .lang-tag {
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 10px; padding: 12px 8px; text-align: center;
+      }
+      .lang-tag strong { font-size: 14px; display: block; }
+      .lang-tag span { font-size: 12px; color: var(--primary); font-weight: 500; }
+
+      /* Steps */
+      .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+      .step { text-align: center; }
+      .step-num {
+        width: 56px; height: 56px; border-radius: 50%;
+        background: var(--primary); color: #fff;
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 16px; font-size: 22px; font-weight: 700;
+      }
+      .step h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+      .step p { font-size: 14px; color: var(--fg-muted); line-height: 1.6; }
+
+      /* Guide Articles */
+      .guide-article {
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: var(--radius); padding: 28px; margin-bottom: 20px;
+      }
+      .guide-article h3 { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
+      .guide-article p { font-size: 14px; color: var(--fg-muted); line-height: 1.7; margin-bottom: 12px; }
+      .guide-article p:last-child { margin-bottom: 0; }
+      kbd {
+        background: var(--bg-muted); border: 1px solid var(--border);
+        border-radius: 4px; padding: 2px 6px; font-size: 12px;
+        font-family: 'SF Mono', 'Consolas', monospace;
+      }
+
+      /* FAQ */
+      .faq-item {
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: var(--radius); padding: 24px; margin-bottom: 16px;
+      }
+      .faq-item h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+      .faq-item p { font-size: 14px; color: var(--fg-muted); line-height: 1.6; }
+
+      /* About */
+      .about-text p { font-size: 15px; color: var(--fg-muted); line-height: 1.8; margin-bottom: 16px; }
+      .about-text strong { color: var(--fg); }
+
+      /* Contact */
+      .contact-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+
+      /* Footer */
+      .footer { background: var(--bg-muted); padding: 48px 20px; }
+      .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; max-width: 1200px; margin: 0 auto; }
+      .footer h4 { font-size: 14px; font-weight: 600; margin-bottom: 14px; }
+      .footer ul { list-style: none; }
+      .footer li { margin-bottom: 8px; }
+      .footer li a { color: var(--fg-muted); font-size: 13px; text-decoration: none; }
+      .footer li a:hover { color: var(--fg); }
+      .footer-desc { font-size: 13px; color: var(--fg-muted); line-height: 1.6; }
+      .footer-bottom {
+        max-width: 1200px; margin: 32px auto 0;
+        padding-top: 24px; border-top: 1px solid var(--border);
+        text-align: center; font-size: 13px; color: var(--fg-muted);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .nav { display: none; }
+        .hero { padding: 50px 16px 40px; }
+        .hero p { font-size: 15px; }
+        .stats { grid-template-columns: repeat(2, 1fr); }
+        .grid-3 { grid-template-columns: 1fr; }
+        .grid-4 { grid-template-columns: repeat(2, 1fr); }
+        .grid-6 { grid-template-columns: repeat(3, 1fr); }
+        .steps { grid-template-columns: 1fr; gap: 24px; }
+        .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        .section { padding: 48px 16px; }
+      }
+      @media (max-width: 480px) {
+        .grid-6 { grid-template-columns: repeat(2, 1fr); }
+        .footer-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
 
   <body>
+    <!-- Static content for SEO / AdSense crawlers -->
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          <div class="logo-icon">B</div>
+          <span>BharatTV</span>
+        </a>
+        <nav class="nav">
+          <a href="#features">Features</a>
+          <a href="#channels">Channels</a>
+          <a href="#how-it-works">How It Works</a>
+          <a href="#guide">Guide</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <a href="/BharatTV.html" class="btn btn-primary btn-sm">▶ Watch Now</a>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-icon">📺</div>
+      <h1>Watch 19,000+ Free Live<br>Indian TV Channels</h1>
+      <p>Stream live News, Sports, Entertainment, Movies, Music, Kids channels in Hindi, English, Tamil, Telugu, Bengali, Punjabi & more — completely free with no signup.</p>
+      <div class="hero-btns">
+        <a href="/BharatTV.html" class="btn btn-primary btn-lg">▶ Start Watching Free</a>
+        <a href="#how-it-works" class="btn btn-outline btn-lg">Learn How It Works</a>
+      </div>
+      <p class="hero-badges">✅ No signup &nbsp;·&nbsp; ✅ No downloads &nbsp;·&nbsp; ✅ Works on all devices</p>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+      <div class="stat"><div class="stat-val">19,000+</div><div class="stat-lbl">Live Channels</div></div>
+      <div class="stat"><div class="stat-val">12+</div><div class="stat-lbl">Languages</div></div>
+      <div class="stat"><div class="stat-val">9+</div><div class="stat-lbl">Countries</div></div>
+      <div class="stat"><div class="stat-val">100%</div><div class="stat-lbl">Free Forever</div></div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="section">
+      <div class="section-inner">
+        <h2>Why Choose BharatTV?</h2>
+        <p class="subtitle">India's most comprehensive free live TV platform, designed to bring every Indian channel to your fingertips — no matter where you are in the world.</p>
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-icon">🌍</div>
+            <h3>19,000+ Channels</h3>
+            <p>Access thousands of live channels from India and 9+ countries worldwide. From national broadcasters to regional favourites, we have the most extensive collection anywhere on the internet.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">⚡</div>
+            <h3>Instant Streaming</h3>
+            <p>No buffering, no downloads, no apps to install. Simply click any channel and start watching immediately in your web browser using HLS streaming technology.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🛡️</div>
+            <h3>100% Free & Safe</h3>
+            <p>No registration, no credit card, no hidden charges. BharatTV is completely free and always will be. We believe Indian TV should be accessible to everyone.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">📱</div>
+            <h3>Works Everywhere</h3>
+            <p>Mobile, tablet, laptop, desktop, smart TV — watch on any device with a modern web browser. Responsive design adapts perfectly to every screen size.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🗣️</div>
+            <h3>12+ Languages</h3>
+            <p>Hindi, English, Tamil, Telugu, Bengali, Punjabi, Marathi, Gujarati, Kannada, Malayalam, Urdu, Bhojpuri and more. Content in every major Indian language.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">📻</div>
+            <h3>All Categories</h3>
+            <p>News, Sports, Entertainment, Movies, Music, Kids, Education, Devotional, Documentary, Lifestyle, Travel, Science and Technology — every genre covered.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="section section-alt">
+      <div class="section-inner">
+        <h2>How BharatTV Works</h2>
+        <p class="subtitle">Getting started with BharatTV takes just seconds. Here's how you can watch your favourite Indian TV channels for free.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <h3>Open BharatTV</h3>
+            <p>Visit BharatTV from any device — phone, tablet, laptop, or desktop. No app downloads or installations needed. Works in Chrome, Firefox, Safari, Edge, and all modern browsers.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <h3>Browse & Search</h3>
+            <p>Use our powerful search and filter system to find channels by name, language, country, or category. Filter by Hindi, Tamil, Telugu, English or any of 12+ languages.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <h3>Click & Watch</h3>
+            <p>Simply click on any channel to start streaming instantly. Our HLS player delivers smooth, buffer-free playback. Use theater mode for a cinematic experience.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Channel Categories -->
+    <section id="channels" class="section">
+      <div class="section-inner">
+        <h2>Popular Channel Categories</h2>
+        <p class="subtitle">BharatTV organises thousands of channels into easy-to-browse categories. Whether you want to catch the latest cricket match, watch Bollywood movies, or tune into regional news — we have it all.</p>
+        <div class="grid-4">
+          <a href="/BharatTV.html" class="cat-card">
+            <div class="cat-emoji">📰</div>
+            <div class="cat-name">News</div>
+            <div class="cat-ex">Aaj Tak, NDTV, Republic, India Today, ABP News, Zee News</div>
+          </a>
+          <a href="/BharatTV.html" class="cat-card">
+            <div class="cat-emoji">⚽</div>
+            <div class="cat-name">Sports</div>
+            <div class="cat-ex">Cricket, Football, IPL, Kabaddi, Wrestling, Hockey</div>
+          </a>
+          <a href="/BharatTV.html" class="cat-card">
+            <div class="cat-emoji">🎬</div>
+            <div class="cat-name">Entertainment</div>
+            <div class="cat-ex">Star Plus, Zee TV, Colors, Sony, SET Max</div>
+          </a>
+          <a href="/BharatTV.html" class="cat-card">
+            <div class="cat-emoji">🎵</div>
+            <div class="cat-name">Music</div>
+            <div class="cat-ex">MTV India, 9XM, B4U Music, Zing, VH1</div>
+          </a>
+          <a href="/BharatTV.html" class="cat-card">
+            <div class="cat-emoji">🧒</div>
+            <div class="cat-name">Kids</div>
+            <div class="cat-ex">Cartoon Network, Pogo, Nick, Disney, Hungama</div>
+          </a>
+          <a href="/BharatTV.html" class="cat-card">
+            <div class="cat-emoji">📚</div>
+            <div class="cat-name">Education</div>
+            <div class="cat-ex">Discovery, Nat Geo, History, Science Channel</div>
+          </a>
+          <a href="/BharatTV.html" class="cat-card">
+            <div class="cat-emoji">🕉️</div>
+            <div class="cat-name">Devotional</div>
+            <div class="cat-ex">Aastha, Sanskar, Peace of Mind, Divya</div>
+          </a>
+          <a href="/BharatTV.html" class="cat-card">
+            <div class="cat-emoji">🎥</div>
+            <div class="cat-name">Movies</div>
+            <div class="cat-ex">Bollywood, Tamil, Telugu, Bengali, Marathi films</div>
+          </a>
+        </div>
+        <div style="text-align:center;margin-top:32px;">
+          <a href="/BharatTV.html" class="btn btn-primary btn-lg">▶ Browse All 19,000+ Channels</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Languages -->
+    <section class="section section-alt">
+      <div class="section-inner">
+        <h2>Watch TV in Your Language</h2>
+        <p class="subtitle">BharatTV supports every major Indian language. Find hundreds of channels in your mother tongue.</p>
+        <div class="grid-6">
+          <div class="lang-tag"><strong>Hindi</strong><span>5,000+ channels</span></div>
+          <div class="lang-tag"><strong>English</strong><span>3,000+ channels</span></div>
+          <div class="lang-tag"><strong>Tamil</strong><span>1,200+ channels</span></div>
+          <div class="lang-tag"><strong>Telugu</strong><span>1,000+ channels</span></div>
+          <div class="lang-tag"><strong>Bengali</strong><span>800+ channels</span></div>
+          <div class="lang-tag"><strong>Punjabi</strong><span>500+ channels</span></div>
+          <div class="lang-tag"><strong>Marathi</strong><span>400+ channels</span></div>
+          <div class="lang-tag"><strong>Gujarati</strong><span>350+ channels</span></div>
+          <div class="lang-tag"><strong>Kannada</strong><span>500+ channels</span></div>
+          <div class="lang-tag"><strong>Malayalam</strong><span>600+ channels</span></div>
+          <div class="lang-tag"><strong>Urdu</strong><span>400+ channels</span></div>
+          <div class="lang-tag"><strong>Bhojpuri</strong><span>200+ channels</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Viewing Guide -->
+    <section id="guide" class="section">
+      <div class="section-narrow">
+        <h2>Complete Viewing Guide</h2>
+        <p class="subtitle">Everything you need to know to get the best experience from BharatTV.</p>
+
+        <article class="guide-article">
+          <h3>🖥️ Watching on Desktop or Laptop</h3>
+          <p>For the best viewing experience on a computer, simply open BharatTV in your web browser. We recommend using Google Chrome or Mozilla Firefox for optimal HLS stream playback. Use our <strong>Theater Mode</strong> feature for an immersive, distraction-free viewing experience — it expands the video player to fill most of your screen while keeping the channel list accessible.</p>
+          <p><strong>Keyboard shortcuts:</strong> Press <kbd>F</kbd> for fullscreen, <kbd>T</kbd> for theater mode, <kbd>M</kbd> to mute/unmute, <kbd>Esc</kbd> to close the player, and <kbd>/</kbd> to focus the search bar.</p>
+        </article>
+
+        <article class="guide-article">
+          <h3>📱 Watching on Mobile & Tablet</h3>
+          <p>BharatTV is fully responsive and works great on smartphones and tablets. Open your mobile browser (Chrome, Safari, or Firefox) and navigate to BharatTV. The interface automatically adapts to your screen size, showing channels in a clean grid layout optimised for touch interaction.</p>
+          <p><strong>Pro tip:</strong> On Android, you can add BharatTV to your home screen for quick access — tap the browser menu and select "Add to Home screen". On iOS, tap the Share button in Safari and choose "Add to Home Screen". This gives you an app-like experience without installing anything.</p>
+        </article>
+
+        <article class="guide-article">
+          <h3>📡 Troubleshooting Stream Issues</h3>
+          <p>If a channel isn't loading, here are some things to try: First, refresh the page and try again — some streams need a second attempt. If the channel still doesn't work, it may be temporarily offline or geo-restricted in your region.</p>
+          <p>You can also try opening the stream in <strong>VLC Media Player</strong> by clicking the VLC button — this bypasses browser limitations. Another option is the "Open in New Tab" button, which loads the raw stream URL directly. If a channel has multiple stream sources, BharatTV automatically tries alternate sources for better reliability.</p>
+        </article>
+
+        <article class="guide-article">
+          <h3>🕐 Best Times to Watch Indian TV</h3>
+          <p>Indian TV channels follow IST (Indian Standard Time, UTC+5:30). Prime time entertainment shows typically air between 8 PM – 11 PM IST. News channels broadcast 24/7 with peak bulletins at 9 AM, 1 PM, 6 PM, and 9 PM IST. Sports channels carry live matches as per their schedules — cricket matches often start at 2 PM or 7 PM IST. For Indians abroad, adjust these times to your local timezone for the best viewing schedule.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section section-alt">
+      <div class="section-narrow">
+        <h2>About BharatTV</h2>
+        <div class="about-text">
+          <p><strong>BharatTV</strong> is India's largest free live TV streaming platform, offering over 19,000 channels from India and across the globe. Founded by Raghav, a tech enthusiast passionate about making Indian media accessible worldwide, BharatTV has grown to serve thousands of viewers daily.</p>
+          <p>Our mission is simple: <strong>make Indian television accessible to everyone, everywhere — for free.</strong> Whether you're an Indian living abroad missing your favourite news channel, a sports fan wanting to catch live cricket, a parent looking for safe kids' content, or simply looking for entertainment in your regional language — BharatTV has you covered.</p>
+          <p>BharatTV aggregates publicly available IPTV streams from the open-source <a href="https://github.com/iptv-org" target="_blank" rel="noopener noreferrer">iptv-org</a> project and presents them in a clean, user-friendly interface. We do not host or store any video content — we simply provide an organised, searchable platform to discover and watch publicly available live streams.</p>
+          <p>The platform features a powerful search engine, multi-level filtering (by language, country, and category), dark and light themes, theater mode for immersive viewing, keyboard shortcuts for power users, and a responsive design that works seamlessly on every device from smartphones to desktop monitors.</p>
+        </div>
+        <div style="text-align:center;margin-top:20px;">
+          <a href="/about.html" class="btn btn-outline btn-sm">Read Full About Page →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section">
+      <div class="section-narrow">
+        <h2>Frequently Asked Questions</h2>
+        <p class="subtitle">Answers to common questions about using BharatTV</p>
+
+        <div class="faq-item">
+          <h3>Is BharatTV really free?</h3>
+          <p>Yes, BharatTV is 100% free. There are no subscriptions, no hidden fees, and no credit card required. We support our platform through non-intrusive advertisements. We believe Indian television should be accessible to everyone regardless of their financial situation.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Do I need to create an account or sign up?</h3>
+          <p>No. You can start watching immediately — no signup, no login, no personal information needed. Simply open BharatTV in your browser and start browsing channels. We respect your privacy and don't collect any personal data.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What devices does BharatTV work on?</h3>
+          <p>BharatTV works on any device with a modern web browser — Android phones, iPhones, iPads, Android tablets, Windows laptops, MacBooks, and desktop computers. It's compatible with Chrome, Firefox, Edge, Safari, Opera, and Brave. You can also use VLC Media Player to watch streams.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What languages are available on BharatTV?</h3>
+          <p>We support 12+ Indian languages: Hindi, English, Tamil, Telugu, Bengali, Punjabi, Marathi, Gujarati, Kannada, Malayalam, Urdu, and Bhojpuri. We also have channels in international languages from countries like USA, UK, Canada, and UAE.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Why is a channel not working or buffering?</h3>
+          <p>Some streams may be temporarily unavailable due to source issues, or they may be geo-restricted in your region. Try refreshing the page, using the VLC option, or opening in a new tab. BharatTV automatically tries multiple stream sources for each channel.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Is it legal to watch channels on BharatTV?</h3>
+          <p>BharatTV aggregates publicly available IPTV streams from the open-source iptv-org project. We do not host, store, or redistribute any video content ourselves. All streams are sourced from public URLs available on the internet. We promptly respond to any content removal requests from rights holders.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can I watch BharatTV outside India?</h3>
+          <p>Yes! BharatTV is specifically designed for the Indian diaspora worldwide. Whether you're in the USA, UK, Canada, Australia, UAE, or anywhere else, you can access most channels. Some channels may have geo-restrictions imposed by the broadcaster, but the vast majority work globally.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How do I use Theater Mode or fullscreen?</h3>
+          <p>Click the Theater Mode button (or press 'T' on your keyboard) to expand the video player for an immersive experience. Press 'F' for fullscreen mode. Use 'M' to mute/unmute, and 'Esc' to close the player.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section section-alt">
+      <div class="section-narrow" style="text-align:center;">
+        <h2>Get in Touch</h2>
+        <p class="subtitle">Have questions, feedback, or suggestions? We'd love to hear from you.</p>
+        <div class="contact-btns">
+          <a href="https://www.youtube.com/@raghav_begins" target="_blank" rel="noopener noreferrer" class="btn btn-outline">▶ YouTube</a>
+          <a href="https://www.instagram.com/raghav3o" target="_blank" rel="noopener noreferrer" class="btn btn-outline">📸 Instagram</a>
+          <a href="https://m.facebook.com/profile.php?id=100091519152590" target="_blank" rel="noopener noreferrer" class="btn btn-outline">👍 Facebook</a>
+        </div>
+        <p style="margin-top:20px;font-size:13px;color:var(--fg-muted);">For content removal requests, copyright concerns, or business inquiries, please reach out via our social media channels above.</p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+            <div class="logo-icon" style="width:28px;height:28px;font-size:12px;border-radius:8px;">B</div>
+            <strong>BharatTV</strong>
+          </div>
+          <p class="footer-desc">India's #1 free live TV streaming platform. Watch 19,000+ channels in 12+ languages from 9+ countries — completely free, no signup required.</p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/BharatTV.html">Watch TV</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#guide">Viewing Guide</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/terms-of-service.html">Terms of Service</a></li>
+            <li><a href="/about.html">About BharatTV</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Follow Us</h4>
+          <ul>
+            <li><a href="https://www.youtube.com/@raghav_begins" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+            <li><a href="https://www.instagram.com/raghav3o" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+            <li><a href="https://m.facebook.com/profile.php?id=100091519152590" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 BharatTV. All rights reserved. Made with ❤️ by Raghav.</p>
+        <p style="margin-top:6px;">Channel data sourced from the <a href="https://github.com/iptv-org" target="_blank" rel="noopener noreferrer">iptv-org</a> open-source project. BharatTV does not host any video content.</p>
+      </div>
+    </footer>
+
+    <!-- React App (enhances the page after load) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
