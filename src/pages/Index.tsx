@@ -41,7 +41,7 @@ const Index = () => {
           <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-primary via-secondary to-accent text-white shadow-[0_0_40px_hsl(var(--primary)/0.4),0_0_80px_hsl(var(--secondary)/0.2)] animate-[float_4s_ease-in-out_infinite]">
             <Tv className="h-10 w-10" />
           </div>
-          <h1 className="mb-5 text-4xl font-extrabold tracking-wider md:text-5xl lg:text-6xl bg-gradient-to-r from-foreground via-primary to-secondary bg-clip-text text-transparent" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+          <h1 className="mb-5 text-4xl font-extrabold tracking-wider md:text-5xl lg:text-6xl" style={{ fontFamily: "'Orbitron', sans-serif", background: 'linear-gradient(90deg, hsl(192 100% 50%), hsl(270 80% 65%), hsl(340 90% 60%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Watch 19,000+ Free Live<br />Indian TV Channels
           </h1>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground">
