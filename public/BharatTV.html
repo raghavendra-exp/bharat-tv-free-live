@@ -1431,14 +1431,26 @@ function playChannel(c){
 }
 
 function tryPlay(url,ss,idx,ov,vid,c){
-  const proxyUrl = proxyUrl(url);
-  const urls = [url, proxyUrl]; // Try direct first, then proxy
+  // Build URL list: direct, then each proxy
+  const urls = [url];
+  PROXIES.forEach(fn => urls.push(fn(url)));
   let urlIdx = 0;
+  let loadTimer = null;
   
   function attemptPlay(playUrl) {
     if(hls){hls.destroy();hls=null;}
+    clearTimeout(loadTimer);
     
-    if(Hls.isSupported()&&url.match(/\.m3u8/i)){
+    // Timeout: if nothing loads in 12s, try next
+    loadTimer = setTimeout(()=>{
+      console.warn('Stream timeout, trying next…');
+      if(hls){hls.destroy();hls=null;}
+      tryNext();
+    }, 12000);
+    
+    const useProxy = urlIdx > 0;
+    
+    if(Hls.isSupported() && (url.match(/\.m3u8/i) || !url.match(/\.(mp4|webm|ogg)$/i))){
       hls=new Hls({
         enableWorker:true,
         lowLatencyMode:true,
@@ -1448,16 +1460,20 @@ function tryPlay(url,ss,idx,ov,vid,c){
         startFragPrefetch:true,
         testBandwidth:true,
         progressive:true,
+        manifestLoadingTimeOut: 10000,
+        manifestLoadingMaxRetry: 1,
+        levelLoadingTimeOut: 10000,
+        fragLoadingTimeOut: 15000,
         xhrSetup: function(xhr, xhrUrl) {
-          // If the URL is already proxied or same-origin, skip
-          if(!xhrUrl.includes('corsproxy.io') && !xhrUrl.includes('allorigins.win') && !xhrUrl.includes('codetabs.com') && urlIdx > 0) {
-            xhr.open('GET', proxyUrl(xhrUrl));
+          if(useProxy && !xhrUrl.includes('corsproxy.io') && !xhrUrl.includes('allorigins.win') && !xhrUrl.includes('codetabs.com')) {
+            xhr.open('GET', PROXIES[Math.max(0,(urlIdx-1) % PROXIES.length)](xhrUrl));
           }
         }
       });
       hls.loadSource(playUrl);
       hls.attachMedia(vid);
       hls.on(Hls.Events.MANIFEST_PARSED,()=>{
+        clearTimeout(loadTimer);
         ov.classList.add('hide');
         vid.play().catch(()=>{
           ov.classList.remove('hide');
@@ -1467,64 +1483,50 @@ function tryPlay(url,ss,idx,ov,vid,c){
       });
       hls.on(Hls.Events.ERROR,(_,d)=>{
         if(d.fatal){
+          clearTimeout(loadTimer);
           hls.destroy(); hls=null;
-          // Try next URL variant (proxy)
-          urlIdx++;
-          if(urlIdx < urls.length) {
-            document.getElementById('p-msg').textContent='Trying via proxy…';
-            attemptPlay(urls[urlIdx]);
-          } else if(idx+1<ss.length){
-            // Try next stream source
-            urlIdx = 0;
-            const nextUrl = ss[idx+1].url;
-            const nextUrls = [nextUrl, proxyUrl(nextUrl)];
-            document.getElementById('p-url').textContent=nextUrl;
-            document.getElementById('p-msg').textContent=`Trying stream ${idx+2}/${ss.length}…`;
-            tryPlay(nextUrl,ss,idx+1,ov,vid,c);
-          } else {
-            ov.classList.remove('hide');
-            document.getElementById('p-spin').style.display='none';
-            document.getElementById('p-msg').innerHTML='All streams failed.<br>Use <b>Open VLC</b> or <b>New Tab</b>.';
-          }
+          tryNext();
         }
       });
-    } else if(vid.canPlayType('application/vnd.apple.mpegurl')){
+    } else if(vid.canPlayType('application/vnd.apple.mpegurl') || url.match(/\.(mp4|webm|ogg)$/i)){
       vid.src=playUrl;
       vid.load();
+      vid.addEventListener('canplay', function onCan(){
+        vid.removeEventListener('canplay', onCan);
+        clearTimeout(loadTimer);
+        ov.classList.add('hide');
+      }, {once:true});
       vid.addEventListener('error', function onErr(){
         vid.removeEventListener('error', onErr);
-        urlIdx++;
-        if(urlIdx < urls.length) attemptPlay(urls[urlIdx]);
-        else if(idx+1<ss.length) tryPlay(ss[idx+1].url,ss,idx+1,ov,vid,c);
-        else {
-          ov.classList.remove('hide');
-          document.getElementById('p-spin').style.display='none';
-          document.getElementById('p-msg').innerHTML='All streams failed.<br>Use <b>Open VLC</b> or <b>New Tab</b>.';
-        }
+        clearTimeout(loadTimer);
+        tryNext();
       }, {once:true});
-      vid.play().then(()=>ov.classList.add('hide')).catch(()=>{
+      vid.play().then(()=>{clearTimeout(loadTimer);ov.classList.add('hide');}).catch(()=>{
         ov.classList.remove('hide');
         document.getElementById('p-spin').style.display='none';
         document.getElementById('p-msg').innerHTML='Tap ▶ to play.';
       });
     } else {
-      vid.src=playUrl;
-      vid.addEventListener('error', function onErr(){
-        vid.removeEventListener('error', onErr);
-        urlIdx++;
-        if(urlIdx < urls.length) attemptPlay(urls[urlIdx]);
-        else if(idx+1<ss.length) tryPlay(ss[idx+1].url,ss,idx+1,ov,vid,c);
-        else {
-          ov.classList.remove('hide');
-          document.getElementById('p-spin').style.display='none';
-          document.getElementById('p-msg').innerHTML='Cannot play directly.<br>Use <b>Open VLC</b> or <b>New Tab</b>.';
-        }
-      }, {once:true});
-      vid.play().then(()=>ov.classList.add('hide')).catch(()=>{
-        ov.classList.remove('hide');
-        document.getElementById('p-spin').style.display='none';
-        document.getElementById('p-msg').innerHTML='Cannot play directly.<br>Use <b>Open VLC</b> or <b>New Tab</b>.';
-      });
+      clearTimeout(loadTimer);
+      tryNext();
+    }
+  }
+  
+  function tryNext(){
+    urlIdx++;
+    if(urlIdx < urls.length) {
+      document.getElementById('p-msg').textContent = urlIdx <= PROXIES.length ? `Trying proxy ${urlIdx}/${PROXIES.length}…` : 'Retrying…';
+      attemptPlay(urls[urlIdx]);
+    } else if(idx+1 < ss.length){
+      // Try next stream source
+      const nextUrl = ss[idx+1].url;
+      document.getElementById('p-url').textContent = nextUrl;
+      document.getElementById('p-msg').textContent = `Trying stream ${idx+2}/${ss.length}…`;
+      tryPlay(nextUrl, ss, idx+1, ov, vid, c);
+    } else {
+      ov.classList.remove('hide');
+      document.getElementById('p-spin').style.display='none';
+      document.getElementById('p-msg').innerHTML='All streams failed. <button onclick="retryChannel()" style="background:hsl(192,100%,50%);color:#000;border:none;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:600;margin-top:8px;">🔄 Retry</button><br><small>Or use <b>Open VLC</b> / <b>New Tab</b></small>';
     }
   }
   
