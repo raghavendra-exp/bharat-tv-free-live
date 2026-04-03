@@ -1001,7 +1001,13 @@ kbd{
 
 <script>
 // ===== CONFIG =====
-const PROXY = 'https://corsproxy.io/?';
+const PROXIES = [
+  url => 'https://corsproxy.io/?' + encodeURIComponent(url),
+  url => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url),
+  url => 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(url),
+];
+let activeProxy = 0;
+function proxyUrl(url){ return PROXIES[activeProxy % PROXIES.length](url); }
 const API = 'https://iptv-org.github.io/api';
 const IN_LANGS = new Set(['hin','bho','eng','pan','ben','tam','tel','kan','mal','guj','mar','urd','ori','asm','mai','raj','san','sin','kon','nep']);
 const CATS = {news:'News',sports:'Sports',entertainment:'Entertainment',lifestyle:'Fashion',travel:'Travel',science:'Science',education:'Education',music:'Music',religious:'Spiritual',kids:'Kids',documentary:'Documentary',general:'General'};
@@ -1127,9 +1133,19 @@ async function apiFetch(path){
     const r=await fetch(url,{signal:makeSignal(8000)});
     if(r.ok) return r.json();
   }catch(e){}
-  const r=await fetch(`${PROXY}${encodeURIComponent(url)}`,{signal:makeSignal(15000)});
-  if(!r.ok) throw new Error('HTTP '+r.status);
-  return r.json();
+  // Try each proxy
+  for(let i=0;i<PROXIES.length;i++){
+    try{
+      const r=await fetch(PROXIES[i](url),{signal:makeSignal(15000)});
+      if(r.ok) return r.json();
+    }catch(e){}
+  }
+  throw new Error('All fetches failed');
+}
+
+// ===== RETRY =====
+function retryChannel(){
+  if(cur) { activeProxy = (activeProxy+1) % PROXIES.length; playChannel(cur); }
 }
 
 // ===== PROGRESS =====
@@ -1208,7 +1224,7 @@ async function loadStreamsBackground(){
         }
       }
     };
-    try{ await tryFetch(url); }catch(e){ raw=''; loaded=0; total=0; await tryFetch(`${PROXY}${encodeURIComponent(url)}`); }
+    try{ await tryFetch(url); }catch(e){ raw=''; loaded=0; total=0; await tryFetch(proxyUrl(url)); }
 
     streams=JSON.parse(raw);
     sMap={};
@@ -1424,14 +1440,26 @@ function playChannel(c){
 }
 
 function tryPlay(url,ss,idx,ov,vid,c){
-  const proxyUrl = PROXY + encodeURIComponent(url);
-  const urls = [url, proxyUrl]; // Try direct first, then proxy
+  // Build URL list: direct, then each proxy
+  const urls = [url];
+  PROXIES.forEach(fn => urls.push(fn(url)));
   let urlIdx = 0;
+  let loadTimer = null;
   
   function attemptPlay(playUrl) {
     if(hls){hls.destroy();hls=null;}
+    clearTimeout(loadTimer);
     
-    if(Hls.isSupported()&&url.match(/\.m3u8/i)){
+    // Timeout: if nothing loads in 12s, try next
+    loadTimer = setTimeout(()=>{
+      console.warn('Stream timeout, trying next…');
+      if(hls){hls.destroy();hls=null;}
+      tryNext();
+    }, 12000);
+    
+    const useProxy = urlIdx > 0;
+    
+    if(Hls.isSupported() && (url.match(/\.m3u8/i) || !url.match(/\.(mp4|webm|ogg)$/i))){
       hls=new Hls({
         enableWorker:true,
         lowLatencyMode:true,
@@ -1441,16 +1469,20 @@ function tryPlay(url,ss,idx,ov,vid,c){
         startFragPrefetch:true,
         testBandwidth:true,
         progressive:true,
+        manifestLoadingTimeOut: 10000,
+        manifestLoadingMaxRetry: 1,
+        levelLoadingTimeOut: 10000,
+        fragLoadingTimeOut: 15000,
         xhrSetup: function(xhr, xhrUrl) {
-          // If the URL is already proxied or same-origin, skip
-          if(!xhrUrl.startsWith(PROXY) && urlIdx > 0) {
-            xhr.open('GET', PROXY + encodeURIComponent(xhrUrl));
+          if(useProxy && !xhrUrl.includes('corsproxy.io') && !xhrUrl.includes('allorigins.win') && !xhrUrl.includes('codetabs.com')) {
+            xhr.open('GET', PROXIES[Math.max(0,(urlIdx-1) % PROXIES.length)](xhrUrl));
           }
         }
       });
       hls.loadSource(playUrl);
       hls.attachMedia(vid);
       hls.on(Hls.Events.MANIFEST_PARSED,()=>{
+        clearTimeout(loadTimer);
         ov.classList.add('hide');
         vid.play().catch(()=>{
           ov.classList.remove('hide');
@@ -1460,64 +1492,50 @@ function tryPlay(url,ss,idx,ov,vid,c){
       });
       hls.on(Hls.Events.ERROR,(_,d)=>{
         if(d.fatal){
+          clearTimeout(loadTimer);
           hls.destroy(); hls=null;
-          // Try next URL variant (proxy)
-          urlIdx++;
-          if(urlIdx < urls.length) {
-            document.getElementById('p-msg').textContent='Trying via proxy…';
-            attemptPlay(urls[urlIdx]);
-          } else if(idx+1<ss.length){
-            // Try next stream source
-            urlIdx = 0;
-            const nextUrl = ss[idx+1].url;
-            const nextUrls = [nextUrl, PROXY + encodeURIComponent(nextUrl)];
-            document.getElementById('p-url').textContent=nextUrl;
-            document.getElementById('p-msg').textContent=`Trying stream ${idx+2}/${ss.length}…`;
-            tryPlay(nextUrl,ss,idx+1,ov,vid,c);
-          } else {
-            ov.classList.remove('hide');
-            document.getElementById('p-spin').style.display='none';
-            document.getElementById('p-msg').innerHTML='All streams failed.<br>Use <b>Open VLC</b> or <b>New Tab</b>.';
-          }
+          tryNext();
         }
       });
-    } else if(vid.canPlayType('application/vnd.apple.mpegurl')){
+    } else if(vid.canPlayType('application/vnd.apple.mpegurl') || url.match(/\.(mp4|webm|ogg)$/i)){
       vid.src=playUrl;
       vid.load();
+      vid.addEventListener('canplay', function onCan(){
+        vid.removeEventListener('canplay', onCan);
+        clearTimeout(loadTimer);
+        ov.classList.add('hide');
+      }, {once:true});
       vid.addEventListener('error', function onErr(){
         vid.removeEventListener('error', onErr);
-        urlIdx++;
-        if(urlIdx < urls.length) attemptPlay(urls[urlIdx]);
-        else if(idx+1<ss.length) tryPlay(ss[idx+1].url,ss,idx+1,ov,vid,c);
-        else {
-          ov.classList.remove('hide');
-          document.getElementById('p-spin').style.display='none';
-          document.getElementById('p-msg').innerHTML='All streams failed.<br>Use <b>Open VLC</b> or <b>New Tab</b>.';
-        }
+        clearTimeout(loadTimer);
+        tryNext();
       }, {once:true});
-      vid.play().then(()=>ov.classList.add('hide')).catch(()=>{
+      vid.play().then(()=>{clearTimeout(loadTimer);ov.classList.add('hide');}).catch(()=>{
         ov.classList.remove('hide');
         document.getElementById('p-spin').style.display='none';
         document.getElementById('p-msg').innerHTML='Tap ▶ to play.';
       });
     } else {
-      vid.src=playUrl;
-      vid.addEventListener('error', function onErr(){
-        vid.removeEventListener('error', onErr);
-        urlIdx++;
-        if(urlIdx < urls.length) attemptPlay(urls[urlIdx]);
-        else if(idx+1<ss.length) tryPlay(ss[idx+1].url,ss,idx+1,ov,vid,c);
-        else {
-          ov.classList.remove('hide');
-          document.getElementById('p-spin').style.display='none';
-          document.getElementById('p-msg').innerHTML='Cannot play directly.<br>Use <b>Open VLC</b> or <b>New Tab</b>.';
-        }
-      }, {once:true});
-      vid.play().then(()=>ov.classList.add('hide')).catch(()=>{
-        ov.classList.remove('hide');
-        document.getElementById('p-spin').style.display='none';
-        document.getElementById('p-msg').innerHTML='Cannot play directly.<br>Use <b>Open VLC</b> or <b>New Tab</b>.';
-      });
+      clearTimeout(loadTimer);
+      tryNext();
+    }
+  }
+  
+  function tryNext(){
+    urlIdx++;
+    if(urlIdx < urls.length) {
+      document.getElementById('p-msg').textContent = urlIdx <= PROXIES.length ? `Trying proxy ${urlIdx}/${PROXIES.length}…` : 'Retrying…';
+      attemptPlay(urls[urlIdx]);
+    } else if(idx+1 < ss.length){
+      // Try next stream source
+      const nextUrl = ss[idx+1].url;
+      document.getElementById('p-url').textContent = nextUrl;
+      document.getElementById('p-msg').textContent = `Trying stream ${idx+2}/${ss.length}…`;
+      tryPlay(nextUrl, ss, idx+1, ov, vid, c);
+    } else {
+      ov.classList.remove('hide');
+      document.getElementById('p-spin').style.display='none';
+      document.getElementById('p-msg').innerHTML='All streams failed. <button onclick="retryChannel()" style="background:hsl(192,100%,50%);color:#000;border:none;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:600;margin-top:8px;">🔄 Retry</button><br><small>Or use <b>Open VLC</b> / <b>New Tab</b></small>';
     }
   }
   
