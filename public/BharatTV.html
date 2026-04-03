@@ -1134,7 +1134,7 @@ async function apiFetch(path){
     const r=await fetch(url,{signal:makeSignal(8000)});
     if(r.ok) return r.json();
   }catch(e){}
-  const r=await fetch(`${PROXY}${encodeURIComponent(url)}`,{signal:makeSignal(15000)});
+  const r=await fetch(proxyUrl(url),{signal:makeSignal(15000)});
   if(!r.ok) throw new Error('HTTP '+r.status);
   return r.json();
 }
@@ -1215,7 +1215,7 @@ async function loadStreamsBackground(){
         }
       }
     };
-    try{ await tryFetch(url); }catch(e){ raw=''; loaded=0; total=0; await tryFetch(`${PROXY}${encodeURIComponent(url)}`); }
+    try{ await tryFetch(url); }catch(e){ raw=''; loaded=0; total=0; await tryFetch(proxyUrl(url)); }
 
     streams=JSON.parse(raw);
     sMap={};
@@ -1431,7 +1431,7 @@ function playChannel(c){
 }
 
 function tryPlay(url,ss,idx,ov,vid,c){
-  const proxyUrl = PROXY + encodeURIComponent(url);
+  const proxyUrl = proxyUrl(url);
   const urls = [url, proxyUrl]; // Try direct first, then proxy
   let urlIdx = 0;
   
@@ -1450,8 +1450,8 @@ function tryPlay(url,ss,idx,ov,vid,c){
         progressive:true,
         xhrSetup: function(xhr, xhrUrl) {
           // If the URL is already proxied or same-origin, skip
-          if(!xhrUrl.startsWith(PROXY) && urlIdx > 0) {
-            xhr.open('GET', PROXY + encodeURIComponent(xhrUrl));
+          if(!xhrUrl.includes('corsproxy.io') && !xhrUrl.includes('allorigins.win') && !xhrUrl.includes('codetabs.com') && urlIdx > 0) {
+            xhr.open('GET', proxyUrl(xhrUrl));
           }
         }
       });
@@ -1477,7 +1477,7 @@ function tryPlay(url,ss,idx,ov,vid,c){
             // Try next stream source
             urlIdx = 0;
             const nextUrl = ss[idx+1].url;
-            const nextUrls = [nextUrl, PROXY + encodeURIComponent(nextUrl)];
+            const nextUrls = [nextUrl, proxyUrl(nextUrl)];
             document.getElementById('p-url').textContent=nextUrl;
             document.getElementById('p-msg').textContent=`Trying stream ${idx+2}/${ss.length}…`;
             tryPlay(nextUrl,ss,idx+1,ov,vid,c);
