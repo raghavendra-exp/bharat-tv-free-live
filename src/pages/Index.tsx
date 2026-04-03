@@ -41,7 +41,7 @@ const Index = () => {
           <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-primary via-secondary to-accent text-white shadow-[0_0_40px_hsl(var(--primary)/0.4),0_0_80px_hsl(var(--secondary)/0.2)] animate-[float_4s_ease-in-out_infinite]">
             <Tv className="h-10 w-10" />
           </div>
-          <h1 className="mb-5 text-4xl font-extrabold tracking-wider md:text-5xl lg:text-6xl bg-gradient-to-r from-foreground via-primary to-secondary bg-clip-text text-transparent" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+          <h1 className="mb-5 text-4xl font-extrabold tracking-wider md:text-5xl lg:text-6xl" style={{ fontFamily: "'Orbitron', sans-serif", background: 'linear-gradient(90deg, hsl(192 100% 50%), hsl(270 80% 65%), hsl(340 90% 60%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Watch 19,000+ Free Live<br />Indian TV Channels
           </h1>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground">
@@ -87,7 +87,7 @@ const Index = () => {
       {/* Features Section */}
       <section id="features" className="border-b border-border py-16 md:py-24 relative z-10">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="mb-2 text-center text-2xl font-bold md:text-3xl bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent" style={{ fontFamily: "'Orbitron', sans-serif" }}>Why Choose BharatTV?</h2>
+          <h2 className="mb-2 text-center text-2xl font-bold md:text-3xl" style={{ fontFamily: "'Orbitron', sans-serif", background: "linear-gradient(90deg, hsl(230 50% 95%), hsl(192 100% 50%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Why Choose BharatTV?</h2>
           <p className="mb-12 text-center text-muted-foreground max-w-2xl mx-auto">
             India's most comprehensive free live TV platform, designed to bring every Indian channel to your fingertips.
           </p>
@@ -116,7 +116,7 @@ const Index = () => {
       {/* How It Works Section */}
       <section id="how-it-works" className="border-b border-border bg-muted/20 py-16 md:py-24 relative z-10">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="mb-2 text-center text-2xl font-bold md:text-3xl bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent" style={{ fontFamily: "'Orbitron', sans-serif" }}>How BharatTV Works</h2>
+          <h2 className="mb-2 text-center text-2xl font-bold md:text-3xl" style={{ fontFamily: "'Orbitron', sans-serif", background: "linear-gradient(90deg, hsl(230 50% 95%), hsl(192 100% 50%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>How BharatTV Works</h2>
           <p className="mb-12 text-center text-muted-foreground max-w-2xl mx-auto">
             Getting started takes just seconds. Here's how you can watch your favourite Indian TV channels for free.
           </p>
@@ -142,7 +142,7 @@ const Index = () => {
       {/* Channel Categories Section */}
       <section id="channels" className="border-b border-border py-16 md:py-24 relative z-10">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="mb-2 text-center text-2xl font-bold md:text-3xl bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent" style={{ fontFamily: "'Orbitron', sans-serif" }}>Popular Channel Categories</h2>
+          <h2 className="mb-2 text-center text-2xl font-bold md:text-3xl" style={{ fontFamily: "'Orbitron', sans-serif", background: "linear-gradient(90deg, hsl(230 50% 95%), hsl(192 100% 50%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Popular Channel Categories</h2>
           <p className="mb-12 text-center text-muted-foreground max-w-2xl mx-auto">
             Thousands of channels organised into easy-to-browse categories. Cricket, Bollywood, regional news — we have it all.
           </p>
@@ -181,7 +181,7 @@ const Index = () => {
       {/* Supported Languages Section */}
       <section className="border-b border-border bg-muted/20 py-16 md:py-24 relative z-10">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="mb-2 text-center text-2xl font-bold md:text-3xl bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent" style={{ fontFamily: "'Orbitron', sans-serif" }}>Watch TV in Your Language</h2>
+          <h2 className="mb-2 text-center text-2xl font-bold md:text-3xl" style={{ fontFamily: "'Orbitron', sans-serif", background: "linear-gradient(90deg, hsl(230 50% 95%), hsl(192 100% 50%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Watch TV in Your Language</h2>
           <p className="mb-12 text-center text-muted-foreground max-w-2xl mx-auto">
             Every major Indian language supported. Find hundreds of channels in your mother tongue.
           </p>
@@ -212,7 +212,7 @@ const Index = () => {
       {/* Viewing Guide Section */}
       <section id="guide" className="border-b border-border py-16 md:py-24 relative z-10">
         <div className="mx-auto max-w-4xl px-4">
-          <h2 className="mb-2 text-center text-2xl font-bold md:text-3xl bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent" style={{ fontFamily: "'Orbitron', sans-serif" }}>Complete Viewing Guide</h2>
+          <h2 className="mb-2 text-center text-2xl font-bold md:text-3xl" style={{ fontFamily: "'Orbitron', sans-serif", background: "linear-gradient(90deg, hsl(230 50% 95%), hsl(192 100% 50%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Complete Viewing Guide</h2>
           <p className="mb-10 text-center text-muted-foreground max-w-2xl mx-auto">
             Everything you need for the best BharatTV experience.
           </p>
@@ -240,7 +240,7 @@ const Index = () => {
       {/* About Section */}
       <section id="about" className="border-b border-border bg-muted/20 py-16 md:py-24 relative z-10">
         <div className="mx-auto max-w-4xl px-4">
-          <h2 className="mb-6 text-center text-2xl font-bold md:text-3xl bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent" style={{ fontFamily: "'Orbitron', sans-serif" }}>About BharatTV</h2>
+          <h2 className="mb-6 text-center text-2xl font-bold md:text-3xl" style={{ fontFamily: "'Orbitron', sans-serif", background: "linear-gradient(90deg, hsl(230 50% 95%), hsl(192 100% 50%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>About BharatTV</h2>
           <div className="space-y-4 text-muted-foreground leading-relaxed">
             <p><strong className="text-foreground">BharatTV</strong> is India's largest free live TV streaming platform, offering over 19,000 channels. Founded by Raghav, a tech enthusiast passionate about making Indian media accessible worldwide.</p>
             <p>Our mission: <strong className="text-foreground">make Indian television accessible to everyone, everywhere — for free.</strong></p>
@@ -257,7 +257,7 @@ const Index = () => {
       {/* FAQ Section */}
       <section className="border-b border-border py-16 md:py-24 relative z-10">
         <div className="mx-auto max-w-4xl px-4">
-          <h2 className="mb-2 text-center text-2xl font-bold md:text-3xl bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent" style={{ fontFamily: "'Orbitron', sans-serif" }}>Frequently Asked Questions</h2>
+          <h2 className="mb-2 text-center text-2xl font-bold md:text-3xl" style={{ fontFamily: "'Orbitron', sans-serif", background: "linear-gradient(90deg, hsl(230 50% 95%), hsl(192 100% 50%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Frequently Asked Questions</h2>
           <p className="mb-10 text-center text-muted-foreground">Answers to common questions about BharatTV</p>
           <div className="space-y-4">
             {[
@@ -282,7 +282,7 @@ const Index = () => {
       {/* Contact Section */}
       <section id="contact" className="border-b border-border bg-muted/20 py-16 md:py-24 relative z-10">
         <div className="mx-auto max-w-4xl px-4 text-center">
-          <h2 className="mb-4 text-2xl font-bold md:text-3xl bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent" style={{ fontFamily: "'Orbitron', sans-serif" }}>Get in Touch</h2>
+          <h2 className="mb-4 text-2xl font-bold md:text-3xl" style={{ fontFamily: "'Orbitron', sans-serif", background: "linear-gradient(90deg, hsl(230 50% 95%), hsl(192 100% 50%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Get in Touch</h2>
           <p className="mb-8 text-muted-foreground max-w-xl mx-auto">
             Questions, feedback, or suggestions? Reach out through our social channels.
           </p>

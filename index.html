@@ -773,8 +773,18 @@
       </div>
     </footer>
 
-    <!-- React App (enhances the page after load) -->
+    <!-- React App (replaces static content after load) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Hide static HTML once React mounts
+      var observer = new MutationObserver(function() {
+        if (document.getElementById('root').children.length > 0) {
+          document.querySelectorAll('body > :not(#root):not(script)').forEach(function(el) { el.style.display = 'none'; });
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.getElementById('root'), { childList: true });
+    </script>
   </body>
 </html>
