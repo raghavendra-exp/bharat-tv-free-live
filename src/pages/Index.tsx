@@ -300,10 +300,13 @@ const Index = () => {
               { q: "Can I watch outside India?", a: "Yes! BharatTV is designed for the Indian diaspora worldwide. Most channels work globally." },
               { q: "How do I use Theater Mode?", a: "Click Theater Mode or press 'T'. Press 'F' for fullscreen, 'M' to mute/unmute, 'Esc' to close the player." },
             ].map(({ q, a }) => (
-              <div key={q} className="rounded-2xl border border-border bg-card/80 p-5 transition-all duration-300 hover:border-accent/40 hover:shadow-[0_0_20px_hsl(var(--accent)/0.15)] backdrop-blur-sm">
-                <h3 className="mb-2 font-semibold">{q}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{a}</p>
-              </div>
+              <details key={q} className="group rounded-2xl border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:border-accent/40 hover:shadow-[0_0_20px_hsl(var(--accent)/0.15)]">
+                <summary className="flex cursor-pointer items-center justify-between p-5 font-semibold list-none [&::-webkit-details-marker]:hidden">
+                  {q}
+                  <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform duration-300 group-open:rotate-90" />
+                </summary>
+                <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed animate-fade-in">{a}</p>
+              </details>
             ))}
           </div>
         </div>
