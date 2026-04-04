@@ -341,7 +341,11 @@ const Index = () => {
               </ul>
             </div>
           </div>
-          <div className="mt-8 border-t border-border pt-6 text-center text-xs text-muted-foreground">
+          <div className="mt-8 rounded-lg border border-yellow-500/30 bg-yellow-500/5 p-4 text-center text-xs text-yellow-200/80">
+            <p className="font-semibold text-yellow-300">⚠️ Channel Availability Notice</p>
+            <p className="mt-1">Many channels may fail because their source streams are dead, geo-restricted to India, or the source URLs have changed. This is an inherent limitation of the <a href="https://github.com/iptv-org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">iptv-org</a> data source — not a bug in the player.</p>
+          </div>
+          <div className="mt-6 border-t border-border pt-6 text-center text-xs text-muted-foreground">
             <p>© {new Date().getFullYear()} BharatTV. All rights reserved. Made with ❤️ by Raghav.</p>
             <p className="mt-1">
               Channel data sourced from <a href="https://github.com/iptv-org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">iptv-org</a>. BharatTV does not host any video content.
