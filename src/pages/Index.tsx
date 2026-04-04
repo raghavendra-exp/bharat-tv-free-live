@@ -1,8 +1,10 @@
-import { Tv, Play, Globe, Zap, Shield, Smartphone, Languages, Radio, Monitor, Wifi, Clock, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { Tv, Play, Globe, Zap, Shield, Smartphone, Languages, Radio, Monitor, Wifi, Clock, ChevronRight, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import TvAnimation from "@/components/TvAnimation";
 
 const Index = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
       {/* Animated background orbs */}
