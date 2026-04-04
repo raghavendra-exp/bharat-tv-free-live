@@ -63,6 +63,7 @@ const Index = () => {
           <p className="mt-8 text-xs text-muted-foreground">
             ✅ No signup &nbsp;·&nbsp; ✅ No downloads &nbsp;·&nbsp; ✅ Works on all devices
           </p>
+          <TvAnimation />
         </div>
       </section>
 
