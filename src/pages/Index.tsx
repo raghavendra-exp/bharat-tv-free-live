@@ -1,5 +1,6 @@
 import { Tv, Play, Globe, Zap, Shield, Smartphone, Languages, Radio, Monitor, Wifi, Clock, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import TvAnimation from "@/components/TvAnimation";
 
 const Index = () => {
   return (
@@ -62,6 +63,7 @@ const Index = () => {
           <p className="mt-8 text-xs text-muted-foreground">
             ✅ No signup &nbsp;·&nbsp; ✅ No downloads &nbsp;·&nbsp; ✅ Works on all devices
           </p>
+          <TvAnimation />
         </div>
       </section>
 
