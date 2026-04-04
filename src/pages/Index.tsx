@@ -29,12 +29,38 @@ const Index = () => {
               </a>
             ))}
           </nav>
-          <a href="/BharatTV.html">
-            <Button size="sm" className="gap-1.5 bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-[0_4px_20px_hsl(var(--primary)/0.3)] hover:shadow-[0_6px_30px_hsl(var(--primary)/0.5)] transition-all hover:-translate-y-0.5">
-              <Play className="h-3.5 w-3.5" /> Watch Now
-            </Button>
-          </a>
+          <div className="flex items-center gap-3">
+            <a href="/BharatTV.html">
+              <Button size="sm" className="gap-1.5 bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-[0_4px_20px_hsl(var(--primary)/0.3)] hover:shadow-[0_6px_30px_hsl(var(--primary)/0.5)] transition-all hover:-translate-y-0.5">
+                <Play className="h-3.5 w-3.5" /> Watch Now
+              </Button>
+            </a>
+            <button
+              className="md:hidden p-2 rounded-lg border border-border hover:bg-muted transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-xl animate-fade-in">
+            <nav className="flex flex-col px-4 py-3 gap-1">
+              {["Features", "Channels", "How It Works", "Guide", "About", "Contact"].map(item => (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase().replace(/ /g, '-')}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-sm text-muted-foreground hover:text-foreground py-2.5 px-3 rounded-lg hover:bg-muted transition-all uppercase tracking-widest font-medium"
+                >
+                  {item}
+                </a>
+              ))}
+            </nav>
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}
