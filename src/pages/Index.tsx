@@ -1,5 +1,6 @@
 import { Tv, Play, Globe, Zap, Shield, Smartphone, Languages, Radio, Monitor, Wifi, Clock, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import TvAnimation from "@/components/TvAnimation";
 
 const Index = () => {
   return (
