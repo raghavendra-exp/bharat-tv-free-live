@@ -326,7 +326,7 @@ const Index = () => {
               { label: "👍 Facebook", url: "https://m.facebook.com/profile.php?id=100091519152590" },
             ].map(({ label, url }) => (
               <a key={label} href={url} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" className="gap-2 border-border/50 hover:border-primary hover:shadow-[0_0_15px_hsl(var(--primary)/0.2)] hover:-translate-y-0.5 transition-all backdrop-blur-sm">{label}</Button>
+                <Button variant="outline" size="sm" className="gap-1.5 text-xs px-3 py-1.5 border-border/50 hover:border-primary hover:shadow-[0_0_15px_hsl(var(--primary)/0.2)] hover:-translate-y-0.5 transition-all backdrop-blur-sm">{label}</Button>
               </a>
             ))}
           </div>
