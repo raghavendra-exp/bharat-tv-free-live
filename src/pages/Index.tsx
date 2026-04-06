@@ -30,6 +30,10 @@ const Index = () => {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
+            <Link to="/blog" className="text-xs text-muted-foreground hover:text-foreground transition-all uppercase tracking-widest font-medium relative group cursor-pointer">
+              Blog
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full" />
+            </Link>
           </nav>
           <div className="flex items-center gap-3">
             <a href="/BharatTV.html">
