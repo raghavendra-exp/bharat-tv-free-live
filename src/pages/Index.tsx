@@ -63,6 +63,13 @@ const Index = () => {
                   {item}
                 </a>
               ))}
+              <Link
+                to="/blog"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-sm text-muted-foreground hover:text-foreground py-2.5 px-3 rounded-lg hover:bg-muted transition-all uppercase tracking-widest font-medium"
+              >
+                Blog
+              </Link>
             </div>
           </nav>
         )}
