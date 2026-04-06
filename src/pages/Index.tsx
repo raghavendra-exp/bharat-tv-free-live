@@ -52,7 +52,14 @@ const Index = () => {
                 <a
                   key={item}
                   href={`#${item.toLowerCase().replace(/ /g, '-')}`}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setMobileMenuOpen(false);
+                    const id = item.toLowerCase().replace(/ /g, '-');
+                    setTimeout(() => {
+                      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                  }}
                   className="text-sm text-muted-foreground hover:text-foreground py-2.5 px-3 rounded-lg hover:bg-muted transition-all uppercase tracking-widest font-medium"
                 >
                   {item}
