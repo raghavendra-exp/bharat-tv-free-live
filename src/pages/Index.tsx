@@ -442,6 +442,7 @@ const Index = () => {
                 {[["Watch TV", "/BharatTV.html"], ["Features", "#features"], ["How It Works", "#how-it-works"], ["Guide", "#guide"], ["About", "#about"], ["Contact", "#contact"]].map(([name, url]) => (
                   <li key={name}><a href={url} className="hover:text-primary transition-colors">{name}</a></li>
                 ))}
+                <li><Link to="/blog" className="hover:text-primary transition-colors">Blog</Link></li>
               </ul>
             </div>
             <div>
