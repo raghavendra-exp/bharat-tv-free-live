@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Tv, Play, Globe, Zap, Shield, Smartphone, Languages, Radio, Monitor, Wifi, Clock, ChevronRight, Menu, X, Star, TrendingUp, Users, Heart, Award, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Tv, Play, Globe, Zap, Shield, Smartphone, Languages, Radio, Monitor, Wifi, Clock, ChevronRight, Menu, X, Star, TrendingUp, Users, Heart, Award, Sparkles, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import TvAnimation from "@/components/TvAnimation";
 
