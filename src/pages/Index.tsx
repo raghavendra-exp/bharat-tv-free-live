@@ -6,7 +6,7 @@ import TvAnimation from "@/components/TvAnimation";
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
-    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden">
       {/* Animated background orbs */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-[10%] left-[10%] w-[600px] h-[600px] rounded-full bg-primary/[0.08] blur-[120px] animate-pulse" />
