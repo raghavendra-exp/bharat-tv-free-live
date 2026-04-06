@@ -24,7 +24,7 @@ const Index = () => {
           </a>
           <nav className="hidden gap-7 md:flex" aria-label="Main navigation">
             {["Features", "Channels", "How It Works", "Guide", "About", "Contact"].map(item => (
-              <a key={item} href={`#${item.toLowerCase().replace(/ /g, '-')}`} onClick={(e) => { e.preventDefault(); document.getElementById(item.toLowerCase().replace(/ /g, '-'))?.scrollIntoView({ behavior: 'smooth' }); }} className="text-xs text-muted-foreground hover:text-foreground transition-all uppercase tracking-widest font-medium relative group cursor-pointer">
+              <a key={item} href={`#${item.toLowerCase().replace(/ /g, '-')}`} className="text-xs text-muted-foreground hover:text-foreground transition-all uppercase tracking-widest font-medium relative group cursor-pointer">
                 {item}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full" />
               </a>
