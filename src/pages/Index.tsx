@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Tv, Play, Globe, Zap, Shield, Smartphone, Languages, Radio, Monitor, Wifi, Clock, ChevronRight, Menu, X, Star, TrendingUp, Users, Heart, Award, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Tv, Play, Globe, Zap, Shield, Smartphone, Languages, Radio, Monitor, Wifi, Clock, ChevronRight, Menu, X, Star, TrendingUp, Users, Heart, Award, Sparkles, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import TvAnimation from "@/components/TvAnimation";
 
@@ -29,6 +30,10 @@ const Index = () => {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
+            <Link to="/blog" className="text-xs text-muted-foreground hover:text-foreground transition-all uppercase tracking-widest font-medium relative group cursor-pointer">
+              Blog
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full" />
+            </Link>
           </nav>
           <div className="flex items-center gap-3">
             <a href="/BharatTV.html">
@@ -58,6 +63,13 @@ const Index = () => {
                   {item}
                 </a>
               ))}
+              <Link
+                to="/blog"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-sm text-muted-foreground hover:text-foreground py-2.5 px-3 rounded-lg hover:bg-muted transition-all uppercase tracking-widest font-medium"
+              >
+                Blog
+              </Link>
             </div>
           </nav>
         )}
@@ -430,6 +442,7 @@ const Index = () => {
                 {[["Watch TV", "/BharatTV.html"], ["Features", "#features"], ["How It Works", "#how-it-works"], ["Guide", "#guide"], ["About", "#about"], ["Contact", "#contact"]].map(([name, url]) => (
                   <li key={name}><a href={url} className="hover:text-primary transition-colors">{name}</a></li>
                 ))}
+                <li><Link to="/blog" className="hover:text-primary transition-colors">Blog</Link></li>
               </ul>
             </div>
             <div>
