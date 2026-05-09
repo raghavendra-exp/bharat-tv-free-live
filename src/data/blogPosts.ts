@@ -397,6 +397,193 @@ We're constantly improving our player to provide the best possible experience:
 
 Technology should serve the viewer, not the other way around. That's the philosophy behind BharatTV's simple, no-signup approach to free live TV.
     `
+  },
+  {
+    slug: "bigg-boss-and-reality-tv-streaming-guide",
+    title: "How to Stream Bigg Boss & Indian Reality TV Free in 2026",
+    excerpt: "From Bigg Boss to Kapil Sharma — your complete guide to streaming India's biggest reality and entertainment shows live and free.",
+    date: "2026-05-05",
+    author: "Raghav",
+    category: "Entertainment",
+    readTime: "5 min read",
+    image: "🎭",
+    content: `
+## Reality TV is Bigger Than Ever in India
+
+Indian reality television has become a cultural phenomenon. Shows like **Bigg Boss**, **The Kapil Sharma Show**, **Indian Idol**, **Dance Deewane**, and **MasterChef India** pull in tens of millions of viewers every week. If you're outside India — or simply tired of paying for OTT subscriptions — BharatTV gives you a free way to watch the channels that air them.
+
+### The Big Reality Shows You Can Watch Live
+
+Most of India's biggest reality shows broadcast on a handful of major entertainment channels. With BharatTV you can tune in to:
+
+- **Colors TV** — Bigg Boss (Hindi), Khatron Ke Khiladi, Dance Deewane
+- **Sony TV** — Indian Idol, Kapil Sharma Show, KBC (Kaun Banega Crorepati)
+- **Star Plus** — MasterChef India, Nach Baliye, Laughter Chefs
+- **Zee TV** — Sa Re Ga Ma Pa, DID (Dance India Dance)
+- **Star Vijay** — Bigg Boss Tamil, Cooku With Comali
+- **Asianet** — Bigg Boss Malayalam
+- **Colors Kannada** — Bigg Boss Kannada
+
+### When Do These Shows Air?
+
+Most reality shows follow weekend prime-time scheduling. Bigg Boss typically airs Monday–Friday at 10:00 PM IST with a Weekend Ka Vaar episode on Saturdays and Sundays at 9:30 PM. Indian Idol and Kapil Sharma usually take the Saturday/Sunday 9:30 PM slot on Sony.
+
+If you're streaming from a different time zone, just convert to IST and tune in live — BharatTV's HLS streams have very low latency, so you're watching essentially real-time.
+
+### Tips for the Best Reality TV Experience
+
+1. **Use Theater Mode** — Reality TV is best enjoyed full-screen
+2. **Bookmark your favorite channel** — Skip the channel browser during prime time
+3. **Pair with social media** — The fun of Bigg Boss is hot-takes on Twitter/X in real time
+4. **Catch the repeats** — Most channels rerun episodes the next afternoon
+
+### Can I Watch Bigg Boss OTT Online for Free?
+
+Bigg Boss OTT is exclusive to JioCinema/Hotstar and not part of free linear TV. BharatTV only carries publicly broadcast linear channels — for OTT-exclusive content you'll still need the official platform. But all the main TV editions (Hindi, Tamil, Telugu, Kannada, Malayalam) are available through their broadcast channels.
+
+### Why Free Streaming Matters for the Diaspora
+
+Indians living abroad pay a premium for satellite TV packages just to keep up with shows everyone back home is talking about. Free, browser-based streaming closes that gap — you can keep up with Bigg Boss contestants, Kapil Sharma's punchlines, and Indian Idol auditions without expensive subscriptions or VPN gymnastics.
+
+Reality TV is shared culture. BharatTV's mission is to keep that culture accessible — no signup, no fees, just open the player and watch.
+    `
+  },
+  {
+    slug: "best-devices-to-watch-bharattv",
+    title: "Best Devices to Watch BharatTV — TV, Phone, Laptop & More",
+    excerpt: "BharatTV runs in any modern browser. Here's how to get the best experience on your smart TV, phone, tablet, laptop, or Fire Stick.",
+    date: "2026-05-07",
+    author: "Raghav",
+    category: "Guide",
+    readTime: "4 min read",
+    image: "📱",
+    content: `
+## One Player, Every Screen
+
+BharatTV is a browser-based player, which means anything that runs a modern browser can stream Indian TV — no app installs, no app-store approvals, no device locking. Here's how to get the cleanest experience on each kind of device.
+
+### Smart TVs (Samsung, LG, Sony, Mi TV)
+
+Most smart TVs ship with a built-in browser. Open it, type the BharatTV URL, and bookmark it. For the best experience:
+
+- **Use a Bluetooth keyboard or air-mouse** — TV remotes are slow for typing
+- **Enable Theater Mode** for a true full-screen view
+- **Pin to home screen** if your TV browser supports it
+
+### Fire TV Stick / Chromecast / Android TV
+
+The easiest path is the **Silk Browser** (Fire Stick) or any **Chromium-based browser** from the Play Store. Once installed:
+
+1. Open the browser and visit BharatTV
+2. Use the remote's directional pad to navigate channels
+3. Press the play/select button to start a stream
+4. Hit fullscreen and enjoy
+
+For Chromecast users, casting a tab from your laptop or phone works perfectly — pick a channel, hit cast, and BharatTV streams to your TV.
+
+### Mobile Phones (Android & iOS)
+
+BharatTV is fully responsive and touch-optimized:
+
+- **Portrait mode** for casual browsing
+- **Landscape + fullscreen** for serious viewing
+- **Picture-in-picture** on supported browsers (Chrome, Safari)
+- **Add to Home Screen** to launch like a native app
+
+iOS Safari supports HLS natively, which means streams start almost instantly on iPhones and iPads. Android Chrome works great too.
+
+### Laptops & Desktops
+
+The desktop experience is the most feature-rich:
+
+- **Keyboard shortcuts** — Space to play/pause, F for fullscreen, M to mute
+- **Multiple tabs** for switching between channels quickly
+- **Bigger channel browser** for category and language filtering
+- **Theater Mode** for distraction-free viewing
+
+### What About Old Devices?
+
+Anything with a browser updated in the last few years should work. If a stream stutters:
+
+- Lower the video quality from the player settings
+- Close other browser tabs
+- Make sure you're not running heavy background downloads
+- Try a wired connection if Wi-Fi is unstable
+
+### Network Tips
+
+HLS is bandwidth-friendly but live TV still needs a stable connection. As a rough guide:
+
+- **SD streams**: 1.5–3 Mbps
+- **HD streams**: 4–6 Mbps
+- **Full HD**: 6–8 Mbps
+
+If a particular channel keeps buffering, the issue is usually the upstream source rather than your connection. Try a different channel in the same category.
+
+### The Bottom Line
+
+There's no "best" device — there's just the screen you have. BharatTV is intentionally built to work everywhere a browser does, so you can watch Indian TV in the kitchen on your phone, in the living room on your TV, and at your desk on a laptop, all without juggling apps or subscriptions.
+    `
+  },
+  {
+    slug: "bharattv-may-2026-product-updates",
+    title: "BharatTV Updates — May 2026: Faster Player, More Channels",
+    excerpt: "What's new on BharatTV this month — performance improvements, new channel additions, the new blog, and what's coming next.",
+    date: "2026-05-09",
+    author: "Raghav",
+    category: "Updates",
+    readTime: "3 min read",
+    image: "🚀",
+    content: `
+## What's New on BharatTV — May 2026
+
+We've shipped a wave of improvements over the last few weeks. Here's a quick rundown of everything that's new, plus a peek at what's coming next.
+
+### Faster, Smoother Player
+
+We rebuilt parts of the HLS player pipeline to start streams faster and recover more gracefully when a channel's source is slow:
+
+- **~30% faster channel switching** thanks to better buffer management
+- **Smarter bitrate selection** so weak connections still get a watchable stream
+- **Fewer "playback failed" errors** on flaky sources via auto-retry
+
+### New & Refreshed Channels
+
+We resync our channel directory with the upstream [iptv-org](https://github.com/iptv-org) project regularly. This month we added or fixed:
+
+- More **regional news** from Tamil, Telugu, Marathi, and Bengali broadcasters
+- Several **24/7 movie channels** in Hindi and South Indian languages
+- A handful of **devotional and music** channels (Aastha, Sanskar, 9XM)
+- Removed a long list of permanently-dead streams to keep the directory clean
+
+### A Brand-New Blog
+
+You're reading it. We launched the BharatTV Blog with detailed guides on free Indian TV streaming, IPL 2026, regional channels, HLS technology, reality TV, and device setup. Expect new posts regularly — we're aiming for at least one in-depth article every two weeks.
+
+### Site-Wide SEO & Accessibility Improvements
+
+Behind the scenes we've been polishing:
+
+- **Structured data** (Organization, BreadcrumbList, BlogPosting JSON-LD) for richer Google results
+- **Visible breadcrumbs** on Blog and article pages
+- **Better semantic HTML** with proper landmarks and aria labels
+- **Sitemap and robots.txt** kept in sync with new pages
+
+### Coming Soon
+
+A few things we're actively working on:
+
+- **Favorites / Watchlist** — pin the channels you actually watch (saved locally, no signup)
+- **EPG (TV guide)** — see what's playing now and next on supported channels
+- **Continue Watching** — jump back to your last channel with one click
+- **More languages** — additional regional and international Indian channels
+
+### Help Us Improve
+
+If a channel doesn't work for you, or there's a show you wish was easier to find, drop us a note via the contact section on the homepage. BharatTV is built for viewers — your feedback directly shapes the roadmap.
+
+Thanks for watching with us. More good stuff soon.
+    `
   }
 ];
 
