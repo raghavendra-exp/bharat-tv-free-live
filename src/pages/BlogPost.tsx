@@ -10,6 +10,27 @@ const BlogPost = () => {
 
   const relatedPosts = blogPosts.filter(p => p.slug !== post.slug).slice(0, 2);
 
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://bugbash-fullscreen-joy.lovable.app";
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${origin}/blog` },
+      { "@type": "ListItem", position: 3, name: post.title, item: `${origin}/blog/${post.slug}` },
+    ],
+  };
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    author: { "@type": "Person", name: post.author },
+    datePublished: post.date,
+    publisher: { "@type": "Organization", name: "BharatTV" },
+    mainEntityOfPage: `${origin}/blog/${post.slug}`,
+  };
+
   // Simple markdown-to-HTML (handles ##, ###, **, -, |, [links])
   const renderContent = (content: string) => {
     return content
@@ -120,14 +141,18 @@ const BlogPost = () => {
       </header>
 
       <main className="relative z-10">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
         {/* Breadcrumb */}
         <div className="mx-auto max-w-3xl px-4 pt-6">
-          <nav className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-            <ChevronRight className="h-3 w-3" />
-            <Link to="/blog" className="hover:text-primary transition-colors">Blog</Link>
-            <ChevronRight className="h-3 w-3" />
-            <span className="text-foreground truncate max-w-[200px]">{post.title}</span>
+          <nav aria-label="Breadcrumb" className="text-xs text-muted-foreground">
+            <ol className="flex items-center gap-1.5 flex-wrap">
+              <li><Link to="/" className="hover:text-primary transition-colors">Home</Link></li>
+              <li aria-hidden="true"><ChevronRight className="h-3 w-3" /></li>
+              <li><Link to="/blog" className="hover:text-primary transition-colors">Blog</Link></li>
+              <li aria-hidden="true"><ChevronRight className="h-3 w-3" /></li>
+              <li aria-current="page" className="text-foreground truncate max-w-[220px] md:max-w-[400px]">{post.title}</li>
+            </ol>
           </nav>
         </div>
 
