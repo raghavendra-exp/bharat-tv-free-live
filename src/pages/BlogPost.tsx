@@ -10,6 +10,27 @@ const BlogPost = () => {
 
   const relatedPosts = blogPosts.filter(p => p.slug !== post.slug).slice(0, 2);
 
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://bugbash-fullscreen-joy.lovable.app";
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${origin}/blog` },
+      { "@type": "ListItem", position: 3, name: post.title, item: `${origin}/blog/${post.slug}` },
+    ],
+  };
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    author: { "@type": "Person", name: post.author },
+    datePublished: post.date,
+    publisher: { "@type": "Organization", name: "BharatTV" },
+    mainEntityOfPage: `${origin}/blog/${post.slug}`,
+  };
+
   // Simple markdown-to-HTML (handles ##, ###, **, -, |, [links])
   const renderContent = (content: string) => {
     return content
