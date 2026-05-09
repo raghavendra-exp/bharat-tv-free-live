@@ -1,8 +1,17 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Clock, User, Tag, BookOpen, Sparkles } from "lucide-react";
+import { ArrowRight, Clock, User, Tag, BookOpen, Sparkles, ChevronRight } from "lucide-react";
 import { blogPosts, formatDate } from "@/data/blogPosts";
 
 const Blog = () => {
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://bugbash-fullscreen-joy.lovable.app";
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${origin}/blog` },
+    ],
+  };
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden">
       {/* Background orbs */}
