@@ -141,6 +141,8 @@ const BlogPost = () => {
       </header>
 
       <main className="relative z-10">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
         {/* Breadcrumb */}
         <div className="mx-auto max-w-3xl px-4 pt-6">
           <nav className="flex items-center gap-1.5 text-xs text-muted-foreground">
