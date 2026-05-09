@@ -145,12 +145,14 @@ const BlogPost = () => {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
         {/* Breadcrumb */}
         <div className="mx-auto max-w-3xl px-4 pt-6">
-          <nav className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-            <ChevronRight className="h-3 w-3" />
-            <Link to="/blog" className="hover:text-primary transition-colors">Blog</Link>
-            <ChevronRight className="h-3 w-3" />
-            <span className="text-foreground truncate max-w-[200px]">{post.title}</span>
+          <nav aria-label="Breadcrumb" className="text-xs text-muted-foreground">
+            <ol className="flex items-center gap-1.5 flex-wrap">
+              <li><Link to="/" className="hover:text-primary transition-colors">Home</Link></li>
+              <li aria-hidden="true"><ChevronRight className="h-3 w-3" /></li>
+              <li><Link to="/blog" className="hover:text-primary transition-colors">Blog</Link></li>
+              <li aria-hidden="true"><ChevronRight className="h-3 w-3" /></li>
+              <li aria-current="page" className="text-foreground truncate max-w-[220px] md:max-w-[400px]">{post.title}</li>
+            </ol>
           </nav>
         </div>
 
