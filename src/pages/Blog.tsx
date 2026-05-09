@@ -38,8 +38,19 @@ const Blog = () => {
       </header>
 
       <main className="relative z-10">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+        {/* Breadcrumb */}
+        <div className="mx-auto max-w-6xl px-4 pt-6">
+          <nav aria-label="Breadcrumb" className="text-xs text-muted-foreground">
+            <ol className="flex items-center gap-1.5">
+              <li><Link to="/" className="hover:text-primary transition-colors">Home</Link></li>
+              <li aria-hidden="true"><ChevronRight className="h-3 w-3" /></li>
+              <li aria-current="page" className="text-foreground">Blog</li>
+            </ol>
+          </nav>
+        </div>
         {/* Hero */}
-        <section className="border-b border-border py-16 md:py-24">
+        <section className="border-b border-border py-12 md:py-16">
           <div className="mx-auto max-w-4xl px-4 text-center section-fade-up">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 mb-6">
               <BookOpen className="h-4 w-4 text-primary" />
