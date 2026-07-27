@@ -12,6 +12,28 @@ const BlogPost = () => {
   const relatedPosts = blogPosts.filter(p => p.slug !== post.slug).slice(0, 2);
 
   const origin = typeof window !== "undefined" ? window.location.origin : "https://bugbash-fullscreen-joy.lovable.app";
+
+  useEffect(() => {
+    if (!post) return;
+    const prevTitle = document.title;
+    document.title = `${post.title} — BharatTV Blog`;
+    const setMeta = (name: string, content: string, attr: "name" | "property" = "name") => {
+      let el = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement | null;
+      if (!el) { el = document.createElement("meta"); el.setAttribute(attr, name); document.head.appendChild(el); }
+      el.setAttribute("content", content);
+    };
+    setMeta("description", post.excerpt);
+    setMeta("og:title", post.title, "property");
+    setMeta("og:description", post.excerpt, "property");
+    setMeta("og:type", "article", "property");
+    setMeta("og:url", `${origin}/blog/${post.slug}`, "property");
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (!canonical) { canonical = document.createElement("link"); canonical.rel = "canonical"; document.head.appendChild(canonical); }
+    canonical.href = `${origin}/blog/${post.slug}`;
+    window.scrollTo({ top: 0, behavior: "auto" });
+    return () => { document.title = prevTitle; };
+  }, [post, origin]);
+
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
