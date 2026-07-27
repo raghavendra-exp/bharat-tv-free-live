@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { ArrowLeft, Clock, User, Tag, Share2, ChevronRight } from "lucide-react";
 import { getPostBySlug, formatDate, blogPosts } from "@/data/blogPosts";
