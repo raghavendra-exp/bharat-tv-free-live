@@ -235,7 +235,7 @@ const BlogPost = () => {
                 {relatedPosts.map(rp => (
                   <Link key={rp.slug} to={`/blog/${rp.slug}`} className="group glass-card rounded-xl p-4 transition-all duration-300 hover:border-primary/40">
                     <div className="flex items-start gap-3">
-                      <span className="text-2xl">{rp.image}</span>
+                      <span className="emoji text-2xl">{rp.image}</span>
                       <div>
                         <h4 className="text-sm font-bold group-hover:text-primary transition-colors line-clamp-2">{rp.title}</h4>
                         <p className="text-xs text-muted-foreground mt-1">{rp.readTime} · {formatDate(rp.date)}</p>
