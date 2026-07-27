@@ -209,7 +209,7 @@ const BlogPost = () => {
           </div>
 
           {/* Article emoji hero */}
-          <div className="flex items-center justify-center w-full h-32 md:h-40 rounded-2xl bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 border border-border mb-10 text-6xl md:text-7xl animate-float">
+          <div className="emoji flex items-center justify-center w-full h-32 md:h-40 rounded-2xl bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 border border-border mb-10 text-6xl md:text-7xl animate-float">
             {post.image}
           </div>
 
