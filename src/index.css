@@ -101,6 +101,15 @@ All colors MUST be HSL.
   }
 }
 
+/* Ensure emoji glyphs render with a color emoji font, even when the surrounding
+   element uses a custom font family (Orbitron / Inter) that lacks emoji coverage. */
+.emoji,
+.emoji * {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+    "Segoe UI Symbol", "Android Emoji", "EmojiSymbols", sans-serif !important;
+  font-feature-settings: normal;
+}
+
 /* Custom animations */
 @keyframes float {
   0%, 100% { transform: translateY(0); }

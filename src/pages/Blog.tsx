@@ -1,9 +1,38 @@
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Clock, User, Tag, BookOpen, Sparkles, ChevronRight } from "lucide-react";
+import { ArrowRight, Clock, User, Tag, BookOpen, Sparkles, ChevronRight, Search, X } from "lucide-react";
 import { blogPosts, formatDate } from "@/data/blogPosts";
 
 const Blog = () => {
   const origin = typeof window !== "undefined" ? window.location.origin : "https://bugbash-fullscreen-joy.lovable.app";
+  const [query, setQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+
+  useEffect(() => {
+    const prevTitle = document.title;
+    document.title = "BharatTV Blog — Free Indian TV Streaming Guides & Updates";
+    const setMeta = (name: string, content: string) => {
+      let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
+      if (!el) { el = document.createElement("meta"); el.name = name; document.head.appendChild(el); }
+      el.content = content;
+    };
+    setMeta("description", "Guides, tips, and product updates for streaming 19,000+ free Indian TV channels on BharatTV.");
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (!canonical) { canonical = document.createElement("link"); canonical.rel = "canonical"; document.head.appendChild(canonical); }
+    canonical.href = `${origin}/blog`;
+    return () => { document.title = prevTitle; };
+  }, [origin]);
+
+  const categories = useMemo(() => ["All", ...Array.from(new Set(blogPosts.map(p => p.category)))], []);
+  const filteredPosts = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return blogPosts.filter(p => {
+      const matchesCat = activeCategory === "All" || p.category === activeCategory;
+      const matchesQ = !q || p.title.toLowerCase().includes(q) || p.excerpt.toLowerCase().includes(q);
+      return matchesCat && matchesQ;
+    });
+  }, [query, activeCategory]);
+
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -71,7 +100,7 @@ const Blog = () => {
             <Link to={`/blog/${blogPosts[0].slug}`} className="group block">
               <article className="glass-card rounded-2xl p-6 md:p-10 transition-all duration-500 hover:border-primary/40 hover:shadow-[0_0_40px_hsl(var(--primary)/0.15)]">
                 <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-start">
-                  <div className="flex-shrink-0 flex items-center justify-center w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 text-4xl md:text-5xl animate-float">
+                  <div className="emoji flex-shrink-0 flex items-center justify-center w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 text-4xl md:text-5xl animate-float">
                     {blogPosts[0].image}
                   </div>
                   <div className="flex-1">
@@ -105,18 +134,67 @@ const Blog = () => {
           </div>
         </section>
 
+        {/* Search + Category Filter */}
+        <section className="border-b border-border py-6">
+          <div className="mx-auto max-w-6xl px-4 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+            <div className="relative w-full md:max-w-sm">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search articles..."
+                aria-label="Search articles"
+                className="w-full pl-9 pr-9 py-2 rounded-lg bg-card/50 border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors"
+              />
+              {query && (
+                <button
+                  onClick={() => setQuery("")}
+                  aria-label="Clear search"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {categories.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
+                    activeCategory === cat
+                      ? "bg-primary/15 border-primary/50 text-primary"
+                      : "bg-transparent border-border text-muted-foreground hover:text-foreground hover:border-primary/30"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* All Posts Grid */}
         <section className="py-12 md:py-16">
           <div className="mx-auto max-w-6xl px-4">
-            <h2 className="text-xl md:text-2xl font-bold mb-8 gradient-text-cool" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-              All Articles
-            </h2>
+            <div className="flex items-baseline justify-between mb-8">
+              <h2 className="text-xl md:text-2xl font-bold gradient-text-cool" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+                All Articles
+              </h2>
+              <span className="text-xs text-muted-foreground">{filteredPosts.length} article{filteredPosts.length === 1 ? "" : "s"}</span>
+            </div>
+            {filteredPosts.length === 0 ? (
+              <div className="text-center py-16 text-muted-foreground text-sm">
+                No articles match your search. <button className="text-primary hover:underline" onClick={() => { setQuery(""); setActiveCategory("All"); }}>Reset filters</button>
+              </div>
+            ) : (
             <div className="grid gap-6 md:grid-cols-2">
-              {blogPosts.slice(1).map((post) => (
+              {filteredPosts.map((post) => (
                 <Link key={post.slug} to={`/blog/${post.slug}`} className="group block">
                   <article className="glass-card rounded-2xl p-6 h-full transition-all duration-500 hover:border-accent/40 hover:shadow-[0_0_30px_hsl(var(--accent)/0.12)]">
                     <div className="flex items-start gap-4 mb-4">
-                      <div className="flex-shrink-0 flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-accent/20 to-secondary/20 text-2xl">
+                      <div className="emoji flex-shrink-0 flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-accent/20 to-secondary/20 text-2xl">
                         {post.image}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -144,6 +222,7 @@ const Blog = () => {
                 </Link>
               ))}
             </div>
+            )}
           </div>
         </section>
       </main>

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { ArrowLeft, Clock, User, Tag, Share2, ChevronRight } from "lucide-react";
 import { getPostBySlug, formatDate, blogPosts } from "@/data/blogPosts";
@@ -11,6 +12,28 @@ const BlogPost = () => {
   const relatedPosts = blogPosts.filter(p => p.slug !== post.slug).slice(0, 2);
 
   const origin = typeof window !== "undefined" ? window.location.origin : "https://bugbash-fullscreen-joy.lovable.app";
+
+  useEffect(() => {
+    if (!post) return;
+    const prevTitle = document.title;
+    document.title = `${post.title} — BharatTV Blog`;
+    const setMeta = (name: string, content: string, attr: "name" | "property" = "name") => {
+      let el = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement | null;
+      if (!el) { el = document.createElement("meta"); el.setAttribute(attr, name); document.head.appendChild(el); }
+      el.setAttribute("content", content);
+    };
+    setMeta("description", post.excerpt);
+    setMeta("og:title", post.title, "property");
+    setMeta("og:description", post.excerpt, "property");
+    setMeta("og:type", "article", "property");
+    setMeta("og:url", `${origin}/blog/${post.slug}`, "property");
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (!canonical) { canonical = document.createElement("link"); canonical.rel = "canonical"; document.head.appendChild(canonical); }
+    canonical.href = `${origin}/blog/${post.slug}`;
+    window.scrollTo({ top: 0, behavior: "auto" });
+    return () => { document.title = prevTitle; };
+  }, [post, origin]);
+
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -186,7 +209,7 @@ const BlogPost = () => {
           </div>
 
           {/* Article emoji hero */}
-          <div className="flex items-center justify-center w-full h-32 md:h-40 rounded-2xl bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 border border-border mb-10 text-6xl md:text-7xl animate-float">
+          <div className="emoji flex items-center justify-center w-full h-32 md:h-40 rounded-2xl bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 border border-border mb-10 text-6xl md:text-7xl animate-float">
             {post.image}
           </div>
 
@@ -212,7 +235,7 @@ const BlogPost = () => {
                 {relatedPosts.map(rp => (
                   <Link key={rp.slug} to={`/blog/${rp.slug}`} className="group glass-card rounded-xl p-4 transition-all duration-300 hover:border-primary/40">
                     <div className="flex items-start gap-3">
-                      <span className="text-2xl">{rp.image}</span>
+                      <span className="emoji text-2xl">{rp.image}</span>
                       <div>
                         <h4 className="text-sm font-bold group-hover:text-primary transition-colors line-clamp-2">{rp.title}</h4>
                         <p className="text-xs text-muted-foreground mt-1">{rp.readTime} · {formatDate(rp.date)}</p>
