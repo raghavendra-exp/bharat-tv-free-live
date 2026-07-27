@@ -1,9 +1,38 @@
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Clock, User, Tag, BookOpen, Sparkles, ChevronRight } from "lucide-react";
+import { ArrowRight, Clock, User, Tag, BookOpen, Sparkles, ChevronRight, Search, X } from "lucide-react";
 import { blogPosts, formatDate } from "@/data/blogPosts";
 
 const Blog = () => {
   const origin = typeof window !== "undefined" ? window.location.origin : "https://bugbash-fullscreen-joy.lovable.app";
+  const [query, setQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+
+  useEffect(() => {
+    const prevTitle = document.title;
+    document.title = "BharatTV Blog — Free Indian TV Streaming Guides & Updates";
+    const setMeta = (name: string, content: string) => {
+      let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
+      if (!el) { el = document.createElement("meta"); el.name = name; document.head.appendChild(el); }
+      el.content = content;
+    };
+    setMeta("description", "Guides, tips, and product updates for streaming 19,000+ free Indian TV channels on BharatTV.");
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (!canonical) { canonical = document.createElement("link"); canonical.rel = "canonical"; document.head.appendChild(canonical); }
+    canonical.href = `${origin}/blog`;
+    return () => { document.title = prevTitle; };
+  }, [origin]);
+
+  const categories = useMemo(() => ["All", ...Array.from(new Set(blogPosts.map(p => p.category)))], []);
+  const filteredPosts = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return blogPosts.filter(p => {
+      const matchesCat = activeCategory === "All" || p.category === activeCategory;
+      const matchesQ = !q || p.title.toLowerCase().includes(q) || p.excerpt.toLowerCase().includes(q);
+      return matchesCat && matchesQ;
+    });
+  }, [query, activeCategory]);
+
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
