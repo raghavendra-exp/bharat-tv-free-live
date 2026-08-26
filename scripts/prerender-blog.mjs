@@ -10,7 +10,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { build as esbuild } from "esbuild";
 
-const SITE_URL = "https://bugbash-fullscreen-joy.lovable.app";
+const SITE_URL = "https://bharat-tv-free-live.lovable.app";
 // Guardrail: publishing rejects very large outputs. Keep the emitted page count small.
 const MAX_PRERENDER_PAGES = 500;
 
