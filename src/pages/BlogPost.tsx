@@ -11,7 +11,7 @@ const BlogPost = () => {
 
   const relatedPosts = blogPosts.filter(p => p.slug !== post.slug).slice(0, 2);
 
-  const origin = typeof window !== "undefined" ? window.location.origin : "https://bugbash-fullscreen-joy.lovable.app";
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://bharat-tv-free-live.lovable.app";
 
   useEffect(() => {
     if (!post) return;

@@ -4,7 +4,7 @@ import { ArrowRight, Clock, User, Tag, BookOpen, Sparkles, ChevronRight, Search,
 import { blogPosts, formatDate } from "@/data/blogPosts";
 
 const Blog = () => {
-  const origin = typeof window !== "undefined" ? window.location.origin : "https://bugbash-fullscreen-joy.lovable.app";
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://bharat-tv-free-live.lovable.app";
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("All");
 

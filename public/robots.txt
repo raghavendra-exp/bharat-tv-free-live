@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://bugbash-fullscreen-joy.lovable.app/sitemap.xml
+Sitemap: https://bharat-tv-free-live.lovable.app/sitemap.xml
