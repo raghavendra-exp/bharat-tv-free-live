@@ -1665,13 +1665,7 @@ function setupBtns(c,url){
     });
   };
   // BUG FIX: Fullscreen with webkit fallback
-  document.getElementById('pb-fs').onclick=()=>{
-    const vid=document.getElementById('vid');
-    if(vid.requestFullscreen) vid.requestFullscreen();
-    else if(vid.webkitRequestFullscreen) vid.webkitRequestFullscreen();
-    else if(vid.webkitEnterFullScreen) vid.webkitEnterFullScreen();
-    else showToast('Fullscreen not supported');
-  };
+  document.getElementById('pb-fs').onclick=()=>VC.toggleFs();
 }
 
 function closePlayer(){
