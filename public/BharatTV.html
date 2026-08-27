@@ -1801,7 +1801,7 @@ const VC = (()=>{
     const live=isLiveStream();
     if(live){
       const behind=Math.max(0, r.end-vid.currentTime);
-      timeEl.textContent = behind<12 ? 'LIVE' : '-'+fmt(behind);
+      timeEl.textContent = behind<12 ? '' : '-'+fmt(behind);
       liveBtn.style.display='inline-flex';
       liveBtn.classList.toggle('at-live', behind<12);
     } else {
