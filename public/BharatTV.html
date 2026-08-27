@@ -969,13 +969,39 @@ kbd{
     <button id="theater-close">✕</button>
     <div id="viewer-counter"><span class="vc-dot"></span><span id="vc-count">0</span> watching</div>
     <div id="p-vid-box">
-      <video id="vid" controls playsinline></video>
-      
+      <video id="vid" playsinline></video>
+
       <div id="p-overlay">
         <div class="spin-ring" id="p-spin"></div>
         <div id="p-msg">Loading stream…</div>
       </div>
+
+      <!-- CUSTOM CONTROLS -->
+      <div id="vc-bar" aria-label="Video controls">
+        <div id="vc-seek-row">
+          <input id="vc-seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek">
+          <span id="vc-time">00:00</span>
+          <button id="vc-live" class="vcb vc-live-btn" title="Jump to live edge"><span class="vc-live-dot"></span>LIVE</button>
+        </div>
+        <div id="vc-btn-row">
+          <button id="vc-play" class="vcb" title="Play / Pause (Space)" aria-label="Play or pause">▶</button>
+          <div id="vc-vol-wrap">
+            <button id="vc-mute" class="vcb" title="Mute / Unmute (M)" aria-label="Mute or unmute">🔊</button>
+            <input id="vc-vol" type="range" min="0" max="100" value="100" step="1" aria-label="Volume">
+            <span id="vc-vol-val">100%</span>
+          </div>
+          <div class="vc-spacer"></div>
+          <div id="vc-quality-wrap">
+            <button id="vc-quality" class="vcb vc-txt-btn" title="Video quality" aria-haspopup="true" aria-expanded="false">Auto</button>
+            <div id="vc-quality-menu" role="menu"></div>
+          </div>
+          <button id="vc-pip" class="vcb" title="Picture-in-picture" aria-label="Picture in picture">⧉</button>
+          <button id="vc-theater" class="vcb" title="Theater mode (T)" aria-label="Theater mode">🖥</button>
+          <button id="vc-fs" class="vcb" title="Fullscreen (F)" aria-label="Fullscreen">⛶</button>
+        </div>
+      </div>
     </div>
+
     <div id="p-info">
       <div id="p-title">—</div>
       <div id="p-sub">—</div>
