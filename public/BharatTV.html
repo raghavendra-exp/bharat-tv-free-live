@@ -1503,6 +1503,7 @@ function playChannel(c){
   cur=c;
   const pw=document.getElementById('player-wrap');
   pw.classList.add('open');
+  VC.reset(); VC.activate();
   if(window.innerWidth<700) pw.scrollIntoView({behavior:'smooth'});
 
   document.getElementById('p-title').textContent=c.name;
@@ -1589,6 +1590,8 @@ function tryPlay(url,ss,idx,ov,vid,c){
       hls.on(Hls.Events.MANIFEST_PARSED,()=>{
         clearTimeout(loadTimer);
         ov.classList.add('hide');
+        VC.levelsReady();
+        hls.on(Hls.Events.LEVEL_SWITCHED,()=>VC.levelsReady());
         vid.play().catch(()=>{
           ov.classList.remove('hide');
           document.getElementById('p-spin').style.display='none';
@@ -1678,6 +1681,7 @@ function closePlayer(){
   if(hls){hls.destroy();hls=null;}
   document.getElementById('vid').src='';
   document.getElementById('vid').style.display='';
+  VC.deactivate();
   stopViewerCounter();
   cur=null;
   renderCards();
@@ -1963,13 +1967,16 @@ document.addEventListener('keydown',e=>{
     case ' ':
       e.preventDefault();
       const vid=document.getElementById('vid');
-      if(vid.src){ vid.paused?vid.play():vid.pause(); showToast(vid.paused?'⏸ Paused':'▶ Playing'); }
+      if(cur){ VC.togglePlay(); }
+      break;
+    case 'm': case 'M':
+      if(cur) VC.toggleMute();
       break;
     case 't': case 'T':
       toggleTheater();
       break;
     case 'f': case 'F':
-      if(cur) document.getElementById('pb-fs').click();
+      if(cur) VC.toggleFs();
       break;
     case '/':
       e.preventDefault();
