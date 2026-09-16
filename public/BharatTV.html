@@ -1871,10 +1871,16 @@ const VC = (()=>{
   const volVal=document.getElementById('vc-vol-val');
   const qBtn=document.getElementById('vc-quality');
   const qMenu=document.getElementById('vc-quality-menu');
+  const ccWrap=document.getElementById('vc-cc-wrap');
+  const ccBtn=document.getElementById('vc-cc');
+  const ccMenu=document.getElementById('vc-cc-menu');
   const pipBtn=document.getElementById('vc-pip');
   const fsBtn=document.getElementById('vc-fs');
   const thBtn=document.getElementById('vc-theater');
-  let seeking=false, hideTimer=null;
+  const statusEl=document.getElementById('vc-status');
+  let seeking=false, hideTimer=null, ccOn=false;
+
+  function announce(msg){ if(statusEl) statusEl.textContent=msg; }
 
   function fmt(s){
     if(!isFinite(s)||s<0) s=0;
