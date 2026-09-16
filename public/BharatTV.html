@@ -1966,28 +1966,44 @@ const VC = (()=>{
   // ---- volume / mute ----
   function syncVol(){
     const v=vid.muted?0:vid.volume;
-    vol.value=Math.round(v*100);
+    const pct=Math.round(v*100);
+    vol.value=pct;
     fill(vol, v*100);
-    volVal.textContent=Math.round(v*100)+'%';
+    volVal.textContent=pct+'%';
+    vol.setAttribute('aria-valuetext','Volume '+pct+' percent');
     muteBtn.textContent = (vid.muted||v===0) ? '🔇' : (v<0.5 ? '🔉' : '🔊');
+    muteBtn.setAttribute('aria-pressed', String(!!vid.muted));
+    muteBtn.setAttribute('aria-label', vid.muted?'Unmute':'Mute');
+  }
+  function saveVol(){
+    try{
+      localStorage.setItem('btv-vol', String(Math.round(vid.volume*100)));
+      localStorage.setItem('btv-muted', vid.muted?'1':'0');
+    }catch(_){}
   }
   vol.addEventListener('input',()=>{
     vid.muted = Number(vol.value)===0;
     vid.volume = Number(vol.value)/100;
-    try{ localStorage.setItem('btv-vol', vol.value); }catch(_){}
+    saveVol();
     syncVol(); show();
   });
   muteBtn.addEventListener('click',e=>{
     e.stopPropagation();
     vid.muted=!vid.muted;
     if(!vid.muted && vid.volume===0) vid.volume=0.6;
+    saveVol();
     syncVol();
+    const t=vid.muted?'Muted':'Unmuted, volume '+Math.round(vid.volume*100)+' percent';
+    announce(t);
     showToast(vid.muted?'🔇 Muted':'🔊 Unmuted '+Math.round(vid.volume*100)+'%');
   });
-  vid.addEventListener('volumechange',syncVol);
+  vid.addEventListener('volumechange',()=>{ syncVol(); saveVol(); });
   try{
     const saved=localStorage.getItem('btv-vol');
-    if(saved!==null){ vid.volume=Number(saved)/100; vid.muted=Number(saved)===0; }
+    if(saved!==null) vid.volume=Math.min(1,Math.max(0,Number(saved)/100));
+    const sm=localStorage.getItem('btv-muted');
+    if(sm!==null) vid.muted = sm==='1';
+    else if(saved!==null) vid.muted = Number(saved)===0;
   }catch(_){}
   syncVol();
 
