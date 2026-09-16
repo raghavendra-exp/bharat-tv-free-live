@@ -1648,9 +1648,12 @@ function tryPlay(url,ss,idx,ov,vid,c){
   let urlIdx = 0;
   let loadTimer = null;
   
+  let mediaRecovered=false, networkRetried=false;
+
   function attemptPlay(playUrl) {
     if(hls){hls.destroy();hls=null;}
     clearTimeout(loadTimer);
+    mediaRecovered=false; networkRetried=false;
     
     // Timeout: if nothing loads in 12s, try next
     loadTimer = setTimeout(()=>{
