@@ -1596,10 +1596,14 @@ document.getElementById('pb-theater').addEventListener('click',toggleTheater);
 
 // ===== PLAY =====
 function playChannel(c){
+  const isRetry = cur && cur.id===c.id;
+  if(!isRetry) autoRetryCount=0;
   cur=c;
+  hideStreamError();
   const pw=document.getElementById('player-wrap');
   pw.classList.add('open');
   VC.reset(); VC.activate();
+  VC.announce('Loading '+c.name);
   if(window.innerWidth<700) pw.scrollIntoView({behavior:'smooth'});
 
   document.getElementById('p-title').textContent=c.name;
