@@ -1686,8 +1686,13 @@ function tryPlay(url,ss,idx,ov,vid,c){
       hls.on(Hls.Events.MANIFEST_PARSED,()=>{
         clearTimeout(loadTimer);
         ov.classList.add('hide');
+        hideStreamError();
+        autoRetryCount=0;
         VC.levelsReady();
         hls.on(Hls.Events.LEVEL_SWITCHED,()=>VC.levelsReady());
+        hls.on(Hls.Events.SUBTITLE_TRACKS_UPDATED,()=>VC.captionsReady());
+        hls.on(Hls.Events.SUBTITLE_TRACK_SWITCH,()=>VC.captionsReady());
+        VC.captionsReady();
         vid.play().catch(()=>{
           ov.classList.remove('hide');
           document.getElementById('p-spin').style.display='none';
@@ -1695,11 +1700,24 @@ function tryPlay(url,ss,idx,ov,vid,c){
         });
       });
       hls.on(Hls.Events.ERROR,(_,d)=>{
-        if(d.fatal){
-          clearTimeout(loadTimer);
-          hls.destroy(); hls=null;
-          tryNext();
+        if(!d.fatal){
+          // recoverable: let hls.js retry, just tell the user something is happening
+          if(d.details && /Load(Error|TimeOut)/i.test(d.details)) VC.announce('Network hiccup — retrying stream');
+          return;
         }
+        clearTimeout(loadTimer);
+        // Try in-place recovery first before falling back to another URL
+        if(d.type===Hls.ErrorTypes.MEDIA_ERROR && !mediaRecovered){
+          mediaRecovered=true;
+          try{ hls.recoverMediaError(); VC.announce('Playback error — recovering'); return; }catch(_){}
+        }
+        if(d.type===Hls.ErrorTypes.NETWORK_ERROR && !networkRetried){
+          networkRetried=true;
+          try{ hls.startLoad(); VC.announce('Connection lost — reconnecting'); return; }catch(_){}
+        }
+        try{ hls.destroy(); }catch(_){}
+        hls=null;
+        tryNext();
       });
     } else if(vid.canPlayType('application/vnd.apple.mpegurl') || url.match(/\.(mp4|webm|ogg)$/i)){
       vid.src=playUrl;
