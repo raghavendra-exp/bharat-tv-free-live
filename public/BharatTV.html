@@ -1096,39 +1096,56 @@ kbd{
 
   <!-- PLAYER -->
   <div id="player-wrap">
-    <button id="theater-close">✕</button>
+    <button id="theater-close" aria-label="Close theater mode">✕</button>
     <div id="viewer-counter"><span class="vc-dot"></span><span id="vc-count">0</span> watching</div>
     <div id="p-vid-box">
-      <video id="vid" playsinline></video>
+      <video id="vid" playsinline crossorigin="anonymous"></video>
 
       <div id="p-overlay">
         <div class="spin-ring" id="p-spin"></div>
         <div id="p-msg">Loading stream…</div>
       </div>
 
+      <!-- STREAM ERROR PANEL -->
+      <div id="p-err" role="alertdialog" aria-labelledby="pe-title" aria-describedby="pe-msg">
+        <div class="pe-ico emoji" aria-hidden="true">📡</div>
+        <div class="pe-title" id="pe-title">Stream unavailable</div>
+        <div class="pe-msg" id="pe-msg">We couldn't load this channel.</div>
+        <div class="pe-acts">
+          <button type="button" class="primary" id="pe-retry">🔄 Retry now</button>
+          <button type="button" id="pe-vlc">▶ Open in VLC</button>
+          <button type="button" id="pe-tab">↗ Open in new tab</button>
+        </div>
+      </div>
+
       <!-- CUSTOM CONTROLS -->
-      <div id="vc-bar" aria-label="Video controls">
+      <div id="vc-bar" role="group" aria-label="Video player controls">
         <div id="vc-seek-row">
-          <input id="vc-seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek">
-          <span id="vc-time">00:00</span>
-          <button id="vc-live" class="vcb vc-live-btn" title="Jump to live edge"><span class="vc-live-dot"></span>LIVE</button>
+          <input id="vc-seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek position" aria-valuetext="Live">
+          <span id="vc-time" aria-hidden="true">00:00</span>
+          <button id="vc-live" class="vcb vc-live-btn" title="Jump to live edge" aria-label="Jump to live edge"><span class="vc-live-dot" aria-hidden="true"></span>LIVE</button>
         </div>
         <div id="vc-btn-row">
-          <button id="vc-play" class="vcb" title="Play / Pause (Space)" aria-label="Play or pause">▶</button>
+          <button id="vc-play" class="vcb" title="Play / Pause (Space)" aria-label="Play">▶</button>
           <div id="vc-vol-wrap">
-            <button id="vc-mute" class="vcb" title="Mute / Unmute (M)" aria-label="Mute or unmute">🔊</button>
-            <input id="vc-vol" type="range" min="0" max="100" value="100" step="1" aria-label="Volume">
-            <span id="vc-vol-val">100%</span>
+            <button id="vc-mute" class="vcb" title="Mute / Unmute (M)" aria-label="Mute" aria-pressed="false">🔊</button>
+            <input id="vc-vol" type="range" min="0" max="100" value="100" step="1" aria-label="Volume" aria-valuetext="Volume 100 percent">
+            <span id="vc-vol-val" aria-hidden="true">100%</span>
           </div>
           <div class="vc-spacer"></div>
+          <div id="vc-cc-wrap">
+            <button id="vc-cc" class="vcb" title="Subtitles / captions (C)" aria-label="Subtitles and captions" aria-haspopup="menu" aria-expanded="false">💬</button>
+            <div id="vc-cc-menu" role="menu" aria-label="Subtitle tracks"></div>
+          </div>
           <div id="vc-quality-wrap">
-            <button id="vc-quality" class="vcb vc-txt-btn" title="Video quality" aria-haspopup="true" aria-expanded="false">Auto</button>
-            <div id="vc-quality-menu" role="menu"></div>
+            <button id="vc-quality" class="vcb vc-txt-btn" title="Video quality" aria-label="Video quality: Auto" aria-haspopup="menu" aria-expanded="false">Auto</button>
+            <div id="vc-quality-menu" role="menu" aria-label="Video quality levels"></div>
           </div>
           <button id="vc-pip" class="vcb" title="Picture-in-picture" aria-label="Picture in picture">⧉</button>
-          <button id="vc-theater" class="vcb" title="Theater mode (T)" aria-label="Theater mode">🖥</button>
-          <button id="vc-fs" class="vcb" title="Fullscreen (F)" aria-label="Fullscreen">⛶</button>
+          <button id="vc-theater" class="vcb" title="Theater mode (T)" aria-label="Theater mode" aria-pressed="false">🖥</button>
+          <button id="vc-fs" class="vcb" title="Fullscreen (F)" aria-label="Fullscreen" aria-pressed="false">⛶</button>
         </div>
+        <p class="vc-sr" id="vc-status" role="status" aria-live="polite"></p>
       </div>
     </div>
 
