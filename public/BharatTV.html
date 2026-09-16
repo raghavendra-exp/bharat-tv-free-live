@@ -1321,6 +1321,34 @@ function retryChannel(){
   if(cur) { activeProxy = (activeProxy+1) % PROXIES.length; playChannel(cur); }
 }
 
+// ===== STREAM ERROR PANEL =====
+let autoRetryTimer=null, autoRetryCount=0;
+function hideStreamError(){
+  clearTimeout(autoRetryTimer); autoRetryTimer=null;
+  document.getElementById('p-err').classList.remove('show');
+}
+function showStreamError(title,msg,opts){
+  opts=opts||{};
+  const box=document.getElementById('p-err');
+  document.getElementById('pe-title').textContent=title;
+  document.getElementById('pe-msg').textContent=msg;
+  box.classList.add('show');
+  document.getElementById('p-overlay').classList.add('hide');
+  if(window.VC && VC.announce) VC.announce(title+'. '+msg);
+  clearTimeout(autoRetryTimer);
+  if(opts.autoRetry && autoRetryCount<3){
+    autoRetryCount++;
+    const wait=2000*autoRetryCount;
+    document.getElementById('pe-msg').textContent=msg+' Retrying automatically in '+(wait/1000)+"s (attempt "+autoRetryCount+" of 3)…";
+    autoRetryTimer=setTimeout(()=>{ if(cur) retryChannel(); }, wait);
+  }
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('pe-retry').addEventListener('click',()=>{ autoRetryCount=0; hideStreamError(); retryChannel(); });
+  document.getElementById('pe-vlc').addEventListener('click',()=>document.getElementById('pb-vlc').click());
+  document.getElementById('pe-tab').addEventListener('click',()=>document.getElementById('pb-tab').click());
+});
+
 // ===== PROGRESS =====
 let retries=0;
 function sp(pct,msg){
