@@ -1758,9 +1758,13 @@ function tryPlay(url,ss,idx,ov,vid,c){
       document.getElementById('p-msg').textContent = `Trying stream ${idx+2}/${ss.length}…`;
       tryPlay(nextUrl, ss, idx+1, ov, vid, c);
     } else {
-      ov.classList.remove('hide');
       document.getElementById('p-spin').style.display='none';
-      document.getElementById('p-msg').innerHTML='All streams failed. <button onclick="retryChannel()" style="background:hsl(192,100%,50%);color:#000;border:none;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:600;margin-top:8px;">🔄 Retry</button><br><small>Or use <b>Open VLC</b> / <b>New Tab</b></small>';
+      document.getElementById('p-msg').textContent='Stream unavailable.';
+      showStreamError(
+        'Stream unavailable',
+        "This channel didn't respond. It may be offline or blocked outside India.",
+        {autoRetry:true}
+      );
     }
   }
   
