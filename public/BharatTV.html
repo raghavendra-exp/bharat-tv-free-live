@@ -1907,6 +1907,8 @@ const VC = (()=>{
   // ---- play / pause ----
   function syncPlay(){
     playBtn.textContent = vid.paused ? '▶' : '⏸';
+    playBtn.setAttribute('aria-label', vid.paused ? 'Play' : 'Pause');
+    announce(vid.paused ? 'Paused' : 'Playing');
     if(vid.paused) show();
   }
   playBtn.addEventListener('click',e=>{ e.stopPropagation(); vid.paused?vid.play().catch(()=>{}):vid.pause(); });
