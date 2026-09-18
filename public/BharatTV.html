@@ -2012,6 +2012,31 @@ const VC = (()=>{
     const h=l.height?l.height+'p':(l.bitrate?Math.round(l.bitrate/1000)+'k':'Level '+i);
     return h + (l.height&&l.bitrate ? ' · '+Math.round(l.bitrate/1000)+'k' : '');
   }
+  function savedQualityPref(){
+    try{ const v=localStorage.getItem('btv-quality'); return v===null?null:v; }catch(_){ return null; }
+  }
+  function applyLevel(i,text){
+    if(!hls) return;
+    // smooth switch: apply at next segment boundary instead of flushing buffer
+    hls.nextLevel = i;
+    hls.loadLevel = i;
+    const short = i===-1 ? 'Auto' : text.split(' · ')[0];
+    qBtn.textContent = short;
+    qBtn.setAttribute('aria-label','Video quality: '+short);
+    announce('Quality set to '+short);
+  }
+  // Restore preference once levels are known (match by height, so it survives stream changes)
+  function restoreQuality(){
+    const pref=savedQualityPref();
+    if(pref===null||!hls||!hls.levels) return;
+    if(pref==='auto'){ applyLevel(-1,'Auto'); return; }
+    const want=Number(pref);
+    let best=-1, bestH=-1;
+    hls.levels.forEach((l,i)=>{ const h=l.height||0; if(h<=want && h>bestH){ best=i; bestH=h; } });
+    if(best<0) return;
+    applyLevel(best, label(hls.levels[best],best));
+  }
+  let qualityRestored=false;
   function buildQuality(){
     qMenu.innerHTML='';
     const levels=(hls&&hls.levels)||[];
@@ -2021,23 +2046,25 @@ const VC = (()=>{
       return;
     }
     qBtn.style.display='inline-flex';
+    if(!qualityRestored){ qualityRestored=true; restoreQuality(); }
     const items=[{i:-1,text:'Auto'}].concat(
       levels.map((l,i)=>({i, text:label(l,i), h:l.height||0}))
            .sort((a,b)=>b.h-a.h)
     );
     items.forEach(it=>{
       const b=document.createElement('button');
-      b.className='vc-q-item'+(hls.currentLevel===it.i||(it.i===-1&&hls.autoLevelEnabled)?' on':'');
-      b.type='button'; b.textContent=it.text; b.setAttribute('role','menuitem');
+      const on = hls.currentLevel===it.i||(it.i===-1&&hls.autoLevelEnabled);
+      b.className='vc-q-item'+(on?' on':'');
+      b.type='button'; b.textContent=it.text; b.setAttribute('role','menuitemradio');
+      b.setAttribute('aria-checked', String(!!on));
       b.addEventListener('click',ev=>{
         ev.stopPropagation();
         if(!hls) return;
-        // smooth switch: apply at next segment boundary instead of flushing buffer
-        hls.nextLevel = it.i;
-        hls.loadLevel = it.i;
-        qBtn.textContent = it.i===-1 ? 'Auto' : it.text.split(' · ')[0];
+        applyLevel(it.i, it.text);
+        try{ localStorage.setItem('btv-quality', it.i===-1 ? 'auto' : String((hls.levels[it.i]&&hls.levels[it.i].height)||0)); }catch(_){}
         qMenu.classList.remove('show');
         qBtn.setAttribute('aria-expanded','false');
+        qBtn.focus();
         showToast('🎚 Quality: '+(it.i===-1?'Auto':it.text.split(' · ')[0]));
         buildQuality();
       });
@@ -2050,11 +2077,100 @@ const VC = (()=>{
     if(open) buildQuality();
     qMenu.classList.toggle('show',open);
     qBtn.setAttribute('aria-expanded',String(open));
+    if(open){ const f=qMenu.querySelector('button'); if(f) f.focus(); }
     show();
   });
   document.addEventListener('click',e=>{
     if(!qMenu.contains(e.target)&&e.target!==qBtn){ qMenu.classList.remove('show'); qBtn.setAttribute('aria-expanded','false'); }
+    if(!ccMenu.contains(e.target)&&e.target!==ccBtn){ ccMenu.classList.remove('show'); ccBtn.setAttribute('aria-expanded','false'); }
   });
+
+  // ---- captions / subtitles ----
+  function textTracks(){
+    const out=[];
+    const tt=vid.textTracks||[];
+    for(let i=0;i<tt.length;i++){
+      const t=tt[i];
+      if(t.kind==='subtitles'||t.kind==='captions') out.push({i, track:t, name:t.label||t.language||('Track '+(out.length+1))});
+    }
+    return out;
+  }
+  function activeTrack(){
+    const list=textTracks();
+    const a=list.find(x=>x.track.mode==='showing');
+    return a||null;
+  }
+  function selectTrack(entry){
+    textTracks().forEach(x=>{ x.track.mode='disabled'; });
+    if(entry){
+      entry.track.mode='showing';
+      ccOn=true;
+      if(hls && hls.subtitleTracks && hls.subtitleTracks.length){
+        hls.subtitleDisplay=true;
+        const m=hls.subtitleTracks.findIndex(t=>(t.name||t.lang)===entry.name);
+        if(m>=0) hls.subtitleTrack=m;
+      }
+      announce('Subtitles on: '+entry.name);
+      showToast('💬 Subtitles: '+entry.name);
+    } else {
+      ccOn=false;
+      if(hls) hls.subtitleDisplay=false;
+      announce('Subtitles off');
+      showToast('💬 Subtitles off');
+    }
+    try{ localStorage.setItem('btv-cc', entry?entry.name:'off'); }catch(_){}
+    buildCC();
+  }
+  function buildCC(){
+    const list=textTracks();
+    if(!list.length){ ccWrap.style.display='none'; ccMenu.classList.remove('show'); return; }
+    ccWrap.style.display='inline-flex';
+    const act=activeTrack();
+    ccBtn.classList.toggle('on', !!act);
+    ccBtn.setAttribute('aria-label', act ? 'Subtitles on: '+act.name+'. Change or turn off subtitles' : 'Subtitles off. Choose a subtitle track');
+    ccMenu.innerHTML='';
+    const items=[{name:'Off', entry:null}].concat(list.map(x=>({name:x.name, entry:x})));
+    items.forEach(it=>{
+      const b=document.createElement('button');
+      const on = it.entry ? (act && act.i===it.entry.i) : !act;
+      b.className='vc-q-item'+(on?' on':'');
+      b.type='button'; b.textContent=it.name;
+      b.setAttribute('role','menuitemradio'); b.setAttribute('aria-checked',String(!!on));
+      b.addEventListener('click',ev=>{ ev.stopPropagation(); selectTrack(it.entry); ccMenu.classList.remove('show'); ccBtn.setAttribute('aria-expanded','false'); ccBtn.focus(); });
+      ccMenu.appendChild(b);
+    });
+  }
+  function toggleCC(){
+    const list=textTracks();
+    if(!list.length){ showToast('💬 No subtitles available for this channel'); announce('No subtitles available'); return; }
+    const act=activeTrack();
+    selectTrack(act?null:list[0]);
+  }
+  ccBtn.addEventListener('click',e=>{
+    e.stopPropagation();
+    const list=textTracks();
+    if(!list.length){ toggleCC(); return; }
+    const open=!ccMenu.classList.contains('show');
+    if(open) buildCC();
+    ccMenu.classList.toggle('show',open);
+    ccBtn.setAttribute('aria-expanded',String(open));
+    if(open){ const f=ccMenu.querySelector('button'); if(f) f.focus(); }
+    show();
+  });
+  if(vid.textTracks && vid.textTracks.addEventListener){
+    vid.textTracks.addEventListener('addtrack',()=>{ captionsReady(); });
+    vid.textTracks.addEventListener('removetrack',()=>{ buildCC(); });
+  }
+  let ccRestored=false;
+  function captionsReady(){
+    buildCC();
+    if(ccRestored) return;
+    let pref=null;
+    try{ pref=localStorage.getItem('btv-cc'); }catch(_){}
+    if(!pref||pref==='off') return;
+    const match=textTracks().find(x=>x.name===pref);
+    if(match){ ccRestored=true; selectTrack(match); }
+  }
 
   // ---- pip ----
   if(!document.pictureInPictureEnabled) pipBtn.style.display='none';
