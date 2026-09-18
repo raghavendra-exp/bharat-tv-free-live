@@ -1583,6 +1583,9 @@ function toggleTheater(){
   theaterMode=!theaterMode;
   pw.classList.toggle('theater',theaterMode);
   document.body.style.overflow=theaterMode?'hidden':'';
+  const th=document.getElementById('vc-theater');
+  if(th){ th.setAttribute('aria-pressed',String(theaterMode)); th.setAttribute('aria-label',theaterMode?'Exit theater mode':'Theater mode'); }
+  if(window.VC && VC.announce) VC.announce(theaterMode?'Theater mode on':'Theater mode off');
   showToast(theaterMode?'🖥 Theater Mode ON — hover for info':'Theater Mode OFF');
 }
 
