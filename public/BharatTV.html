@@ -1334,7 +1334,7 @@ function showStreamError(title,msg,opts){
   document.getElementById('pe-msg').textContent=msg;
   box.classList.add('show');
   document.getElementById('p-overlay').classList.add('hide');
-  if(window.VC && VC.announce) VC.announce(title+'. '+msg);
+  try{ VC.announce(title+'. '+msg); }catch(_){}
   clearTimeout(autoRetryTimer);
   if(opts.autoRetry && autoRetryCount<3){
     autoRetryCount++;
@@ -1585,7 +1585,7 @@ function toggleTheater(){
   document.body.style.overflow=theaterMode?'hidden':'';
   const th=document.getElementById('vc-theater');
   if(th){ th.setAttribute('aria-pressed',String(theaterMode)); th.setAttribute('aria-label',theaterMode?'Exit theater mode':'Theater mode'); }
-  if(window.VC && VC.announce) VC.announce(theaterMode?'Theater mode on':'Theater mode off');
+  try{ VC.announce(theaterMode?'Theater mode on':'Theater mode off'); }catch(_){}
   showToast(theaterMode?'🖥 Theater Mode ON — hover for info':'Theater Mode OFF');
 }
 
