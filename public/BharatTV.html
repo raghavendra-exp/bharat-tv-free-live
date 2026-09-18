@@ -1800,6 +1800,8 @@ function closePlayer(){
   const pw=document.getElementById('player-wrap');
   if(theaterMode){ theaterMode=false; pw.classList.remove('theater'); document.body.style.overflow=''; }
   pw.classList.remove('open');
+  hideStreamError();
+  autoRetryCount=0;
   if(hls){hls.destroy();hls=null;}
   document.getElementById('vid').src='';
   document.getElementById('vid').style.display='';
