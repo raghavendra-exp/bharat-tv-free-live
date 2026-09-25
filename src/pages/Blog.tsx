@@ -17,6 +17,14 @@ const Blog = () => {
       el.content = content;
     };
     setMeta("description", "Guides, tips, and product updates for streaming 19,000+ free Indian TV channels on BharatTV.");
+    const setProp = (prop: string, content: string) => {
+      let el = document.querySelector(`meta[property="${prop}"]`) as HTMLMetaElement | null;
+      if (!el) { el = document.createElement("meta"); el.setAttribute("property", prop); document.head.appendChild(el); }
+      el.content = content;
+    };
+    setProp("og:title", "BharatTV Blog — Free Indian TV Streaming Guides & Updates");
+    setProp("og:description", "Guides, tips, and product updates for streaming 19,000+ free Indian TV channels on BharatTV.");
+    setProp("og:url", `${origin}/blog`);
     let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!canonical) { canonical = document.createElement("link"); canonical.rel = "canonical"; document.head.appendChild(canonical); }
     canonical.href = `${origin}/blog`;

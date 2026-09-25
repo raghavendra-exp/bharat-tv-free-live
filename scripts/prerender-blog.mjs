@@ -69,6 +69,10 @@ function replaceHead(html, tags) {
     /<meta\s+property="og:url"[^>]*>/,
     `<meta property="og:url" content="${tags.url}">`,
   );
+  if (tags.image) {
+    swap(/<meta\s+property="og:image"[^>]*>/, `<meta property="og:image" content="${tags.image}">`);
+    swap(/<meta\s+name="twitter:image"[^>]*>/, `<meta name="twitter:image" content="${tags.image}">`);
+  }
   swap(
     /<meta\s+name="twitter:title"[^>]*>/,
     `<meta name="twitter:title" content="${tags.title}">`,
@@ -151,6 +155,7 @@ export async function prerenderBlog({ root, outDir }) {
         description: escapeHtml(post.excerpt),
         url,
         type: "article",
+        image: `${SITE_URL}/og/${post.slug}.jpg`,
         jsonLd: [
           {
             "@context": "https://schema.org",
@@ -160,6 +165,7 @@ export async function prerenderBlog({ root, outDir }) {
             author: { "@type": "Person", name: post.author },
             datePublished: post.date,
             articleSection: post.category,
+            image: `${SITE_URL}/og/${post.slug}.jpg`,
             publisher: { "@type": "Organization", name: "BharatTV", url: `${SITE_URL}/` },
             mainEntityOfPage: url,
             url,
