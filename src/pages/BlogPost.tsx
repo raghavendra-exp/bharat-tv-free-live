@@ -27,6 +27,8 @@ const BlogPost = () => {
     setMeta("og:description", post.excerpt, "property");
     setMeta("og:type", "article", "property");
     setMeta("og:url", `${origin}/blog/${post.slug}`, "property");
+    setMeta("og:image", `https://bharat-tv-free-live.lovable.app/og/${post.slug}.jpg`, "property");
+    setMeta("twitter:image", `https://bharat-tv-free-live.lovable.app/og/${post.slug}.jpg`);
     let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!canonical) { canonical = document.createElement("link"); canonical.rel = "canonical"; document.head.appendChild(canonical); }
     canonical.href = `${origin}/blog/${post.slug}`;
@@ -50,6 +52,7 @@ const BlogPost = () => {
     description: post.excerpt,
     author: { "@type": "Person", name: post.author },
     datePublished: post.date,
+    image: `https://bharat-tv-free-live.lovable.app/og/${post.slug}.jpg`,
     publisher: { "@type": "Organization", name: "BharatTV" },
     mainEntityOfPage: `${origin}/blog/${post.slug}`,
   };
