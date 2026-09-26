@@ -466,6 +466,24 @@ const Index = () => {
             <p className="font-semibold text-destructive">⚠️ Channel Availability Notice</p>
             <p className="mt-1">Many channels may fail because their source streams are dead, geo-restricted to India, or the source URLs have changed. This is an inherent limitation of the <a href="https://github.com/iptv-org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">iptv-org</a> data source — not a bug in the player.</p>
           </div>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-xs text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1">
+              <span className="h-2 w-2 rounded-full bg-green-500" aria-hidden="true" />
+              Google Search Console: Verified
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1">
+              <span className="h-2 w-2 rounded-full bg-green-500" aria-hidden="true" />
+              Sitemap submitted to Google
+            </span>
+            <a
+              href="https://search.google.com/search-console?resource_id=https://bharat-tv-free-live.lovable.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1 hover:text-primary transition-colors"
+            >
+              Check status in Search Console ↗
+            </a>
+          </div>
           <div className="mt-6 border-t border-border pt-6 text-center text-xs text-muted-foreground">
             <p>© {new Date().getFullYear()} BharatTV. All rights reserved. Made with ❤️ by Raghav.</p>
             <p className="mt-1">
