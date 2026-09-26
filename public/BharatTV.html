@@ -786,6 +786,21 @@ kbd{
 #ptr-indicator .ptr-arrow{font-size:16px;transition:transform .2s var(--ease)}
 #ptr-indicator.ready .ptr-arrow{transform:rotate(180deg)}
 @keyframes spin{to{transform:rotate(360deg)}}
+.fav-btn{position:absolute;top:6px;left:6px;z-index:3;width:34px;height:34px;border-radius:50%;border:none;background:rgba(0,0,0,.55);color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+.fav-btn:hover{transform:scale(1.12)}.fav-btn.on{color:#ffcc00}
+.fav-btn:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.ch-thumb{position:relative}
+#ai-box{margin-bottom:14px;padding:14px;border-radius:14px;background:var(--bg2);border:1px solid rgba(0,229,255,.25)}
+#ai-box h2{font-size:14px;margin:0 0 4px;color:var(--txt)}
+#ai-box p{font-size:11px;color:var(--txt3);margin:0 0 10px}
+#ai-form{display:flex;gap:8px;flex-wrap:wrap}
+#ai-q{flex:1;min-width:200px;padding:11px 14px;border-radius:10px;border:1px solid var(--bg3);background:var(--bg);color:var(--txt);font-size:14px}
+#ai-go{padding:11px 18px;border-radius:10px;border:none;background:var(--acc);color:#fff;font-weight:700;cursor:pointer;min-height:44px}
+#ai-go:disabled{opacity:.6;cursor:wait}
+#ai-status{font-size:12px;color:var(--txt2);margin-top:8px;min-height:1em}
+#ai-results{margin-top:10px}
+#install-btn{display:none;padding:6px 12px;border-radius:16px;border:none;background:var(--acc);color:#fff;font-size:11px;font-weight:700;cursor:pointer}
+#install-btn.show{display:inline-block}
 </style>
 </head>
 <body>
@@ -880,6 +895,8 @@ kbd{
       </div>
       <div class="sb-head" style="margin-top:4px">Category</div>
       <div id="cats">
+        <div class="cat-item" data-c="fav"><span class="ci">⭐</span><span class="cl">My Favorites</span><span class="cc" id="n-fav">0</span></div>
+        <div class="cat-item" data-c="recent"><span class="ci">🕘</span><span class="cl">Recently Watched</span><span class="cc" id="n-recent">0</span></div>
         <div class="cat-item on" data-c="all"><span class="ci">📺</span><span class="cl">All Channels</span><span class="cc" id="n-all">–</span></div>
         <div class="cat-item" data-c="news"><span class="ci">📰</span><span class="cl">News</span><span class="cc" id="n-news">–</span></div>
         <div class="cat-item" data-c="sports"><span class="ci">⚽</span><span class="cl">Sports</span><span class="cc" id="n-sports">–</span></div>
@@ -947,6 +964,7 @@ kbd{
         <div id="pg-head">
           <div id="pg-title">All India Channels <span class="live-tag">LIVE</span></div>
           <div id="sort-row">
+            <button id="install-btn" type="button" aria-label="Install BharatTV app">📲 Install App</button>
             <span id="count-lbl" style="font-size:11px;color:var(--txt3)"></span>
             <button class="sort-btn on" data-s="name">A-Z</button>
             <button class="sort-btn" data-s="live">Live First</button>
@@ -999,6 +1017,16 @@ kbd{
           <button onclick="window.open('https://t.me/share/url?url='+encodeURIComponent('https://bharat-tv-free-live.lovable.app/BharatTV.html')+'&text='+encodeURIComponent('🇮🇳 Watch 19000+ Free Live Indian TV Channels on BharatTV! 📺'),'_blank')" style="display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:20px;border:none;background:#0088cc;color:#fff;font-size:11px;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 14px rgba(0,136,204,.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">✈️ Telegram</button>
           <button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent('🇮🇳 Watch 19000+ Free Live Indian TV Channels on BharatTV! 📺\nhttps://bharat-tv-free-live.lovable.app/BharatTV.html'),'_blank')" style="display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:20px;border:none;background:#1DA1F2;color:#fff;font-size:11px;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 14px rgba(29,161,242,.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">🐦 Twitter</button>
         </div>
+        <section id="ai-box" aria-labelledby="ai-h">
+          <h2 id="ai-h">✨ Ask AI what to watch</h2>
+          <p>Describe what you're in the mood for — e.g. "Hindi cricket news", "cartoons for my kids in Tamil", "calm devotional music".</p>
+          <form id="ai-form">
+            <input id="ai-q" type="text" maxlength="300" placeholder="What kind of live content do you want?" aria-label="Describe the content you want">
+            <button id="ai-go" type="submit">Find channels</button>
+          </form>
+          <div id="ai-status" role="status" aria-live="polite"></div>
+          <div id="ai-results" class="grid-like"></div>
+        </section>
         <div id="grid"></div>
         <button id="load-more">Load More Channels</button>
         <div id="empty">
@@ -1491,6 +1519,12 @@ function mapCat(c){
 // ===== FILTER =====
 function filtered(){
   let ch=india;
+  if(cat==='fav'||cat==='recent'){
+    const ids=cat==='fav'?getFavs():getRecent();
+    ch=ids.map(id=>india.find(c=>c.id===id)).filter(Boolean);
+    if(q){ const lq=q.toLowerCase(); ch=ch.filter(c=>c.name.toLowerCase().includes(lq)); }
+    return ch;
+  }
   // Auto-hide channels without available streams
   if(streamsReady) ch=ch.filter(c=>(sMap[c.id]||[]).length>0);
   if(cat!=='all') ch=ch.filter(c=>c.categories&&c.categories.some(x=>mapCat(x)===cat));
@@ -1499,6 +1533,29 @@ function filtered(){
   if(sortBy==='live'&&streamsReady) ch=[...ch].sort((a,b)=>((sMap[b.id]||[]).length>0?1:0)-((sMap[a.id]||[]).length>0?1:0));
   else ch=[...ch].sort((a,b)=>a.name.localeCompare(b.name));
   return ch;
+}
+
+// ===== FAVORITES & RECENT =====
+function lsGet(k){ try{ return JSON.parse(localStorage.getItem(k)||'[]'); }catch(_){ return []; } }
+function getFavs(){ return lsGet('btv-favs'); }
+function getRecent(){ return lsGet('btv-recent'); }
+function isFav(id){ return getFavs().includes(id); }
+function toggleFav(id){
+  let f=getFavs(); const on=f.includes(id);
+  f=on?f.filter(x=>x!==id):[id,...f];
+  localStorage.setItem('btv-favs',JSON.stringify(f));
+  const c=india.find(x=>x.id===id);
+  showToast(on?'Removed from favorites':'⭐ Added '+(c?c.name:'')+' to favorites');
+  renderCards(); if(window.renderAiResults) renderAiResults();
+}
+function addRecent(id){
+  const r=[id,...getRecent().filter(x=>x!==id)].slice(0,30);
+  localStorage.setItem('btv-recent',JSON.stringify(r));
+  updateGuideCounts();
+}
+function updateGuideCounts(){
+  const a=document.getElementById('n-fav'), b=document.getElementById('n-recent');
+  if(a) a.textContent=getFavs().length; if(b) b.textContent=getRecent().length;
 }
 
 // ===== RENDER ALL =====
@@ -1511,16 +1568,21 @@ function renderCards(){
   const lm=document.getElementById('load-more');
   document.getElementById('count-lbl').textContent=`${ch.length} channels`;
   const cName=COUNTRY_NAMES[country]||country;
-  const titles={all:`All ${cName} Channels`,news:'News Channels',sports:'Sports Channels',entertainment:'Entertainment',lifestyle:'Fashion & Lifestyle',travel:'Travel & Adventure',science:'Science & Nature',education:'Education',music:'Music Channels',religious:'Spiritual & Religious',kids:'Kids Channels',documentary:'Documentary',general:'General Channels'};
+  const titles={fav:'⭐ My Favorites',recent:'🕘 Recently Watched',all:`All ${cName} Channels`,news:'News Channels',sports:'Sports Channels',entertainment:'Entertainment',lifestyle:'Fashion & Lifestyle',travel:'Travel & Adventure',science:'Science & Nature',education:'Education',music:'Music Channels',religious:'Spiritual & Religious',kids:'Kids Channels',documentary:'Documentary',general:'General Channels'};
   document.getElementById('pg-title').innerHTML=`${titles[cat]||cName+' Channels'} <span class="live-tag">LIVE</span>`;
 
-  if(!ch.length){ grid.innerHTML=''; empty.classList.add('show'); lm.classList.remove('show'); return; }
+  updateGuideCounts();
+  if(!ch.length){ grid.innerHTML=''; empty.classList.add('show'); empty.querySelector('.em-sub').textContent=cat==='fav'?'Tap the ☆ on any channel to save it here':cat==='recent'?'Channels you play will appear here':'Try a different language or category filter'; lm.classList.remove('show'); return; }
   empty.classList.remove('show');
   const slice=ch.slice(0, page*PER_PAGE);
   grid.innerHTML=slice.map((c,i)=>cardHTML(c,i)).join('');
   lm.classList.toggle('show', ch.length>slice.length);
   lm.dataset.total=ch.length;
-  grid.querySelectorAll('.ch-card').forEach(el=>{
+  bindCards(grid);
+}
+function bindCards(root){
+  root.querySelectorAll('.fav-btn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();toggleFav(b.dataset.id);}));
+  root.querySelectorAll('.ch-card').forEach(el=>{
     el.addEventListener('click',()=>{
       const c=india.find(x=>x.id===el.dataset.id);
       if(c){playChannel(c);if(window.innerWidth<700)closeSb();}
@@ -1551,6 +1613,7 @@ function cardHTML(c,i){
   const isNow=cur&&cur.id===c.id;
   return `<div class="ch-card${isNow?' now':''} card-in" data-id="${c.id}" style="animation-delay:${Math.min(i*15,300)}ms">
     <div class="ch-thumb">
+      <button class="fav-btn${isFav(c.id)?' on':''}" data-id="${c.id}" aria-pressed="${isFav(c.id)}" aria-label="${isFav(c.id)?'Remove '+c.name+' from favorites':'Add '+c.name+' to favorites'}">${isFav(c.id)?'★':'☆'}</button>
       ${logo?`<img src="${logo}" loading="lazy" alt="${c.name}" onerror="this.style.display='none'">`:`<div class="no-lg">${c.name.slice(0,2).toUpperCase()}</div>`}
       <div class="play-ov"><div class="play-circle"><div class="play-tri"></div></div></div>
       ${streamsReady?(hasStream?`<div class="live-ind"></div><div class="viewer-badge"><span class="vb-dot"></span>${fmtViewers(genViewers(c.id))}</div>`:'<div class="no-stream-ind">No stream</div>'):''}
@@ -1602,6 +1665,7 @@ function playChannel(c){
   const isRetry = cur && cur.id===c.id;
   if(!isRetry) autoRetryCount=0;
   cur=c;
+  addRecent(c.id);
   hideStreamError();
   const pw=document.getElementById('player-wrap');
   pw.classList.add('open');
@@ -2384,5 +2448,49 @@ startTrafficUpdates();
   <span style="color:#555;margin:0 10px;">|</span>
   <span style="color:#777;font-size:0.85rem;">© 2026 BharatTV. All rights reserved.</span>
 </footer>
+<script>
+// ===== AI RECOMMENDATIONS =====
+(function(){
+  const FN='https://ewchyubrdusdlmrtocao.supabase.co/functions/v1/recommend-channels';
+  const KEY='sb_publishable_Nr3gn6vFYjkk6AddMpHOIw_dabkiaNZ';
+  let picks=[];
+  const st=document.getElementById('ai-status'), out=document.getElementById('ai-results'), go=document.getElementById('ai-go');
+  window.renderAiResults=function(){
+    const list=picks.map(p=>({p,c:india.find(x=>x.id===p.id)})).filter(x=>x.c);
+    out.innerHTML=list.length?'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">'+list.map((x,i)=>'<div>'+cardHTML(x.c,i)+'<div style="font-size:11px;color:var(--txt2);margin-top:4px">'+String(x.p.reason||'').replace(/[<>&]/g,'')+'</div></div>').join('')+'</div>':'';
+    bindCards(out);
+  };
+  document.getElementById('ai-form').addEventListener('submit',async e=>{
+    e.preventDefault();
+    const query=document.getElementById('ai-q').value.trim();
+    if(!query){ st.textContent='Type what you would like to watch first.'; return; }
+    let pool=india.filter(c=>!streamsReady||(sMap[c.id]||[]).length>0);
+    const lq=query.toLowerCase();
+    pool=[...pool].sort((a,b)=>(b.name.toLowerCase().split(' ').some(w=>w.length>2&&lq.includes(w))?1:0)-(a.name.toLowerCase().split(' ').some(w=>w.length>2&&lq.includes(w))?1:0)).slice(0,600);
+    const list=pool.map(c=>({id:c.id,n:c.name,c:(c.categories||[]).join(','),l:(c._langs||[]).join(',')}));
+    go.disabled=true; st.textContent='Finding channels for you…'; out.innerHTML='';
+    try{
+      const r=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json',apikey:KEY,Authorization:'Bearer '+KEY},body:JSON.stringify({query,channels:list})});
+      const d=await r.json().catch(()=>({}));
+      if(!r.ok) throw new Error(d.error||'Something went wrong. Please try again.');
+      picks=d.recommendations||[];
+      st.textContent=picks.length?(d.summary||'Here are channels that match:'):'No matching channels found — try describing it differently.';
+      renderAiResults();
+    }catch(err){ st.textContent='⚠️ '+err.message; }
+    finally{ go.disabled=false; }
+  });
+})();
+// ===== PWA INSTALL (published site only) =====
+(function(){
+  if(location.hostname!=='bharat-tv-free-live.lovable.app' || !/\/BharatTV\.html$/.test(location.pathname)) return;
+  const l=document.createElement('link'); l.rel='manifest'; l.href='/bharattv.webmanifest'; document.head.appendChild(l);
+  const t=document.createElement('meta'); t.name='theme-color'; t.content='#05050f'; document.head.appendChild(t);
+  const a=document.createElement('link'); a.rel='apple-touch-icon'; a.href='/icons/btv-192.png'; document.head.appendChild(a);
+  let deferred=null; const btn=document.getElementById('install-btn');
+  window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferred=e; btn.classList.add('show'); });
+  btn.addEventListener('click',async()=>{ if(!deferred) return; deferred.prompt(); await deferred.userChoice; deferred=null; btn.classList.remove('show'); });
+  window.addEventListener('appinstalled',()=>{ btn.classList.remove('show'); showToast('✅ BharatTV installed'); });
+})();
+</script>
 </body>
 </html>
