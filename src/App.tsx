@@ -7,6 +7,8 @@ import Index from "./pages/Index.tsx";
 import Blog from "./pages/Blog.tsx";
 import BlogPost from "./pages/BlogPost.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import TamilLive from "./pages/TamilLive.tsx";
+import AdminHealth from "./pages/AdminHealth.tsx";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +22,9 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/tamil-live-tv" element={<TamilLive />} />
+          <Route path="/tamil-live-tv/:city" element={<TamilLive />} />
+          <Route path="/admin/health" element={<AdminHealth />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
