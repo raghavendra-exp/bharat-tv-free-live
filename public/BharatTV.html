@@ -19,6 +19,13 @@
 <meta name="author" content="Raghav">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <link rel="canonical" href="https://bharat-tv-free-live.lovable.app/BharatTV.html">
+<link rel="manifest" href="/bharattv.webmanifest">
+<meta name="theme-color" content="#05050f">
+<link rel="apple-touch-icon" href="/icons/btv-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="BharatTV">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="BharatTV — Watch 19000+ Free Live Indian TV Channels Online">
@@ -1710,6 +1717,7 @@ function playChannel(c){
   renderCards();
   showToast('▶ Playing: '+c.name);
   startViewerCounter(c.id);
+  TEL.start(c);
 }
 
 function tryPlay(url,ss,idx,ov,vid,c){
@@ -1762,6 +1770,7 @@ function tryPlay(url,ss,idx,ov,vid,c){
         ov.classList.add('hide');
         hideStreamError();
         autoRetryCount=0;
+        TEL.ok(c);
         VC.levelsReady();
         hls.on(Hls.Events.LEVEL_SWITCHED,()=>VC.levelsReady());
         hls.on(Hls.Events.SUBTITLE_TRACKS_UPDATED,()=>VC.captionsReady());
@@ -1800,6 +1809,7 @@ function tryPlay(url,ss,idx,ov,vid,c){
         vid.removeEventListener('canplay', onCan);
         clearTimeout(loadTimer);
         ov.classList.add('hide');
+        TEL.ok(c);
       }, {once:true});
       vid.addEventListener('error', function onErr(){
         vid.removeEventListener('error', onErr);
@@ -1831,6 +1841,7 @@ function tryPlay(url,ss,idx,ov,vid,c){
     } else {
       document.getElementById('p-spin').style.display='none';
       document.getElementById('p-msg').textContent='Stream unavailable.';
+      TEL.fail(c);
       showStreamError(
         'Stream unavailable',
         "This channel didn't respond. It may be offline or blocked outside India.",
@@ -1861,6 +1872,7 @@ function setupBtns(c,url){
 }
 
 function closePlayer(){
+  TEL.stop();
   const pw=document.getElementById('player-wrap');
   if(theaterMode){ theaterMode=false; pw.classList.remove('theater'); document.body.style.overflow=''; }
   pw.classList.remove('open');
@@ -2480,15 +2492,45 @@ startTrafficUpdates();
     finally{ go.disabled=false; }
   });
 })();
-// ===== PWA INSTALL (published site only) =====
+// ===== STREAM TELEMETRY (anonymous; powers the admin health dashboard) =====
+const TEL=(function(){
+  const URL_='https://ewchyubrdusdlmrtocao.supabase.co/rest/v1/stream_events', KEY='sb_publishable_Nr3gn6vFYjkk6AddMpHOIw_dabkiaNZ';
+  let sid=sessionStorage.getItem('btv-sid'); if(!sid){ sid=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2)+Date.now()); sessionStorage.setItem('btv-sid',sid); }
+  let ch=null, t0=0, okSent=false, bufAt=0, hb=null;
+  const vid=document.getElementById('vid');
+  function send(event,c,ms){
+    if(!c) return;
+    try{ fetch(URL_,{method:'POST',keepalive:true,headers:{apikey:KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
+      body:JSON.stringify({channel_id:String(c.id).slice(0,100),channel_name:String(c.name||'').slice(0,120),session_id:sid,event,value_ms:ms==null?null:Math.min(600000,Math.max(0,Math.round(ms)))})}).catch(()=>{}); }catch(_){}
+  }
+  function stopHb(){ if(hb){clearInterval(hb);hb=null;} }
+  vid.addEventListener('waiting',()=>{ if(okSent && !bufAt) bufAt=performance.now(); });
+  vid.addEventListener('playing',()=>{ if(bufAt){ const d=performance.now()-bufAt; bufAt=0; if(d>300) send('buffer',ch,d); } });
+  window.addEventListener('pagehide',stopHb);
+  return {
+    start(c){ ch=c; t0=performance.now(); okSent=false; bufAt=0; stopHb(); send('start',c); },
+    ok(c){ if(okSent||!ch||c.id!==ch.id) return; okSent=true; send('ok',c,performance.now()-t0);
+      stopHb(); hb=setInterval(()=>{ if(ch && !vid.paused && !document.hidden) send('heartbeat',ch); },45000); },
+    fail(c){ if(!ch||c.id!==ch.id) return; stopHb(); send('fail',c,performance.now()-t0); },
+    stop(){ stopHb(); ch=null; }
+  };
+})();
+// ===== PWA INSTALL =====
 (function(){
-  if(location.hostname!=='bharat-tv-free-live.lovable.app' || !/\/BharatTV\.html$/.test(location.pathname)) return;
-  const l=document.createElement('link'); l.rel='manifest'; l.href='/bharattv.webmanifest'; document.head.appendChild(l);
-  const t=document.createElement('meta'); t.name='theme-color'; t.content='#05050f'; document.head.appendChild(t);
-  const a=document.createElement('link'); a.rel='apple-touch-icon'; a.href='/icons/btv-192.png'; document.head.appendChild(a);
-  let deferred=null; const btn=document.getElementById('install-btn');
+  const btn=document.getElementById('install-btn');
+  const standalone=matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  const onLive=location.hostname==='bharat-tv-free-live.lovable.app';
+  if(standalone || !onLive) return;
+  const ios=/iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+  let deferred=null;
   window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferred=e; btn.classList.add('show'); });
-  btn.addEventListener('click',async()=>{ if(!deferred) return; deferred.prompt(); await deferred.userChoice; deferred=null; btn.classList.remove('show'); });
+  // Always offer the button on phones; fall back to manual steps when the browser gives no prompt.
+  if(ios || /android/i.test(navigator.userAgent)) btn.classList.add('show');
+  btn.addEventListener('click',async()=>{
+    if(deferred){ deferred.prompt(); const r=await deferred.userChoice; deferred=null; if(r.outcome==='accepted') btn.classList.remove('show'); return; }
+    if(ios) alert('To install BharatTV on iPhone/iPad:\n1. Tap the Share button (□↑) in Safari\n2. Choose "Add to Home Screen"\n3. Tap Add');
+    else alert('To install BharatTV:\nOpen your browser menu (⋮) and tap "Install app" or "Add to Home screen".');
+  });
   window.addEventListener('appinstalled',()=>{ btn.classList.remove('show'); showToast('✅ BharatTV installed'); });
 })();
 </script>
