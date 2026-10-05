@@ -14,16 +14,84 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      stream_events: {
+        Row: {
+          channel_id: string
+          channel_name: string | null
+          created_at: string
+          event: string
+          id: number
+          session_id: string
+          value_ms: number | null
+        }
+        Insert: {
+          channel_id: string
+          channel_name?: string | null
+          created_at?: string
+          event: string
+          id?: never
+          session_id: string
+          value_ms?: number | null
+        }
+        Update: {
+          channel_id?: string
+          channel_name?: string | null
+          created_at?: string
+          event?: string
+          id?: never
+          session_id?: string
+          value_ms?: number | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      stream_health_summary: {
+        Args: { _hours?: number }
+        Returns: {
+          avg_start_ms: number
+          buffer_events: number
+          buffer_ms: number
+          channel_id: string
+          channel_name: string
+          fails: number
+          last_seen: string
+          ok: number
+          starts: number
+          viewers_now: number
+        }[]
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +218,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const
