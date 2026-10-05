@@ -1872,6 +1872,7 @@ function setupBtns(c,url){
 }
 
 function closePlayer(){
+  TEL.stop();
   const pw=document.getElementById('player-wrap');
   if(theaterMode){ theaterMode=false; pw.classList.remove('theater'); document.body.style.overflow=''; }
   pw.classList.remove('open');
@@ -2520,7 +2521,6 @@ const TEL=(function(){
   const standalone=matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   const onLive=location.hostname==='bharat-tv-free-live.lovable.app';
   if(standalone || !onLive) return;
-  if('serviceWorker' in navigator) navigator.serviceWorker.register('/btv-sw.js',{scope:'/BharatTV.html'}).catch(()=>{});
   const ios=/iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
   let deferred=null;
   window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferred=e; btn.classList.add('show'); });
