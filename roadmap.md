@@ -1,5 +1,7 @@
 # Roadmap
-- [ ] Connect GitHub; push GitHub Pages channel page to raghavendra-exp/bharattv (connector push, no auto-sync)
-- [ ] Full PWA manifest + install prompt (BharatTV.html)
-- [ ] Tamil keywords + city pages: Chennai, Coimbatore, Madurai, Tiruchirappalli, Salem, Tirunelveli
-- [ ] Admin-only stream health dashboard: health, buffering, real viewer counts (heartbeats)
+- [ ] Complete secure dashboard sign-up/login and verify role-gated health metrics.
+- [ ] Store a display name and optional viewing-language preference, separately from admin roles.
+- [ ] Improve TV viewing with practical remote-style controls.
+- [ ] Strengthen Tamil/local SEO pages, metadata, and sitemap coverage.
+- [ ] Recheck existing PWA install flow and deployment readiness.
+- [ ] GitHub Pages / existing-repository sync remains pending unless repository tools allow it.

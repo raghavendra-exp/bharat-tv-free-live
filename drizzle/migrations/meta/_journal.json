@@ -8,6 +8,13 @@
       "when": 1791182849475,
       "tag": "0000_stream_health",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795328115679,
+      "tag": "0001_create_dashboard_profiles",
+      "breakpoints": true
     }
   ]
 }
