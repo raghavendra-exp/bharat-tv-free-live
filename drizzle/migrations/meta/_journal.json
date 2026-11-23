@@ -15,6 +15,13 @@
       "when": 1795328115679,
       "tag": "0001_create_dashboard_profiles",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795452807829,
+      "tag": "0002_grant_admin_to_verified_owner_email",
+      "breakpoints": true
     }
   ]
 }
